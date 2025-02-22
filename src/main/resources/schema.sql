@@ -80,8 +80,7 @@ CREATE TABLE IF NOT EXISTS "workout_template_exercises" (
     "id" SERIAL PRIMARY KEY,
     "workout_template_id" INT NOT NULL,
     "exercise_id" INT NOT NULL,
-    -- renamed "set" -> "set_count":
-    "set_count" INT NOT NULL,
+    "set_num" INT NOT NULL,
     "weight" INT NOT NULL,
     "reps" INT NOT NULL,
     CONSTRAINT "fk_workout_template"
@@ -95,7 +94,7 @@ CREATE TABLE IF NOT EXISTS "workout_template_exercises" (
 );
 
 COMMENT ON TABLE "workout_template_exercises" IS 'Join table linking workout templates and exercises, with sets, weight, and reps.';
-COMMENT ON COLUMN "workout_template_exercises"."set_count" IS 'Number of sets assigned to the exercise in the workout template.';
+COMMENT ON COLUMN "workout_template_exercises"."set_num" IS 'Number of the set assigned to the exercise in the workout template.';
 
 ---- #### TEMPLATES AND USERS ####
 --
@@ -130,6 +129,8 @@ CREATE TABLE IF NOT EXISTS "workouts" (
     "body_part" VARCHAR(255),
     "tags" VARCHAR(255),
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "started_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "ended_at" TIMESTAMP,
     "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     "workout_template_id" INT,
     "user_id" UUID,
@@ -152,7 +153,7 @@ CREATE TABLE IF NOT EXISTS "workout_exercises" (
     "id" SERIAL PRIMARY KEY,
     "workout_id" INT NOT NULL,
     "exercise_id" INT NOT NULL,
-    "set_count" INT NOT NULL,
+    "set_num" INT NOT NULL,
     "reps" INT NOT NULL,
     "weight" INT NOT NULL,
     "annotation" VARCHAR(255),
@@ -167,7 +168,7 @@ CREATE TABLE IF NOT EXISTS "workout_exercises" (
 );
 
 COMMENT ON TABLE "workout_exercises" IS 'Join table linking actual workouts and exercises.';
-COMMENT ON COLUMN "workout_exercises"."set_count" IS 'Number of sets for this exercise in the user’s actual workout.';
+COMMENT ON COLUMN "workout_exercises"."set_num" IS 'Number of the set for this exercise in the user’s actual workout.';
 COMMENT ON COLUMN "workout_exercises"."reps" IS 'Number of reps for each set.';
 COMMENT ON COLUMN "workout_exercises"."weight" IS 'Weight to be lifted or used, if applicable.';
 COMMENT ON COLUMN "workout_exercises"."annotation" IS 'User notes for this exercise in the current workout.';
