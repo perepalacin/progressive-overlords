@@ -1,8 +1,6 @@
 package progressive_overlords.entities.dao;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import progressive_overlords.exceptions.BadRequestException;
 
@@ -25,6 +23,10 @@ public class TemplateDao {
     private List<SetDao> sets;
     private String createdAt;
     private String updatedAt;
+
+    public TemplateDao() {
+
+    }
 
     public TemplateDao(int id, String name, String description, String color, String bodyPart, String tags) {
         this.name = name;

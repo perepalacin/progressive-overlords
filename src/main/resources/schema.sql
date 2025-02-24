@@ -132,12 +132,12 @@ CREATE TABLE IF NOT EXISTS "workouts" (
     "started_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     "ended_at" TIMESTAMP,
     "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    "workout_template_id" INT,
+    "workout_template_id" INT NULL,
     "user_id" UUID,
     CONSTRAINT "fk_workout_template_in_workouts"
         FOREIGN KEY ("workout_template_id")
         REFERENCES "workout_templates" ("id")
-        ON DELETE CASCADE,
+        ON DELETE SET NULL,
     CONSTRAINT "fk_user_in_workouts"
         FOREIGN KEY ("user_id")
         REFERENCES "users" ("id")

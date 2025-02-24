@@ -19,4 +19,9 @@ public class WorkoutDao extends TemplateDao {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    public WorkoutDao(TemplateDao templateDao, String startDate, String endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 }

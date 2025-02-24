@@ -11,7 +11,6 @@ import progressive_overlords.entities.dto.TemplateDto;
 import progressive_overlords.services.TemplatesService;
 
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("${api.prefix}/templates")
