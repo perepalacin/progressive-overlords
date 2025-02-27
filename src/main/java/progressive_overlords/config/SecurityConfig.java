@@ -1,55 +1,73 @@
 package progressive_overlords.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
-import javax.sql.DataSource;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import progressive_overlords.filters.SessionCookieFilter;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     @Bean
-    JdbcUserDetailsManager CustomUserManager (DataSource dataSource, PasswordEncoder passwordEncoder) {
-        UserDetails user = User.builder()
-                .username("userManagerTest")
-                .password(passwordEncoder.encode("Test1234"))
-                .roles()
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
+    }
+
+
+    @Bean
+    SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(
+                        authorizeHttp -> {
+                            authorizeHttp.requestMatchers("/api/v1/auth/**", "/sign-up", "/sign-in").permitAll();
+                            authorizeHttp.anyRequest().authenticated();
+                        }
+                )
+                .formLogin(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(sessionCookieFilter(), UsernamePasswordAuthenticationFilter.class)
+                .logout(l -> l.logoutUrl("/sign-in"))
                 .build();
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-        jdbcUserDetailsManager.createUser(user);
-        return jdbcUserDetailsManager;
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception {
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.setAllowCredentials(true);
 
-        httpSecurity.formLogin(formLogin -> formLogin
-                .loginPage("/sign-in")
-                .permitAll());
-//        httpSecurity.formLogin(c ->
-//                c.successHandler(authenticationSuccessHandler)
-//                        .failureHandler(authenticationFailureHandler)
-//        );
-        httpSecurity
-                .authorizeHttpRequests(req -> req
-                        .requestMatchers("/api/v1/auth/**", "/sign-up", "/sign-in").permitAll()
-                        .anyRequest().authenticated()
-                );
-
-        return httpSecurity.build();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(6);
+    public SessionCookieFilter sessionCookieFilter() {
+        return new SessionCookieFilter();
     }
 
 }
