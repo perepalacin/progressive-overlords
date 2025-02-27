@@ -1,9 +1,9 @@
 INSERT INTO "users" (
-    "username", "password", "weight_units"
+    "username", "password", "weight_units", "enabled"
 ) VALUES
-    ('perepalacin', 'test1234', 'kg');
+    ('dbtest', 'test1234', 'kg', TRUE);
 
-INSERT INTO "exercises" ("name", "description", "thumbnail", "muscle", "bodyPart", "motion", "body", "resistance", "isometric") VALUES
+INSERT INTO "exercises" ("name", "description", "thumbnail", "muscle", "body_part", "motion", "upper_or_lower", "resistance", "isometric") VALUES
 ('Push-up', 'A basic upper body exercise that works the chest, shoulders, and triceps.', NULL, 'Chest', 'arms', 'push', 'upper', 'bodyWeight', false),
 ('Pull-up', 'An exercise primarily targeting the back, biceps, and forearms.', NULL, 'Back', 'arms', 'pull', 'upper', 'bodyWeight', false),
 ('Squat', 'A fundamental lower body exercise that strengthens the quads, glutes, and hamstrings.', NULL, 'Legs', 'legs', 'push', 'lower', 'weight', false),

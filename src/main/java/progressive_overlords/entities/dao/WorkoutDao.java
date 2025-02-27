@@ -1,27 +1,91 @@
 package progressive_overlords.entities.dao;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import progressive_overlords.exceptions.BadRequestException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class WorkoutDao extends TemplateDao {
-
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class WorkoutDao {
+    private int id;
+    private String name;
+    private String description;
+    private String color;
+    private String bodyPart;
+    private List<String> tags;
+    private String unparsedTags;
+    private List<SetDao> sets;
+    private String createdAt;
+    private String updatedAt;
     private String startDate;
     private String endDate;
+    private boolean isTemplate;
+    private int templateId;
 
+//    public WorkoutDao() {
+//
+//    }
+//
+//    public WorkoutDao(int id, String name, String description, String color, String bodyPart, String tags) {
+//        this.name = name;
+//        this.description = description;
+//        this.color = color;
+//        this.bodyPart = bodyPart;
+//        this.unparsedTags = tags;
+//        parseTags(tags);
+//    }
+//
+//    public WorkoutDao(int id, String name, String description, String color, String bodyPart, String tags, List<Integer> exercisesId, List<Integer> sets, List<Integer> reps) {
+//        this.id = id;
+//        this.name = name;
+//        this.description = description;
+//        this.color = color;
+//        this.bodyPart = bodyPart;
+//        this.unparsedTags = tags;
+//        parseTags(tags);
+//        parseSetsList(exercisesId, sets, reps);
+//    }
+//
+//    public WorkoutDao(String name, String description, String color, String bodyPart, String tags, List<Integer> exercisesId, List<Integer> sets, List<Integer> reps) {
+//        this.name = name;
+//        this.description = description;
+//        this.color = color;
+//        this.bodyPart = bodyPart;
+//        this.unparsedTags = tags;
+//        parseTags(tags);
+//        parseSetsList(exercisesId, sets, reps);
+//    }
 
-    public WorkoutDao(int id, String name, String description, String color, String bodyPart, String tags, String startDate, String endDate, List<Integer> exercisesId, List<Integer> sets, List<Integer> reps) {
-        super(id, name, description, color, bodyPart, tags, exercisesId, sets, reps);
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public void parseSetsList(List<Integer> exercisesId, List<Integer> sets, List<Integer> reps)  {
+        List<SetDao> setList = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < sets.size(); i++) {
+                SetDao newSet = SetDao.builder().id(i).exerciseId(exercisesId.get(i)).reps(reps.get(i)).build();
+                setList.add(newSet);
+            }
+        } catch (Exception e) {
+            throw new BadRequestException("There is a mismatch between the number of exercises and sets selected. Please review your template.");
+        }
+
+        this.sets = setList;
     }
 
-    public WorkoutDao(TemplateDao templateDao, String startDate, String endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public void parseTags(String tags) {
+        if (tags == null || tags.trim().isEmpty()) {
+            this.tags = Collections.emptyList();
+        }
+
+        this.tags = Arrays.stream(tags.split(","))
+                .map(String::trim)
+                .collect(Collectors.toList());
     }
 }
