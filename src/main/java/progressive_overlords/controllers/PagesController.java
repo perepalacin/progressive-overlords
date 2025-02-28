@@ -14,6 +14,7 @@ public class PagesController {
 
     @GetMapping("/sign-in")
     public String getSignInPage(Model model) {
+        System.out.println("Reached this enpoint");
         return "pages/sign-in";
     }
 

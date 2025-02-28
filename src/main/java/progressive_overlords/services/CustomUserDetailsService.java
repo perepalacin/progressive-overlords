@@ -19,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDao user = usersRepository.findByUsername(username);
+        UserDao user = usersRepository.findByUsername(username.toLowerCase());
         if (user == null) {
             return null;
         }

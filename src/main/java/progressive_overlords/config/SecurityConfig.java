@@ -45,10 +45,17 @@ public class SecurityConfig {
                             authorizeHttp.anyRequest().authenticated();
                         }
                 )
-                .formLogin(AbstractHttpConfigurer::disable)
+                .exceptionHandling(e -> e.authenticationEntryPoint(
+                        (request, response, authException) -> {
+                            response.sendRedirect("/sign-in");
+                        }
+                ))
+                .formLogin(form -> form
+                        .loginPage("/sign-in")
+                        .permitAll()
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(sessionCookieFilter(), UsernamePasswordAuthenticationFilter.class)
-                .logout(l -> l.logoutUrl("/sign-in"))
                 .build();
     }
 

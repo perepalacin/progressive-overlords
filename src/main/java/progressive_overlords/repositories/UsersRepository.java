@@ -17,22 +17,36 @@ public class UsersRepository {
 
     public UserDao findByUsername (String username) {
         String sqlStatement = "SELECT id, username, password FROM users WHERE username = ?";
-        List<UserDao> user = jdbcTemplate.query(
+        List<UserDao> userList = jdbcTemplate.query(
                 sqlStatement,
                 new Object[]{username},
                 (rs, rowNum) -> UserDao.builder().id(UUID.fromString(rs.getString("id"))).username(rs.getString("username")).password(rs.getString("password")).build()
         );
-        return user.get(0);
+        if (userList.size() == 0) {
+            return null;
+        }
+        return userList.get(0);
     }
 
     public UserDao findById (UUID userId) {
         String sqlStatement = "SELECT id, username, password, weight_units FROM users WHERE id = ?";
-        List<UserDao> user = jdbcTemplate.query(
+        List<UserDao> userList = jdbcTemplate.query(
                 sqlStatement,
                 new Object[]{userId},
                 (rs, rowNum) -> UserDao.builder().id(UUID.fromString(rs.getString("id"))).username(rs.getString("username")).password(rs.getString("password")).weightUnits(rs.getString("weight_units")).build()
         );
-        return user.get(0);
+        if (userList.size() == 0) {
+            return null;
+        }
+        return userList.get(0);
+    }
+
+    public void save(UserDao user) {
+        String sqlStatement = "INSERT INTO users ( username, password, weight_units, enabled) VALUES (?, ?, 'kg', TRUE)";
+        jdbcTemplate.update(sqlStatement,
+                user.getUsername(),
+                user.getPassword()
+        );
     }
 
 }
