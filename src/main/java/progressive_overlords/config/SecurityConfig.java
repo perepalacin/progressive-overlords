@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -50,10 +48,11 @@ public class SecurityConfig {
                             response.sendRedirect("/sign-in");
                         }
                 ))
-                .formLogin(form -> form
-                        .loginPage("/sign-in")
-                        .permitAll()
-                )
+//                .formLogin(form -> form
+//                        .loginPage("/sign-in")
+//                        .permitAll()
+//                )
+                .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(sessionCookieFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();

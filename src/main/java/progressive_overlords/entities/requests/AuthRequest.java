@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SignUpRequest {
+public class AuthRequest {
     //TODO: ADD validation rules
     private String username;
     private String password;
