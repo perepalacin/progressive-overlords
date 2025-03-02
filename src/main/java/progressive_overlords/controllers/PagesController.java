@@ -9,12 +9,12 @@ public class PagesController {
 
     @GetMapping("/")
     public String getHomePage (Model model) {
+        System.out.println("directed to home page");
         return "pages/home";
     }
 
     @GetMapping("/sign-in")
     public String getSignInPage(Model model) {
-        System.out.println("Reached this enpoint");
         return "pages/sign-in";
     }
 

@@ -1,9 +1,9 @@
 package progressive_overlords.services;
 
+import jakarta.servlet.http.Cookie;
 import progressive_overlords.entities.dao.UserDao;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.Date;
 import java.util.UUID;
 import java.util.function.Function;
@@ -66,4 +66,5 @@ public class SessionsService {
         final Claims claims = getClaims(token);
         return claimsResolver.apply(claims);
     }
+
 }

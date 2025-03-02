@@ -29,29 +29,35 @@ public class SessionCookieFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestPath = request.getServletPath();
-        if (isPublicRoute(requestPath)) {
+        if ("/api/v1/auth/".equals(requestPath)) {
             filterChain.doFilter(request, response);
             return;
         }
 
         Optional<Cookie> sessionCookie = getSessionCookie(request);
-        if (sessionCookie.isPresent() && SessionsService.isTokenValid(sessionCookie.get().getValue())) {
-            UUID userId = SessionsService.getUserId(sessionCookie.get().getValue());
-            if ( SecurityContextHolder.getContext().getAuthentication() == null) {
-                //TODO: Replace with roles from the token
-                List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("USER"));
-                UsernamePasswordAuthenticationToken principal= new UsernamePasswordAuthenticationToken(
-                        userId,
-                        null,
-                        authorities
-                );
-                principal.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(principal);
+        if (sessionCookie.isEmpty() || !SessionsService.isTokenValid(sessionCookie.get().getValue())) {
+            if ("/sign-in".equals(requestPath) || "/sign-up".equals(requestPath)) {
+                filterChain.doFilter(request, response);
+            } else {
+                response.sendRedirect("/sign-in");
             }
-        } else {
-            response.sendRedirect("/sign-in");
+            return;
         }
 
+        if (SecurityContextHolder.getContext().getAuthentication() != null || "/sign-in".equals(requestPath) || "/sign-up".equals(requestPath)) {
+            response.sendRedirect("/");
+            return;
+        }
+
+        UUID userId = SessionsService.getUserId(sessionCookie.get().getValue());
+        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("USER"));
+        UsernamePasswordAuthenticationToken principal= new UsernamePasswordAuthenticationToken(
+                userId,
+                null,
+                authorities
+        );
+        principal.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(principal);
         filterChain.doFilter(request,response);
     }
 
