@@ -20,7 +20,7 @@ import java.util.*;
 public class SessionCookieFilter extends OncePerRequestFilter {
 
     private static final String SESSION_COOKIE_NAME = "SESSION_ID";
-    private static final List<String> PUBLIC_ROUTES = List.of("/sign-in", "/sign-up", "/api/v1/auth/");
+    private static final List<String> PUBLIC_ROUTES = List.of("/sign-in", "/sign-up", "/api/v1/auth/", "/error");
 
     private boolean isPublicRoute(String requestPath) {
         return PUBLIC_ROUTES.stream().anyMatch(requestPath::startsWith);
@@ -29,7 +29,7 @@ public class SessionCookieFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestPath = request.getServletPath();
-        if ("/api/v1/auth/".equals(requestPath)) {
+        if (requestPath != null && requestPath.startsWith("/api/v1/auth/")) {
             filterChain.doFilter(request, response);
             return;
         }

@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS progressive_overlords.workouts (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     is_template BOOLEAN DEFAULT FALSE,
     template_id INT NULL,
-    user_id UUID,
+    user_id UUID NOT NULL,
     CONSTRAINT fk_workout_template_in_workouts FOREIGN KEY (template_id)
         REFERENCES progressive_overlords.workouts (id) ON DELETE SET NULL,
     CONSTRAINT fk_user_in_workouts FOREIGN KEY (user_id)

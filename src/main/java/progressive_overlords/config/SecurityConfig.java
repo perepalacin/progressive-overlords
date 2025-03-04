@@ -32,31 +32,6 @@ public class SecurityConfig {
     }
 
 
-    @Bean
-    SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(
-                        authorizeHttp -> {
-                            authorizeHttp.requestMatchers("/api/v1/auth/**", "/sign-up", "/sign-in").permitAll();
-                            authorizeHttp.anyRequest().authenticated();
-                        }
-                )
-                .exceptionHandling(e -> e.authenticationEntryPoint(
-                        (request, response, authException) -> {
-                            response.sendRedirect("/sign-in");
-                        }
-                ))
-//                .formLogin(form -> form
-//                        .loginPage("/sign-in")
-//                        .permitAll()
-//                )
-                .formLogin(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(sessionCookieFilter(), UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -69,7 +44,23 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }    @Bean
+    SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(
+                        authorizeHttp -> {
+                            authorizeHttp.requestMatchers("/api/v1/auth/**", "/sign-up", "/sign-in", "/error").permitAll();
+                            authorizeHttp.anyRequest().authenticated();
+                        }
+                )
+                .formLogin(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(sessionCookieFilter(), UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
+
 
     @Bean
     public SessionCookieFilter sessionCookieFilter() {

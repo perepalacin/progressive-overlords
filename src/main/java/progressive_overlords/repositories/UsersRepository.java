@@ -19,8 +19,8 @@ public class UsersRepository {
         String sqlStatement = "SELECT id, username, password FROM users WHERE username = ?";
         List<UserDao> userList = jdbcTemplate.query(
                 sqlStatement,
-                new Object[]{username},
-                (rs, rowNum) -> UserDao.builder().id(UUID.fromString(rs.getString("id"))).username(rs.getString("username")).password(rs.getString("password")).build()
+                (rs, rowNum) -> UserDao.builder().id(UUID.fromString(rs.getString("id"))).username(rs.getString("username")).password(rs.getString("password")).build(),
+                username
         );
         if (userList.size() == 0) {
             return null;
@@ -32,8 +32,8 @@ public class UsersRepository {
         String sqlStatement = "SELECT id, username, password, weight_units FROM users WHERE id = ?";
         List<UserDao> userList = jdbcTemplate.query(
                 sqlStatement,
-                new Object[]{userId},
-                (rs, rowNum) -> UserDao.builder().id(UUID.fromString(rs.getString("id"))).username(rs.getString("username")).password(rs.getString("password")).weightUnits(rs.getString("weight_units")).build()
+                (rs, rowNum) -> UserDao.builder().id(UUID.fromString(rs.getString("id"))).username(rs.getString("username")).password(rs.getString("password")).weightUnits(rs.getString("weight_units")).build(),
+                userId
         );
         if (userList.size() == 0) {
             return null;

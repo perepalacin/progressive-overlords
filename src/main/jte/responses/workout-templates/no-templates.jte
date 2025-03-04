@@ -1,0 +1,1 @@
+<p>You have no workout templates yet, build your first one!</p>

@@ -4,9 +4,12 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import progressive_overlords.entities.requests.AuthRequest;
+import progressive_overlords.entities.responses.GenericResponse;
 import progressive_overlords.services.UserService;
 
 import java.io.IOException;
@@ -19,9 +22,9 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/sign-up")
-    public String registerNewUser (@ModelAttribute AuthRequest signUpRequest) {
+    public ResponseEntity<GenericResponse> registerNewUser (@ModelAttribute AuthRequest signUpRequest) {
         userService.registerUser(signUpRequest);
-        return "Successful register";
+        return new ResponseEntity<>(new GenericResponse("Successful register"), HttpStatus.CREATED);
     }
 
 

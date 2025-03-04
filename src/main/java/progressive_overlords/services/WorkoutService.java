@@ -3,20 +3,45 @@ package progressive_overlords.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import progressive_overlords.entities.dao.WorkoutDao;
-import progressive_overlords.entities.dto.TemplateDto;
-import progressive_overlords.repositories.TemplatesRepository;
+import progressive_overlords.entities.dto.WorkoutDto;
 import progressive_overlords.repositories.WorkoutsRepository;
 
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class WorkoutService {
 
-//    private final TemplatesRepository templatesRepository;
-//    private final WorkoutsRepository workoutsRepository;
+    private final WorkoutsRepository workoutsRepository;
+
+    public List<WorkoutDao> getUserTemplates() {
+        return workoutsRepository.getAllTemplatesFromUser();
+    }
+
+    public WorkoutDao getUserTemplateById(int templateId) {
+        return workoutsRepository.getByTemplateId(templateId);
+    }
+
+    public WorkoutDao createTemplate(WorkoutDto templateDto) {
+        WorkoutDao templateDao = WorkoutDao.builder().name(templateDto.getName()).description(templateDto.getDescription()).color(templateDto.getColor()).bodyPart(templateDto.getBodyPart()).isTemplate(true).templateId(null).unparsedTags(templateDto.getUnparsedTags()).build();
+        templateDao.parseSetsList(templateDto.getExercisesId(), templateDto.getSets(), templateDto.getReps());
+        return workoutsRepository.saveTemplate(templateDao);
+    }
+
+    public int startWorkout(WorkoutDto workoutDto) {
+        return workoutsRepository.startWorkout(workoutDto);
+    }
+
+    public WorkoutDao editTemplate(int templateId, WorkoutDto templateDto) {
+        WorkoutDao templateDao = WorkoutDao.builder().id(templateId).name(templateDto.getName()).description(templateDto.getDescription()).color(templateDto.getColor()).bodyPart(templateDto.getBodyPart()).isTemplate(true).templateId(null).unparsedTags(templateDto.getUnparsedTags()).build();
+        templateDao.parseSetsList(templateDto.getExercisesId(), templateDto.getSets(), templateDto.getReps());
+        return workoutsRepository.editTemplate(templateDao);
+    }
+
+    public boolean deleteWorkout(int workoutId) {
+        return workoutsRepository.deleteWorkout(workoutId);
+    }
+
 //
 //    public List<WorkoutDao> getUserTemplates(String userId) {
 //        return workoutsRepository.getAllTemplatesByUserId(UUID.fromString(userId));

@@ -28,41 +28,7 @@ public class WorkoutDao {
     private String startDate;
     private String endDate;
     private boolean isTemplate;
-    private int templateId;
-
-//    public WorkoutDao() {
-//
-//    }
-//
-//    public WorkoutDao(int id, String name, String description, String color, String bodyPart, String tags) {
-//        this.name = name;
-//        this.description = description;
-//        this.color = color;
-//        this.bodyPart = bodyPart;
-//        this.unparsedTags = tags;
-//        parseTags(tags);
-//    }
-//
-//    public WorkoutDao(int id, String name, String description, String color, String bodyPart, String tags, List<Integer> exercisesId, List<Integer> sets, List<Integer> reps) {
-//        this.id = id;
-//        this.name = name;
-//        this.description = description;
-//        this.color = color;
-//        this.bodyPart = bodyPart;
-//        this.unparsedTags = tags;
-//        parseTags(tags);
-//        parseSetsList(exercisesId, sets, reps);
-//    }
-//
-//    public WorkoutDao(String name, String description, String color, String bodyPart, String tags, List<Integer> exercisesId, List<Integer> sets, List<Integer> reps) {
-//        this.name = name;
-//        this.description = description;
-//        this.color = color;
-//        this.bodyPart = bodyPart;
-//        this.unparsedTags = tags;
-//        parseTags(tags);
-//        parseSetsList(exercisesId, sets, reps);
-//    }
+    private Integer templateId;
 
     public void parseSetsList(List<Integer> exercisesId, List<Integer> sets, List<Integer> reps)  {
         List<SetDao> setList = new ArrayList<>();

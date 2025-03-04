@@ -2,64 +2,70 @@ package progressive_overlords.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import progressive_overlords.entities.dao.WorkoutDao;
-import progressive_overlords.entities.dto.TemplateDto;
+import progressive_overlords.entities.dto.WorkoutDto;
+import progressive_overlords.entities.responses.GenericResponse;
 import progressive_overlords.services.WorkoutService;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
-@RequestMapping("${api.prefix}/templates")
+@RequestMapping("${api.prefix}/workouts")
 @RequiredArgsConstructor
 public class WorkoutsController {
 
-//    @Value("${master.userId}")
-//    private String masterUserId;
-//    private final WorkoutService templatesService;
-//
-//    @GetMapping("")
-//    public String getUserTemplates (Model model) {
-//        List<WorkoutDao> templates = templatesService.getUserTemplates(masterUserId);
-//        if (templates.isEmpty()) {
-//            return "responses/workout-templates/no-templates";
-//        }
-//        model.addAttribute("templates", templates);
-//        return "responses/workout-templates/templates-list";
-//    }
-//
-//    @GetMapping("/{templateId}")
-//    public String getById(@PathVariable int templateId, Model model) {
-//        WorkoutDao template = templatesService.findTemplate(templateId, masterUserId);
-//        if (template == null) {
-//            model.addAttribute("message", "The workout template you are looking for doesn't exist");
-//            return "responses/errors/404-not-found";
-//        }
-//        model.addAttribute("template", template);
-//        return "responses/workout-templates/template-view";
-//    }
-//
-//    @PostMapping
-//    public String createTemplate (@Valid @ModelAttribute TemplateDto templateDto, Model model) {
-//        WorkoutDao templateDao = templatesService.createTemplate(templateDto, masterUserId);
-//        model.addAttribute("template", templateDao);
-//        return "responses/workout-templates/template-created";
-//    }
-//
-//    @PatchMapping("/{templateId}")
-//    public String editTemplate (@PathVariable int templateId, @Valid @ModelAttribute TemplateDto templateDto, Model model) {
-//        WorkoutDao templateDao = templatesService.editTemplate(templateId, templateDto, masterUserId);
-//        model.addAttribute("template", templateDao);
-//        return "responses/workout-templates/template-created";
-//    }
-//
-//    @DeleteMapping("/{templateId}")
-//    public String deleteTemplate(@PathVariable int templateId, Model model) {
-//        boolean isDeleted = templatesService.deleteTemplate(templateId, masterUserId);
-//        model.addAttribute("message", isDeleted ? "Template deleted successfully" : "Sorry we couldn't delete your template");
-//        return "responses/workout-templates/template-deleted";
-//    }
+    private final WorkoutService workoutService;
+
+    @GetMapping("/templates")
+    public String getUserTemplates (Model model) {
+        List<WorkoutDao> templates = workoutService.getUserTemplates();
+        if (templates.isEmpty()) {
+            return "responses/workout-templates/no-templates";
+        }
+        model.addAttribute("templates", templates);
+        return "responses/workout-templates/templates-list";
+    }
+
+    @GetMapping("/templates/{templateId}")
+    public String getUserTemplates (@PathVariable int templateId, Model model) {
+        WorkoutDao template = workoutService.getUserTemplateById(templateId);
+        if (template == null) {
+            return "responses/workout-templates/no-templates";
+        }
+        model.addAttribute("template", template);
+        return "responses/workout-templates/template-view";
+    }
+
+    @PostMapping
+    public String createTemplate (@Valid @ModelAttribute WorkoutDto templateDto, Model model) {
+        WorkoutDao templateDao = workoutService.createTemplate(templateDto);
+        model.addAttribute("template", templateDao);
+        return "responses/workout-templates/template-created";
+    }
+
+    @PatchMapping("/templates/{templateId}")
+    public String editTemplate (@PathVariable int templateId, @Valid @ModelAttribute WorkoutDto templateDto, Model model) {
+        WorkoutDao templateDao = workoutService.editTemplate(templateId, templateDto);
+        model.addAttribute("template", templateDao);
+        return "responses/workout-templates/template-created";
+    }
+
+    @PostMapping("/start")
+    public String startWorkout(@Valid @ModelAttribute WorkoutDto workoutDto) throws IOException {
+        int workoutId = workoutService.startWorkout(workoutDto);
+        return "redirect:/workout/" + workoutId;
+    }
+
+    @DeleteMapping("/templates/{workoutId}")
+    public ResponseEntity<GenericResponse> deleteWorkout(@PathVariable int workoutId, Model model) {
+        boolean result = workoutService.deleteWorkout(workoutId);
+        return new ResponseEntity<>(new GenericResponse("Template deleted successfully"), HttpStatus.NO_CONTENT);
+    }
+
 }
