@@ -62,6 +62,12 @@ public class WorkoutsController {
         return "redirect:/workout/" + workoutId;
     }
 
+    @PatchMapping("/finish/{workoutId}")
+    public String finishWorkout(@PathVariable int workoutId) throws IOException {
+        workoutService.finishWorkout(workoutId);
+        return "redirect:/workout-finished/" + workoutId;
+    }
+
     @DeleteMapping("/templates/{workoutId}")
     public ResponseEntity<GenericResponse> deleteWorkout(@PathVariable int workoutId, Model model) {
         boolean result = workoutService.deleteWorkout(workoutId);

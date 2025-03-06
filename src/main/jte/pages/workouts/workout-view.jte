@@ -1,7 +1,8 @@
-@param progressive_overlords.entities.dao.WorkoutDao workoutDao
+@param progressive_overlords.entities.dao.WorkoutDao workout
 
-@if(workoutDao != null)
-<p>${workoutDao.getName()}</p>
+@if(workout != null)
+<p>${workout.getName()}</p>
+ <p>It has a total of ${workout.getSets().size()} exercises</p>
 @else
  <p>Give a name to your workout!</p>
 @endif

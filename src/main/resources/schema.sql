@@ -84,12 +84,15 @@ CREATE TABLE IF NOT EXISTS progressive_overlords.workout_exercises (
     workout_id INT NOT NULL,
     exercise_id INT NOT NULL,
     set_num INT NOT NULL,
-    reps INT NOT NULL,
-    weight INT NOT NULL,
+    DECIMAL INT NOT NULL,
+    DECIMAL INT NOT NULL,
     annotation VARCHAR(255),
+    user_id UUID NOT NULL,
     CONSTRAINT fk_workout FOREIGN KEY (workout_id)
         REFERENCES progressive_overlords.workouts (id) ON DELETE CASCADE,
     CONSTRAINT fk_exercise_in_workout FOREIGN KEY (exercise_id)
-        REFERENCES progressive_overlords.exercises (id) ON DELETE CASCADE
+        REFERENCES progressive_overlords.exercises (id) ON DELETE CASCADE,
+    CONSTRAINT fk_user_in_workouts FOREIGN KEY (user_id)
+        REFERENCES progressive_overlords.users (id) ON DELETE CASCADE
 );
 

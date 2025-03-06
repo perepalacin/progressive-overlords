@@ -62,7 +62,7 @@ public class WorkoutsRepository {
         }, userId);
     }
 
-    public WorkoutDao getByTemplateId(int templateId) {
+    public WorkoutDao getTemplateById(int templateId) {
 
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userId == null) {
@@ -106,7 +106,7 @@ public class WorkoutsRepository {
 
             List<Integer> exercisesId = setList.stream().map(SetDao::getExerciseId).toList();
             List<Integer> sets = setList.stream().map(SetDao::getSetNum).toList();
-            List<Integer> reps = setList.stream().map(SetDao::getReps).toList();
+            List<Float> reps = setList.stream().map(SetDao::getReps).toList();
 
             WorkoutDao template = WorkoutDao.builder()
                     .id(rs.getInt("id"))
@@ -156,6 +156,95 @@ public class WorkoutsRepository {
         return ((Number) keys.get("id")).intValue();
     }
 
+    public void finishWorkout (int workoutId) {
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            return;
+            // TODO: Throw an exception to unauthorized request maybe?
+        }
+
+        String updateWorkoutSQL = """
+            UPDATE workouts
+            SET updated_at = CURRENT_TIMESTAMP, ended_at = CURRENT_TIMESTAMP
+            WHERE id = ? AND user_id = ?
+        """;
+
+        jdbcTemplate.update(updateWorkoutSQL,
+                workoutId,
+                userId
+        );
+    }
+
+    public WorkoutDao getWorkoutById(int workoutId) {
+
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            return null;
+        }
+
+        String sql = """
+            SELECT
+                w.id,
+                w.name,
+                w.description,
+                w.color,
+                w.body_part,
+                w.tags,
+                w.template_id,
+                w.started_at,
+                w.ended_at,
+                COALESCE(json_agg(
+                    json_build_object(
+                        'exerciseId', we.exercise_id,
+                        'setNum', we.set_num,
+                        'weight', we.weight,
+                        'reps', we.reps
+                    )
+                ) FILTER (WHERE we.exercise_id IS NOT NULL), '[]') AS exercises
+            FROM workouts w
+            LEFT JOIN workout_exercises we ON w.id = we.workout_id
+            WHERE w.user_id = ? AND w.id = ?
+            GROUP BY w.id
+        """;
+
+        List<WorkoutDao> workoutList = jdbcTemplate.query(sql, (rs, rowNum) -> {
+            String exercisesJson = rs.getString("exercises");
+
+            List<SetDao> setList = null;
+            try {
+                setList = new ObjectMapper().readValue(
+                        exercisesJson,
+                        new com.fasterxml.jackson.core.type.TypeReference<>() {}
+                );
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+
+            List<Integer> exercisesId = setList.stream().map(SetDao::getExerciseId).toList();
+            List<Integer> sets = setList.stream().map(SetDao::getSetNum).toList();
+            List<Float> reps = setList.stream().map(SetDao::getReps).toList();
+            Integer templateId = rs.getObject("template_id") != null ? rs.getInt("template_id") : null;
+            WorkoutDao workout = WorkoutDao.builder()
+                    .id(rs.getInt("id"))
+                    .name(rs.getString("name"))
+                    .description(rs.getString("description"))
+                    .color(rs.getString("color"))
+                    .bodyPart(rs.getString("body_part"))
+                    .unparsedTags(rs.getString("tags"))
+                    .startDate(rs.getString("started_at"))
+                    .endDate(rs.getString("ended_at"))
+                    .templateId(templateId)
+                    .build();
+
+            workout.parseSetsList(exercisesId, sets, reps);
+            workout.parseTags(workout.getUnparsedTags());
+
+            return workout;
+        }, userId, workoutId);
+
+        return workoutList.isEmpty() ? null : workoutList.get(0);
+    }
+
     public WorkoutDao saveTemplate (WorkoutDao template) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userId == null) {
@@ -193,8 +282,8 @@ public class WorkoutsRepository {
                     ps.setInt(1, workoutTemplateId);
                     ps.setInt(2, exercise.getExerciseId());
                     ps.setInt(3, exercise.getSetNum());
-                    ps.setInt(4, exercise.getWeight());
-                    ps.setInt(5, exercise.getReps());
+                    ps.setFloat(4, exercise.getWeight());
+                    ps.setFloat(5, exercise.getReps());
                 });
 
         template.setId(workoutTemplateId);
@@ -241,8 +330,8 @@ public class WorkoutsRepository {
                     ps.setInt(1, template.getId());
                     ps.setInt(2, exercise.getExerciseId());
                     ps.setInt(3, exercise.getSetNum());
-                    ps.setInt(4, exercise.getWeight());
-                    ps.setInt(5, exercise.getReps());
+                    ps.setFloat(4, exercise.getWeight());
+                    ps.setFloat(5, exercise.getReps());
                 });
 
         template.setId(template.getId());

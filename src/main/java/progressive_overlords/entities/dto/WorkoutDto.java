@@ -19,7 +19,7 @@ public class WorkoutDto {
     private String unparsedTags;
     private List<Integer> exercisesId;
     private List<Integer> sets;
-    private List<Integer> reps;
+    private List<Float> reps;
     private Integer templateId;
     private boolean isTemplate;
 }

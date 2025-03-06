@@ -30,7 +30,7 @@ public class WorkoutDao {
     private boolean isTemplate;
     private Integer templateId;
 
-    public void parseSetsList(List<Integer> exercisesId, List<Integer> sets, List<Integer> reps)  {
+    public void parseSetsList(List<Integer> exercisesId, List<Integer> sets, List<Float> reps)  {
         List<SetDao> setList = new ArrayList<>();
 
         try {
@@ -53,5 +53,16 @@ public class WorkoutDao {
         this.tags = Arrays.stream(tags.split(","))
                 .map(String::trim)
                 .collect(Collectors.toList());
+    }
+
+    public void mergeSetsWithTemplate(WorkoutDao template) {
+        List<SetDao> sets = this.getSets();
+        int workoutCompletedSets = sets.size();
+        for (int i = 0; i < template.getSets().size(); i++) {
+            if (i >= workoutCompletedSets) {
+                sets.add(template.getSets().get(i));
+            }
+        }
+        this.setSets(sets);
     }
 }

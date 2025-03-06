@@ -9,9 +9,10 @@ import lombok.*;
 @AllArgsConstructor
 public class SetDao {
     private int id;
-    private int setNum;
+    private int workoutId;
     private int exerciseId;
-    private int reps;
-    private int weight;
+    private int setNum;
+    private float reps;
+    private float weight;
     private String annotation;
 }

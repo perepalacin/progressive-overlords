@@ -19,7 +19,21 @@ public class WorkoutService {
     }
 
     public WorkoutDao getUserTemplateById(int templateId) {
-        return workoutsRepository.getByTemplateId(templateId);
+        return workoutsRepository.getTemplateById(templateId);
+    }
+
+    public WorkoutDao getWorkoutById(int workoutId) {
+        WorkoutDao workoutDao = workoutsRepository.getWorkoutById(workoutId);
+        if (workoutDao == null) {
+            System.out.println("Workout is actually null!");
+            return null;
+//            throw new NotFoundException("This workout doens't exist!");
+        }
+        if (workoutDao.getEndDate() == null && workoutDao.getTemplateId() != null) {
+            WorkoutDao template = workoutsRepository.getTemplateById(workoutDao.getTemplateId());
+            workoutDao.mergeSetsWithTemplate(template);
+        }
+        return workoutDao;
     }
 
     public WorkoutDao createTemplate(WorkoutDto templateDto) {
@@ -30,6 +44,10 @@ public class WorkoutService {
 
     public int startWorkout(WorkoutDto workoutDto) {
         return workoutsRepository.startWorkout(workoutDto);
+    }
+
+    public void finishWorkout(int workoutId) {
+        workoutsRepository.finishWorkout(workoutId);
     }
 
     public WorkoutDao editTemplate(int templateId, WorkoutDto templateDto) {
