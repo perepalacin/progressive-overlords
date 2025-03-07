@@ -36,4 +36,13 @@ public class PagesController {
         return "pages/workouts/workout-view";
     }
 
+    //TODO: This endpoint is only meant for when the user submits a workout! Otherwise, we will hit the /workout/workoutId endpoint!
+    //this one should only show the actual sets! not the sets from the template!!
+    @GetMapping("/workout-finished/{workoutId}")
+    public String getFinishWorkoutPage(@PathVariable int workoutId, Model model) {
+        WorkoutDao currentWorkout = workoutService.getWorkoutById(workoutId);
+        model.addAttribute("workout", currentWorkout);
+        return "pages/workouts/finish-workout-view";
+    }
+
 }

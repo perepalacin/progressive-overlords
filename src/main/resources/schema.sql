@@ -84,8 +84,8 @@ CREATE TABLE IF NOT EXISTS progressive_overlords.workout_exercises (
     workout_id INT NOT NULL,
     exercise_id INT NOT NULL,
     set_num INT NOT NULL,
-    DECIMAL INT NOT NULL,
-    DECIMAL INT NOT NULL,
+    reps DECIMAL NOT NULL,
+    weight DECIMAL NOT NULL,
     annotation VARCHAR(255),
     user_id UUID NOT NULL,
     CONSTRAINT fk_workout FOREIGN KEY (workout_id)

@@ -274,7 +274,7 @@ public class WorkoutsRepository {
 
         int workoutTemplateId = ((Number) keys.get("id")).intValue(); // Correct casting
 
-        String insertExercisesSQL = "INSERT INTO workout_exercises (workout_id, exercise_id, set_num, weight, reps) VALUES (?, ?, ?, ?, ?)";
+        String insertExercisesSQL = "INSERT INTO workout_exercises (workout_id, exercise_id, set_num, weight, reps, user_id) VALUES (?, ?, ?, ?, ?, ?)";
 
         List<SetDao> sets = template.getSets();
         jdbcTemplate.batchUpdate(insertExercisesSQL, sets, sets.size(),
@@ -284,6 +284,7 @@ public class WorkoutsRepository {
                     ps.setInt(3, exercise.getSetNum());
                     ps.setFloat(4, exercise.getWeight());
                     ps.setFloat(5, exercise.getReps());
+                    ps.setObject(6, userId);
                 });
 
         template.setId(workoutTemplateId);
@@ -315,15 +316,15 @@ public class WorkoutsRepository {
 
         String deleteExercisesSQL = """
             DELETE FROM workout_exercises
-            WHERE workout_id = ?
+            WHERE workout_id = ? AND user_id = ?
         """;
-        jdbcTemplate.update(deleteExercisesSQL, template.getId());
+        jdbcTemplate.update(deleteExercisesSQL, template.getId(), userId);
 
         List<Integer> updatedExerciseIds = template.getSets().stream()
                 .map(SetDao::getExerciseId)
                 .toList();
 
-        String insertExercisesSQL = "INSERT INTO workout_exercises (workout_id, exercise_id, set_num, weight, reps) VALUES (?, ?, ?, ?, ?)";
+        String insertExercisesSQL = "INSERT INTO workout_exercises (workout_id, exercise_id, set_num, weight, reps, user_id) VALUES (?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.batchUpdate(insertExercisesSQL, template.getSets(), template.getSets().size(),
                 (ps, exercise) -> {
@@ -332,6 +333,7 @@ public class WorkoutsRepository {
                     ps.setInt(3, exercise.getSetNum());
                     ps.setFloat(4, exercise.getWeight());
                     ps.setFloat(5, exercise.getReps());
+                    ps.setObject(6, userId);
                 });
 
         template.setId(template.getId());
