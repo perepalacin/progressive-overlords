@@ -31,7 +31,9 @@ public class WorkoutService {
         }
         if (workoutDao.getEndDate() == null && workoutDao.getTemplateId() != null) {
             WorkoutDao template = workoutsRepository.getTemplateById(workoutDao.getTemplateId());
-            workoutDao.mergeSetsWithTemplate(template);
+            if (template != null) {
+                workoutDao.mergeSetsWithTemplate(template);
+            }
         }
         return workoutDao;
     }

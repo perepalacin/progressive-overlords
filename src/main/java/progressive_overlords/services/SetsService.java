@@ -15,4 +15,12 @@ public class SetsService {
         return setsRepository.createSet(setDao);
     }
 
+    public SetDao editSet(SetDao setDao) {
+        return setsRepository.editSet(setDao);
+    }
+
+    public void deleteSet(int setId) {
+        setsRepository.deleteSet(setId);
+    }
+
 }

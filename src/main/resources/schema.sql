@@ -87,6 +87,8 @@ CREATE TABLE IF NOT EXISTS progressive_overlords.workout_exercises (
     reps DECIMAL NOT NULL,
     weight DECIMAL NOT NULL,
     annotation VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     user_id UUID NOT NULL,
     CONSTRAINT fk_workout FOREIGN KEY (workout_id)
         REFERENCES progressive_overlords.workouts (id) ON DELETE CASCADE,

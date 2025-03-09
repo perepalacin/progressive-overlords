@@ -18,6 +18,7 @@ import java.util.UUID;
 public class SetsRepository {
 
     private final JdbcTemplate jdbcTemplate;
+
     public SetDao createSet(SetDao setDao) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userId == null) {
@@ -46,5 +47,43 @@ public class SetsRepository {
 
         setDao.setId(((Number) keys.get("id")).intValue());
         return setDao;
+    }
+
+    public SetDao editSet(SetDao setDao) {
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (userId == null) {
+            return null;
+            // TODO: Throw an exception to unauthorized request maybe?
+        }
+
+        String updateWorkoutSQL = """
+            UPDATE workout_exercises
+            SET updated_at = CURRENT_TIMESTAMP, reps = ?, weight = ?, annotation = ?
+            WHERE id = ? AND user_id = ?
+        """;
+        jdbcTemplate.update(updateWorkoutSQL,
+                setDao.getReps(),
+                setDao.getWeight(),
+                setDao.getAnnotation(),
+                setDao.getId(),
+                userId
+        );
+
+        return setDao;
+    }
+
+    public void deleteSet(int setId) {
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            return;
+            // TODO: Throw an exception to unauthorized request maybe?
+        }
+
+        String deleteSetsSQL = """
+            DELETE FROM workout_exercises
+            WHERE id = ? AND user_id = ?
+        """;
+        jdbcTemplate.update(deleteSetsSQL, setId, userId);
     }
 }

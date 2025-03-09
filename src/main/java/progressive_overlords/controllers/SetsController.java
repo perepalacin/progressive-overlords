@@ -4,9 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import progressive_overlords.entities.dao.SetDao;
 import progressive_overlords.services.SetsService;
 
@@ -19,10 +17,22 @@ public class SetsController {
 
     @PostMapping
     public String uploadSet(@Valid @ModelAttribute SetDao set, Model model) {
-        System.out.println("Endpoint reached!!");
         SetDao setDao = setsService.createSet(set);
         model.addAttribute("set", setDao);
-        return "response/sets/new-set";
+        return "responses/sets/new-set";
+    }
+
+    @PatchMapping
+    public String editSet(@Valid @ModelAttribute SetDao set, Model model) {
+        SetDao setDao = setsService.editSet(set);
+        model.addAttribute("set", setDao);
+        return "responses/sets/new-set";
+    }
+
+    @DeleteMapping("/{setId}")
+    public String deleteSet(@PathVariable int setId) {
+        setsService.deleteSet(setId);
+        return "responses/sets/deleted-set";
     }
 
 }

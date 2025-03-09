@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import progressive_overlords.entities.dao.WorkoutDao;
 import progressive_overlords.services.WorkoutService;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class PagesController {
@@ -27,6 +29,13 @@ public class PagesController {
     @GetMapping("/sign-up")
     public String getSignUpPage(Model model) {
         return "pages/sign-up";
+    }
+
+    @GetMapping("/routines")
+    public String getUsersTemplates(Model model) {
+        List<WorkoutDao> templates = workoutService.getUserTemplates();
+        model.addAttribute("templates", templates);
+        return "pages/workouts/user-routines";
     }
 
     @GetMapping("/workout/{workoutId}")

@@ -42,16 +42,16 @@ public class WorkoutsController {
         return "responses/workout-templates/template-view";
     }
 
-    @PostMapping
+    @PostMapping("/templates")
     public String createTemplate (@Valid @ModelAttribute WorkoutDto templateDto, Model model) {
         WorkoutDao templateDao = workoutService.createTemplate(templateDto);
         model.addAttribute("template", templateDao);
         return "responses/workout-templates/template-created";
     }
 
-    @PatchMapping("/templates/{templateId}")
-    public String editTemplate (@PathVariable int templateId, @Valid @ModelAttribute WorkoutDto templateDto, Model model) {
-        WorkoutDao templateDao = workoutService.editTemplate(templateId, templateDto);
+    @PatchMapping("/templates")
+    public String editTemplate (@Valid @ModelAttribute WorkoutDto templateDto, Model model) {
+        WorkoutDao templateDao = workoutService.editTemplate(templateDto.getId(), templateDto);
         model.addAttribute("template", templateDao);
         return "responses/workout-templates/template-created";
     }
@@ -68,10 +68,14 @@ public class WorkoutsController {
         return "redirect:/workout-finished/" + workoutId;
     }
 
-    @DeleteMapping("/templates/{workoutId}")
+    @DeleteMapping("/{workoutId}")
     public ResponseEntity<GenericResponse> deleteWorkout(@PathVariable int workoutId, Model model) {
         boolean result = workoutService.deleteWorkout(workoutId);
-        return new ResponseEntity<>(new GenericResponse("Template deleted successfully"), HttpStatus.NO_CONTENT);
+        if (result) {
+            return new ResponseEntity<>(new GenericResponse("Template deleted successfully"), HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(new GenericResponse("We couldn't delete your workout, please try again later"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
