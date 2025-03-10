@@ -48,60 +48,6 @@ public class TemplatesRepository {
 
 //    private final JdbcTemplate jdbcTemplate;
 //
-//    public TemplateDao getByTemplateId(int templateId, UUID userId) {
-//        String sql = """
-//            SELECT
-//                wt.id,
-//                wt.name,
-//                wt.description,
-//                wt.color,
-//                wt.body_part,
-//                wt.tags,
-//                COALESCE(json_agg(
-//                    json_build_object(
-//                        'exerciseId', wte.exercise_id,
-//                        'setNum', wte.set_num,
-//                        'weight', wte.weight,
-//                        'reps', wte.reps
-//                    )
-//                ) FILTER (WHERE wte.exercise_id IS NOT NULL), '[]') AS exercises
-//            FROM workout_templates wt
-//            LEFT JOIN workout_template_exercises wte ON wt.id = wte.workout_template_id
-//            WHERE wt.user_id = ? AND wt.id = ?
-//            GROUP BY wt.id
-//        """;
-//        List<TemplateDao> templateList = jdbcTemplate.query(sql, new Object[]{userId, templateId}, (rs, rowNum) -> {
-//            String exercisesJson = rs.getString("exercises");
-//
-//            List<SetDao> setList = null;
-//            try {
-//                setList = new ObjectMapper().readValue(
-//                        exercisesJson,
-//                        new com.fasterxml.jackson.core.type.TypeReference<>() {}
-//                );
-//            } catch (JsonProcessingException e) {
-//                throw new RuntimeException(e);
-//            }
-//
-//            List<Integer> exercisesId = setList.stream().map(SetDao::getExerciseId).toList();
-//            List<Integer> sets = setList.stream().map(SetDao::getSetNum).toList();
-//            List<Integer> reps = setList.stream().map(SetDao::getReps).toList();
-//
-//            return new TemplateDao(
-//                    rs.getInt("id"),
-//                    rs.getString("name"),
-//                    rs.getString("description"),
-//                    rs.getString("color"),
-//                    rs.getString("body_part"),
-//                    rs.getString("tags"),
-//                    exercisesId,
-//                    sets,
-//                    reps
-//            );
-//        });
-//
-//        return templateList.isEmpty() ? null : templateList.get(0);
-//    }
 //
 //    public TemplateDao editTemplate(int templateId, TemplateDao template, UUID userId) {
 //        String updateTemplateSQL = """

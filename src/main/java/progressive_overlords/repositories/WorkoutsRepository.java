@@ -6,10 +6,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.SqlParameterValue;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,19 +24,6 @@ import progressive_overlords.entities.dto.WorkoutDto;
 public class WorkoutsRepository {
 
     private final JdbcTemplate jdbcTemplate;
-
-//    public List<WorkoutDao> getByTemplateIdAndUserId(Integer templateId) {
-//        Object userId = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if (userId == null) {
-//            return null;
-//        }
-//        String sql = "SELECT id, name, description, color, body_part, tags FROM workouts WHERE user_id = ?";
-//        return jdbcTemplate.query(sql, new Object[]{userId}, (rs, rowNum) -> {
-//            WorkoutDao workout = WorkoutDao.builder().id(rs.getInt("id")).name(rs.getString("name")).description(rs.getString("description")).color(rs.getString("color")).bodyPart(rs.getString("body_part")).unparsedTags(rs.getString("tags")).build();
-//            workout.parseTags(workout.getUnparsedTags());
-//            return workout;
-//        });
-//    }
 
     public List<WorkoutDao> getAllTemplatesFromUser () {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -260,7 +243,7 @@ public class WorkoutsRepository {
             ps.setString(2, template.getDescription() != null ? template.getDescription() : "");
             ps.setString(3, template.getColor() != null ? template.getColor() : "#CD4945");
             ps.setString(4, template.getBodyPart());
-            ps.setString(5, template.getTags() != null ? template.getUnparsedTags() : "");
+            ps.setString(5, template.getUnparsedTags() != null ? template.getUnparsedTags() : "");
             ps.setBoolean(6, true);
             ps.setObject(7, null);
             ps.setObject(8, userId);
@@ -346,15 +329,15 @@ public class WorkoutsRepository {
             return false;
         }
         try {
-            String preparedStatement = """
-                DELETE FROM workout_templates
-                WHERE id = ?
-                AND user_id = ?
-            """;
-
-            jdbcTemplate.update(preparedStatement, workoutId, userId);
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement("DELETE FROM workouts WHERE id = ? AND user_id = ?");
+                ps.setInt(1, workoutId);
+                ps.setObject(2, userId);
+                return ps;
+            });
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }

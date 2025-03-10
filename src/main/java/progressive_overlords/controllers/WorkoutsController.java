@@ -2,6 +2,7 @@ package progressive_overlords.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -43,14 +44,14 @@ public class WorkoutsController {
     }
 
     @PostMapping("/templates")
-    public String createTemplate (@Valid @ModelAttribute WorkoutDto templateDto, Model model) {
+    public String createTemplate (@Valid @RequestBody WorkoutDto templateDto, Model model) {
         WorkoutDao templateDao = workoutService.createTemplate(templateDto);
         model.addAttribute("template", templateDao);
         return "responses/workout-templates/template-created";
     }
 
     @PatchMapping("/templates")
-    public String editTemplate (@Valid @ModelAttribute WorkoutDto templateDto, Model model) {
+    public String editTemplate (@Valid @RequestBody WorkoutDto templateDto, Model model) {
         WorkoutDao templateDao = workoutService.editTemplate(templateDto.getId(), templateDto);
         model.addAttribute("template", templateDao);
         return "responses/workout-templates/template-created";
@@ -69,13 +70,17 @@ public class WorkoutsController {
     }
 
     @DeleteMapping("/{workoutId}")
-    public ResponseEntity<GenericResponse> deleteWorkout(@PathVariable int workoutId, Model model) {
+    public ResponseEntity<Void> deleteWorkout(@PathVariable int workoutId, Model model) {
         boolean result = workoutService.deleteWorkout(workoutId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("HX-Trigger", "ShowToast");
         if (result) {
-            return new ResponseEntity<>(new GenericResponse("Template deleted successfully"), HttpStatus.NO_CONTENT);
+            headers.add("X-Message", "success: Workout deleted successfully!"); // Custom header
         } else {
-            return new ResponseEntity<>(new GenericResponse("We couldn't delete your workout, please try again later"), HttpStatus.INTERNAL_SERVER_ERROR);
+            headers.add("X-Message", "error: We couldn't delete your workout, please try again later"); // Custom header
         }
+        return ResponseEntity.ok().headers(headers).build();
+
     }
 
 }

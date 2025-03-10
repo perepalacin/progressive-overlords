@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS progressive_overlords.workouts (
     name VARCHAR(255) NOT NULL,
     description VARCHAR(511),
     color VARCHAR(255),
-    body_part VARCHAR(255),
+--    body_part VARCHAR(255),
     tags VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,

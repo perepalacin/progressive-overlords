@@ -31,11 +31,24 @@ public class PagesController {
         return "pages/sign-up";
     }
 
-    @GetMapping("/routines")
+    @GetMapping("/templates")
     public String getUsersTemplates(Model model) {
         List<WorkoutDao> templates = workoutService.getUserTemplates();
         model.addAttribute("templates", templates);
-        return "pages/workouts/user-routines";
+        return "pages/workouts/user-templates";
+    }
+
+    @GetMapping("/create-template")
+    public String getCreateTemplateView(Model model) {
+        model.addAttribute("template", null);
+        return "pages/workouts/create-template";
+    }
+
+    @GetMapping("/edit-template/{templateId}")
+    public String getEditTemplateView(@PathVariable int templateId, Model model) {
+        WorkoutDao template = workoutService.getUserTemplateById(templateId);
+        model.addAttribute("template", template);
+        return "pages/workouts/create-template";
     }
 
     @GetMapping("/workout/{workoutId}")

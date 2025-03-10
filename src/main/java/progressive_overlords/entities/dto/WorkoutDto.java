@@ -20,9 +20,10 @@ public class WorkoutDto {
     private String color;
     private String bodyPart;
     private String unparsedTags;
+    private List<SetDto> setsDto;
     private List<Integer> exercisesId;
     private List<Integer> sets;
     private List<Float> reps;
     private Integer templateId;
-    private boolean isTemplate;
+    private Boolean isTemplate;
 }

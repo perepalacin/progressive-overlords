@@ -11,7 +11,7 @@
             crossorigin="anonymous"></script>
     <script src="https://unpkg.com/htmx-ext-response-targets@2.0.0/response-targets.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-<%--    <link href="/static/styles.css" rel="stylesheet">--%>
+    <link href="../styles/index.css" rel="stylesheet">
 </head>
 <body>
 <main class="w-full h-screen flex flex-row justify-between">
@@ -22,7 +22,7 @@
                 <p class="text-xl font-semibold">Progressive Overlords</p>
             </a>
             <a href="/">Feed</a>
-            <a href="/routines">Routines</a>
+            <a href="/templates">Templates</a>
         </div>
         <div class="w-full flex flex-row justify-between">
             <div>
@@ -40,7 +40,9 @@
     <aside class="flex flex-col w-1/5">
         <p>Side section!</p>
     </aside>
+    <div id="toastContainer" class="fixed top-5 right-5 flex flex-col gap-2 z-50"></div>
 </main>
 </body>
-</html>
+<script src="../scripts/dropdown.js"></script>
+<script src="../scripts/toasts.js"></script>
 </html>
