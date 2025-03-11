@@ -10,6 +10,7 @@ import lombok.Setter;
 @Builder
 public class SetDto {
     private int setNum;
+    private int exerciseId;
     private float reps;
     private float weight;
     private boolean warmup;

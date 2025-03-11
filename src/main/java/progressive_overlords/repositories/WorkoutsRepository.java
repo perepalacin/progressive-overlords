@@ -100,7 +100,7 @@ public class WorkoutsRepository {
                     .unparsedTags(rs.getString("tags"))
             .build();
 
-            template.parseSetsList(exercisesId, sets, reps);
+            template.parseSetsFromDB(exercisesId, sets, reps);
             template.parseTags(template.getUnparsedTags());
 
             return template;
@@ -219,7 +219,7 @@ public class WorkoutsRepository {
                     .templateId(templateId)
                     .build();
 
-            workout.parseSetsList(exercisesId, sets, reps);
+            workout.parseSetsFromDB(exercisesId, sets, reps);
             workout.parseTags(workout.getUnparsedTags());
 
             return workout;

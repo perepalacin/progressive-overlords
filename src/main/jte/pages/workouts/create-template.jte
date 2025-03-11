@@ -4,14 +4,15 @@
 <div  class="flex flex-col gap-2 w-full md:w-[600px]">
     <h1 class="text-xl font-semibold">${template != null ? "Edit template" : "Create a template"}</h1>
     <form
-        id="workoutForm"
-        hx-post="${template == null ? "/api/v1/workouts/templates" : null}"
-        hx-patch="${template != null ? "/api/v1/workouts/templates" : null}"
-        hx-trigger="submit"
-        hx-swap="none"
-        class="flex flex-col gap-2 px-4 py-2 rounded-md border"
-        hx-headers='{"Content-Type": "application/json"}'
-        hx-ext="json-enc"
+            id="workoutForm"
+            hx-post="${template == null ? "/api/v1/workouts/templates" : null}"
+            hx-patch="${template != null ? "/api/v1/workouts/templates" : null}"
+            hx-trigger="submit"
+            hx-swap="none"
+            class="flex flex-col gap-2 px-4 py-2 rounded-md border"
+            hx-headers='{"Content-Type": "application/json"}'
+            hx-ext="json-enc"
+            onsubmit="event.preventDefault();"
     >
         @if (template != null)
             <input style="display: none" type="number" name="id" required value="${template.getId()}">
@@ -25,7 +26,7 @@
 
         <label class="block font-semibold">Color:</label>
         <div class="relative flex items-center gap-2">
-            <input type="color" name="color" class="h-10 w-10 px-1 py-1 border rounded-md cursor-pointer" id="colorPicker" value="${template != null ? template.getColor() : ""}">
+            <input type="color" name="color" class="h-10 w-10 px-1 py-1 border rounded-md cursor-pointer" id="colorPicker" value="${template != null ? template.getColor() : "#00FF00"}">
             <span id="colorHex" class="font-mono text-sm"></span>
         </div>
 
@@ -58,5 +59,7 @@
     </form>
 </div>
 <script src="../scripts/add-exercise.js"></script>
+<script src="https://unpkg.com/htmx-ext-json-enc@2.0.1/json-enc.js"></script>
+
 
 `)

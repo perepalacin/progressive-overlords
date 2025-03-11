@@ -1,6 +1,7 @@
 package progressive_overlords.entities.dao;
 
 import lombok.*;
+import progressive_overlords.entities.dto.SetDto;
 import progressive_overlords.exceptions.BadRequestException;
 
 import java.util.ArrayList;
@@ -30,7 +31,22 @@ public class WorkoutDao {
     private boolean isTemplate;
     private Integer templateId;
 
-    public void parseSetsList(List<Integer> exercisesId, List<Integer> sets, List<Float> reps)  {
+    public void parseSetsFromRequest(List<SetDto> sets)  {
+        List<SetDao> setList = new ArrayList<>();
+
+        try {
+            for (SetDto set : sets) {
+                SetDao newSet = SetDao.builder().setNum(set.getSetNum()).exerciseId(set.getExerciseId()).reps(set.getReps()).weight(set.getWeight()).build();
+                setList.add(newSet);
+            }
+        } catch (Exception e) {
+            throw new BadRequestException("There is a mismatch between the number of exercises and sets selected. Please review your template.");
+        }
+
+        this.sets = setList;
+    }
+
+    public void parseSetsFromDB(List<Integer> exercisesId, List<Integer> sets, List<Float> reps)  {
         List<SetDao> setList = new ArrayList<>();
 
         try {
