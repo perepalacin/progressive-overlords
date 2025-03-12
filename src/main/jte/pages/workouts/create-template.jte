@@ -8,11 +8,9 @@
             hx-post="${template == null ? "/api/v1/workouts/templates" : null}"
             hx-patch="${template != null ? "/api/v1/workouts/templates" : null}"
             hx-trigger="submit"
-            hx-swap="none"
+            hx-target="this"
+            hx-swap="outerHTML"
             class="flex flex-col gap-2 px-4 py-2 rounded-md border"
-            hx-headers='{"Content-Type": "application/json"}'
-            hx-ext="json-enc"
-            onsubmit="event.preventDefault();"
     >
         @if (template != null)
             <input style="display: none" type="number" name="id" required value="${template.getId()}">
@@ -38,16 +36,16 @@
 
         <div id="exerciseContainer">
             <h3 class="font-bold mt-4">Exercises</h3>
-<%--            @if (template.getSets() != null)--%>
-<%--                @for (progressive_overlords.entities.dao.SetDao sets : template.getSets())--%>
-<%--                    <div class="exercise-item flex gap-2 mb-2">--%>
-<%--                        <input type="number" name="exercisesId[]" placeholder="Exercise ID" required class="px-3 py-2 border rounded-md w-1/3">--%>
-<%--                        <input type="number" name="sets[]" placeholder="Sets" required class="px-3 py-2 border rounded-md w-1/3">--%>
-<%--                        <input type="number" name="reps[]" placeholder="Reps" required class="px-3 py-2 border rounded-md w-1/3">--%>
-<%--                        <button type="button" onclick="removeExercise(this)" class="text-red-500 font-bold">&times;</button>--%>
-<%--                    </div>--%>
-<%--                @endfor--%>
-<%--            @endif--%>
+            @if (template.getSets() != null)
+                @for (progressive_overlords.entities.dao.SetDao sets : template.getSets())
+                    <div class="exercise-item flex gap-2 mb-2">
+                        <input type="number" name="exercisesId[]" placeholder="Exercise ID" required class="px-3 py-2 border rounded-md w-1/3">
+                        <input type="number" name="sets[]" placeholder="Sets" required class="px-3 py-2 border rounded-md w-1/3">
+                        <input type="number" name="reps[]" placeholder="Reps" required class="px-3 py-2 border rounded-md w-1/3">
+                        <button type="button" onclick="removeExercise(this)" class="text-red-500 font-bold">&times;</button>
+                    </div>
+                @endfor
+            @endif
                 <div id="exerciseList"></div>
         </div>
 
