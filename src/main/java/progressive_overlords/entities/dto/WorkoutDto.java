@@ -18,7 +18,6 @@ public class WorkoutDto {
     private String name;
     private String description;
     private String color;
-    private String bodyPart;
     private String unparsedTags;
     private List<SetDto> sets;
     private Integer templateId;

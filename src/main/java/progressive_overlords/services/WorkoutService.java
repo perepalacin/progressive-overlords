@@ -47,14 +47,14 @@ public class WorkoutService {
     }
 
     public WorkoutDao createTemplate(WorkoutDto templateDto) {
-        WorkoutDao templateDao = WorkoutDao.builder().name(templateDto.getName()).description(templateDto.getDescription()).color(templateDto.getColor()).bodyPart(templateDto.getBodyPart()).isTemplate(true).templateId(null).unparsedTags(templateDto.getUnparsedTags()).build();
-        templateDao.parseSetsFromRequest(templateDto.getSets());
+        WorkoutDao templateDao = WorkoutDao.builder().name(templateDto.getName()).description(templateDto.getDescription()).color(templateDto.getColor()).isTemplate(true).templateId(null).unparsedTags(templateDto.getUnparsedTags()).build();
+        templateDao.setExercisesDaoFromSetsDto(templateDto.getSets());
         return workoutsRepository.saveTemplate(templateDao);
     }
 
     public WorkoutDao editTemplate(int templateId, WorkoutDto templateDto) {
-        WorkoutDao templateDao = WorkoutDao.builder().id(templateId).name(templateDto.getName()).description(templateDto.getDescription()).color(templateDto.getColor()).bodyPart(templateDto.getBodyPart()).isTemplate(true).templateId(null).unparsedTags(templateDto.getUnparsedTags()).build();
-        templateDao.parseSetsFromRequest(templateDto.getSets());
+        WorkoutDao templateDao = WorkoutDao.builder().id(templateId).name(templateDto.getName()).description(templateDto.getDescription()).color(templateDto.getColor()).isTemplate(true).templateId(null).unparsedTags(templateDto.getUnparsedTags()).build();
+        templateDao.setExercisesDaoFromSetsDto(templateDto.getSets());
         return workoutsRepository.editTemplate(templateDao);
     }
 

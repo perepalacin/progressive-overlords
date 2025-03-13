@@ -28,23 +28,62 @@
             <span id="colorHex" class="font-mono text-sm"></span>
         </div>
 
-        <label class="block font-semibold">Body Part:</label>
-        <input type="text" name="bodyPart" class="w-full px-3 py-2 border rounded-md mb-2" placeholder="e.g. arms, legs" value="${template != null ? template.getBodyPart() : ""}">
-
         <label class="block font-semibold">Tags (comma-separated):</label>
         <input type="text" name="unparsedTags" class="w-full px-3 py-2 border rounded-md mb-2" placeholder="e.g. strength, endurance" value="${template != null ? template.getUnparsedTags() : ""}">
 
         <div id="exerciseContainer">
             <h3 class="font-bold mt-4">Exercises</h3>
-            @if (template.getSets() != null)
-                @for (progressive_overlords.entities.dao.SetDao sets : template.getSets())
-                    <div class="exercise-item flex gap-2 mb-2">
-                        <input type="number" name="exercisesId[]" placeholder="Exercise ID" required class="px-3 py-2 border rounded-md w-1/3">
-                        <input type="number" name="sets[]" placeholder="Sets" required class="px-3 py-2 border rounded-md w-1/3">
-                        <input type="number" name="reps[]" placeholder="Reps" required class="px-3 py-2 border rounded-md w-1/3">
-                        <button type="button" onclick="removeExercise(this)" class="text-red-500 font-bold">&times;</button>
-                    </div>
+            @if (template != null && template.getExercises() != null)
+                @for(int i = 0; i < template.getExercises().size(); i++)
+                        <div class="exercise-item border px-4 py-2 mb-2 rounded-md">
+                            <div class="flex flex-row align-center justify-between py-2">
+                                <label>Exercise:</label>
+                                <button type="button" onclick="removeExercise(this)" class="text-red-500 font-bold">
+                                    <img src="../icons/trash.svg" style="width: 1rem" />
+                                </button>
+                            </div>
+                            <input type="number" name="exerciseId-${i}" required class="border px-2 py-1 rounded-md w-full mb-2" value="${template.getExercises().get(i).getExerciseId()}">
+
+                            <div class="sets-container border-collapse border rounded-md" data-exercise="${i}">
+                                <table class="w-full ">
+                                    <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="p-2">Sets</th>
+                                        <th class="p-2">Reps</th>
+                                        <th class="p-2">Weight</th>
+                                        <th class="p-2">Warmup</th>
+                                        <th class="p-2"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="setTableBody-${i}">
+                                    @for (progressive_overlords.entities.dao.SetDao set : template.getExercises().get(i).getSets())
+                                    <tr>
+                                        <td class="p-2 text-center">${set.getSetNum() +1}</td>
+                                        <td class="p-2">
+                                            <input type="number" name="reps-${i}[]" placeholder="12" required class="border px-2 py-1 rounded-md w-full text-center" value="${set.getReps()}">
+                                        </td>
+                                        <td class="p-2">
+                                            <input type="number" name="weight-${i}[]" placeholder="44" required class="border px-2 py-1 rounded-md w-full text-center" value="${set.getWeight()}">
+                                        </td>
+                                        <td class="p-2 text-center">
+                                            <input type="checkbox" name="warmup-${i}[]" checked="${set.isWarmup()}">
+                                        </td>
+                                        <td class="p-2 text-center">
+                                            <button type="button" onclick="removeSet(this)" class="text-red-500 font-bold">
+                                                <img src="../icons/trash.svg" style="width: 1rem" />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    @endfor
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button type="button" onclick="addSet(${i})" class="bg-blue-500 px-4 py-2 rounded-md">
+                                + Add Set
+                            </button>
+                        </div>
                 @endfor
+
             @endif
                 <div id="exerciseList"></div>
         </div>

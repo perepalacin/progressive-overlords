@@ -26,7 +26,6 @@ let exerciseCounter = 0;
                          </tr>
                      </thead>
                      <tbody id="setTableBody-${exerciseCounter}">
-                         <!-- Default Row -->
                          <tr>
                              <td class="p-2 text-center">1</td>
                              <td class="p-2">
@@ -108,7 +107,6 @@ let exerciseCounter = 0;
          const setRows = exerciseElement.querySelectorAll(`#setTableBody-${index + 1} tr`);
          setRows.forEach((row, setIndex) => {
              const newSet = {
-                 setNum: setIndex + 1,
                  exerciseId: exerciseId,
                  reps: row.querySelector(`input[name="reps-${index + 1}[]"]`).value,
                  weight: row.querySelector(`input[name="weight-${index + 1}[]"]`).value,

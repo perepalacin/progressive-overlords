@@ -4,10 +4,7 @@ import lombok.*;
 import progressive_overlords.entities.dto.SetDto;
 import progressive_overlords.exceptions.BadRequestException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -20,10 +17,9 @@ public class WorkoutDao {
     private String name;
     private String description;
     private String color;
-    private String bodyPart;
     private List<String> tags;
     private String unparsedTags;
-    private List<SetDao> sets;
+    private List<ExerciseDao> exercises = new ArrayList<>();
     private String createdAt;
     private String updatedAt;
     private String startDate;
@@ -31,39 +27,65 @@ public class WorkoutDao {
     private boolean isTemplate;
     private Integer templateId;
 
-    public void parseSetsFromRequest(List<SetDto> sets)  {
-        List<SetDao> setList = new ArrayList<>();
+    public void setExercisesDaoFromSetsDto(List<SetDto> sets)  {
+        if (sets == null || sets.isEmpty()) {
+            throw new BadRequestException("No sets were provided.");
+        }
+
+        HashMap<Integer, ExerciseDao> exerciseMap = new HashMap<>();
 
         try {
             for (SetDto set : sets) {
-                SetDao newSet = SetDao.builder().setNum(set.getSetNum()).exerciseId(set.getExerciseId()).reps(set.getReps()).weight(set.getWeight()).build();
-                setList.add(newSet);
+                if (exerciseMap.containsKey(set.getExerciseId())) {
+                    SetDao newSet = SetDao.builder().exerciseNum(exerciseMap.get(set.getExerciseId()).getSets().get(0).getExerciseNum()).setNum(exerciseMap.get(set.getExerciseId()).getSets().size()).exerciseId(set.getExerciseId()).reps(set.getReps()).weight(set.getWeight()).warmup(set.isWarmup()).build();
+                    exerciseMap.get(set.getExerciseId()).getSets().add(newSet);
+                } else {
+                    ExerciseDao newExercise = ExerciseDao.builder().exerciseNum(exerciseMap.size()).exerciseId(set.getExerciseId()).sets(new ArrayList<>()).build();
+                    SetDao newSet = SetDao.builder().exerciseNum(exerciseMap.size()).setNum(0).exerciseId(set.getExerciseId()).reps(set.getReps()).weight(set.getWeight()).warmup(set.isWarmup()).build();
+                    newExercise.getSets().add(newSet);
+                    exerciseMap.put(set.getExerciseId(), newExercise);
+                }
             }
+            this.exercises = new ArrayList<>(exerciseMap.values());
+            this.exercises.sort(Comparator.comparingInt(ExerciseDao::getExerciseNum));
         } catch (Exception e) {
             throw new BadRequestException("There is a mismatch between the number of exercises and sets selected. Please review your template.");
         }
-
-        this.sets = setList;
     }
 
-    public void parseSetsFromDB(List<Integer> exercisesId, List<Integer> sets, List<Float> reps)  {
-        List<SetDao> setList = new ArrayList<>();
-
-        try {
-            for (int i = 0; i < sets.size(); i++) {
-                SetDao newSet = SetDao.builder().id(i).exerciseId(exercisesId.get(i)).reps(reps.get(i)).build();
-                setList.add(newSet);
+    public List<SetDao> getFlatSetsList () {
+        List<SetDao> sets = new ArrayList<>();
+        for (ExerciseDao exerciseDao : this.exercises) {
+            for (SetDao set : exerciseDao.getSets()) {
+                sets.add(set);
             }
+        }
+        return sets;
+    }
+
+    public void setExercisesDaoFromSetsDao(List<SetDao> sets)  {
+        if (sets == null || sets.isEmpty()) {
+            throw new BadRequestException("No sets were provided.");
+        }
+        sets.sort(Comparator.comparingInt(SetDao::getExerciseNum)
+                .thenComparingInt(SetDao::getSetNum));
+
+        Map<Integer, ExerciseDao> exerciseMap = new HashMap<>();
+        try {
+            for (SetDao set : sets) {
+                ExerciseDao exerciseDao = exerciseMap.computeIfAbsent(set.getExerciseNum(), num -> ExerciseDao.builder().exerciseNum(set.getExerciseNum()).exerciseId(set.getExerciseId()).sets(new ArrayList<>()).build());
+                exerciseDao.getSets().add(set);
+            }
+            this.exercises = new ArrayList<>(exerciseMap.values());
+            this.exercises.sort(Comparator.comparingInt(ExerciseDao::getExerciseNum));
         } catch (Exception e) {
             throw new BadRequestException("There is a mismatch between the number of exercises and sets selected. Please review your template.");
         }
-
-        this.sets = setList;
     }
 
     public void parseTags(String tags) {
         if (tags == null || tags.trim().isEmpty()) {
-            this.tags = Collections.emptyList();
+            return;
         }
 
         this.tags = Arrays.stream(tags.split(","))
@@ -72,13 +94,24 @@ public class WorkoutDao {
     }
 
     public void mergeSetsWithTemplate(WorkoutDao template) {
-        List<SetDao> sets = this.getSets();
-        int workoutCompletedSets = sets.size();
-        for (int i = 0; i < template.getSets().size(); i++) {
-            if (i >= workoutCompletedSets) {
-                sets.add(template.getSets().get(i));
+
+        HashSet<String> alreadyFoundSets = new HashSet<>();
+        List<SetDao> result = new ArrayList<>();
+        List<SetDao> sets = this.getFlatSetsList();
+
+        for (SetDao set : sets) {
+            alreadyFoundSets.add(set.getExerciseNum() + "-" + set.getSetNum());
+            result.add(set);
+        }
+
+        List<SetDao> templateSetsList = template.getFlatSetsList();
+        for (SetDao set : templateSetsList) {
+            if (!alreadyFoundSets.contains(set.getExerciseNum() + "-" + set.getSetNum())) {
+                alreadyFoundSets.add(set.getExerciseNum() + "-" + set.getSetNum());
+                result.add(set);
             }
         }
-        this.setSets(sets);
+
+        this.setExercisesDaoFromSetsDao(result);
     }
 }

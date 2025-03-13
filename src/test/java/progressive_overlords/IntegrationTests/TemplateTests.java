@@ -28,7 +28,7 @@ public class TemplateTests {
         Assertions.assertEquals(result.getDescription(), template.getDescription());
         Assertions.assertEquals(result.getColor(), template.getColor());
         Assertions.assertEquals(result.getBodyPart(), template.getBodyPart());
-        Assertions.assertEquals(result.getUnparsedTags(), template.getUnparsedTags()s);
+        Assertions.assertEquals(result.getUnparsedTags(), template.getUnparsedTags());
 
     }
 
