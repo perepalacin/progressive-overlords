@@ -16,20 +16,26 @@
         @else
             <ul class="flex flex-col gap-2">
                 @for(progressive_overlords.entities.dao.WorkoutDao template : templates)
-                    <li id="template-${template.getId()}" class="flex flex-col items-start justify-center border rounded-md pl-6 pr-2 py-2">
+                    <li id="template-${template.getId()}" class="flex flex-col items-start justify-center border rounded-md pl-6 pr-2 py-2 bg-[${template.getColor()}30]">
                         <div class="flex flex-row relative justify-between w-full items-center">
                             <div class="flex flex-row gap-2 items-center">
-                                <div class="w-[1rem] h-[1rem] rounded-md" style="background-color: ${template.getColor()}"></div>
-                                <p>${template.getName()}</p>
+                                <div class="min-w-[1rem] min-h-[1rem] rounded-md" style="background-color: ${template.getColor()}"></div>
+                                <a href="/template/${template.getId()}">
+                                    <p class="hover:underline w-full">${template.getName()}</p>
+                                </a>
                             </div>
                             <div>
-                                <button class="accordion-button p-2 rounded-full hover:bg-gray-200 transition" data-id="${template.getId()}">
+                                <button class="accordion-button p-2 rounded-full hover:bg-[${template.getColor()}40] transition" data-id="${template.getId()}">
                                     <img src="../icons/chevron-down.svg" class="accordion-icon transition-transform duration-300 ease-in-out" style="width: 1rem;" />
                                 </button>
-                                <button class="menu-button p-2 rounded-full hover:bg-gray-200 transition" data-id="${template.getId()}">
+                                <button class="menu-button p-2 rounded-full hover:bg-[${template.getColor()}40] transition" data-id="${template.getId()}">
                                     <img src="../icons/ellipsis-vertical.svg" style="width: 1rem"/>
                                 </button>
                                 <div class="dropdown-menu hidden absolute top-0 right-0 mt-12 w-40 bg-white border rounded-lg shadow-lg z-50" data-id="${template.getId()}">
+                                    <button hx-post="/api/v1/workouts/start" class="flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-gray-100">
+                                        <%--<img src="../icons/pen.svg" style="width: 1rem"/>--%>
+                                        Start
+                                    </button>
                                     <a href="/edit-template/${template.getId()}">
                                         <button class="flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-gray-100">
                                             <img src="../icons/pen.svg" style="width: 1rem"/> Edit
@@ -42,15 +48,20 @@
                             </div>
                         </div>
                         <div class="accordion hidden mt-2 w-full" data-id="${template.getId()}">
-                            <div class="mb-2 h-[1px] bg-gray-200"></div>
-                            <p class="mb-2 text-md">
-                                <span class="font-semibold">Description: </span>
-                                ${template.getDescription()}
-                            </p>
-                            <p>
-                                <span class="font-semibold">Tags: </span>
-                                ${template.getUnparsedTags()}
-                            </p>
+                            <div class="mb-2 h-[1px] bg-[${template.getColor()}40]"></div>
+                            @if(template.getDescription() != null)
+                                <p class="mb-2 text-md">
+                                    <span class="font-semibold">Description: </span>
+                                    ${template.getDescription()}
+                                </p>
+                            @endif
+                            @if(template.getUnparsedTags() != null && !template.getUnparsedTags().isEmpty())
+                                <p>
+                                    <span class="font-semibold">Tags: </span>
+                                    ${template.getUnparsedTags()}
+                                </p>
+                            @endif
+
                         </div>
                     </li>
                 @endfor

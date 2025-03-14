@@ -1,9 +1,10 @@
 let exerciseCounter = 0;
 
  function addExercise() {
-     exerciseCounter++;
      const exerciseList = document.getElementById("exerciseList");
-
+     if (exerciseList.querySelectorAll('.exercise-item').length > 0) {
+        exerciseCounter++;
+     }
      const exerciseHTML = `
          <div class="exercise-item border px-4 py-2 mb-2 rounded-md">
              <div class="flex flex-row align-center justify-between py-2">
@@ -91,39 +92,39 @@ let exerciseCounter = 0;
  }
 
  function prepareDataForHTMX(formElement) {
+    const templateId = formElement.querySelector('input[name="templateId"]');
+
      const workoutData = {
+         id: templateId ? templateId.value : null,
          name: formElement.querySelector('input[name="name"]').value,
          description: formElement.querySelector('textarea[name="description"]').value,
          color: formElement.querySelector('input[name="color"]').value,
-         bodyPart: formElement.querySelector('input[name="bodyPart"]').value,
          unparsedTags: formElement.querySelector('input[name="unparsedTags"]').value,
          sets: []
      };
 
      formElement.querySelectorAll('.exercise-item').forEach((exerciseElement, index) => {
-         const exerciseId = exerciseElement.querySelector(`input[name="exerciseId-${index + 1}"]`).value;
+         const exerciseId = exerciseElement.querySelector(`input[name="exerciseId-${index}"]`).value;
          const sets = [];
 
-         const setRows = exerciseElement.querySelectorAll(`#setTableBody-${index + 1} tr`);
+         const setRows = exerciseElement.querySelectorAll(`#setTableBody-${index} tr`);
          setRows.forEach((row, setIndex) => {
              const newSet = {
                  exerciseId: exerciseId,
-                 reps: row.querySelector(`input[name="reps-${index + 1}[]"]`).value,
-                 weight: row.querySelector(`input[name="weight-${index + 1}[]"]`).value,
-                 warmup: row.querySelector(`input[name="warmup-${index + 1}[]"]`).checked
+                 reps: row.querySelector(`input[name="reps-${index}[]"]`).value,
+                 weight: row.querySelector(`input[name="weight-${index}[]"]`).value,
+                 warmup: row.querySelector(`input[name="warmup-${index}[]"]`).checked
              };
 
              workoutData.sets.push(newSet);
          });
      });
-
      return workoutData;
  }
 
 document.body.addEventListener("htmx:beforeRequest", function (event) {
     if (event.detail.elt && event.detail.elt.id === "workoutForm") {
         event.preventDefault();
-
         const form = event.target;
         if (!form) return;
 

@@ -2,4 +2,4 @@
 
 <p>Template with id: ${template.getId()}</p>
 <p>Name: ${template.getName()}</p>
-<p>And ${template.getSets().size()} sets in total!</p>
+<p>And ${template.getExercises().size()} sets in total!</p>

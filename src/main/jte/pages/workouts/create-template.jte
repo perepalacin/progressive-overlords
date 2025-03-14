@@ -3,17 +3,9 @@
 @template.pages.layout.main(tabName = template != null ? "Edit template" : "Create a template",content = @`
 <div  class="flex flex-col gap-2 w-full md:w-[600px]">
     <h1 class="text-xl font-semibold">${template != null ? "Edit template" : "Create a template"}</h1>
-    <form
-            id="workoutForm"
-            hx-post="${template == null ? "/api/v1/workouts/templates" : null}"
-            hx-patch="${template != null ? "/api/v1/workouts/templates" : null}"
-            hx-trigger="submit"
-            hx-target="this"
-            hx-swap="outerHTML"
-            class="flex flex-col gap-2 px-4 py-2 rounded-md border"
-    >
+    <form id="workoutForm" hx-post="${template == null ? "/api/v1/workouts/templates" : null}" hx-patch="${template != null ? "/api/v1/workouts/templates" : null}" hx-trigger="submit" hx-target="this" hx-swap="outerHTML" class="flex flex-col gap-2 px-4 py-2 rounded-md border">
         @if (template != null)
-            <input style="display: none" type="number" name="id" required value="${template.getId()}">
+            <input style="display: none" type="number" name="templateId" required value="${template.getId()}">
         @endif
 
         <label class="block font-semibold">Template Name:</label>

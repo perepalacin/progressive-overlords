@@ -1,7 +1,7 @@
 package gg.jte.generated.ondemand.pages.workouts;
 public final class JtecreatetemplateGenerated {
 	public static final String JTE_NAME = "pages/workouts/create-template.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,0,0,2,2,2,2,4,4,4,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,14,14,15,15,15,15,15,15,15,15,15,16,16,19,19,19,19,19,19,19,19,19,22,22,22,26,26,26,26,26,26,26,26,26,31,31,31,31,31,31,31,31,31,35,35,36,36,44,44,44,44,44,44,44,44,44,44,44,44,44,46,46,46,46,46,46,46,46,46,57,57,57,57,58,58,60,60,60,62,62,62,62,62,62,62,62,62,62,62,62,62,65,65,65,65,65,65,65,65,65,65,65,65,65,68,68,68,68,68,68,68,68,68,76,76,80,80,80,80,84,84,86,86,93,93,93,101,101,101,101,101,0,0,0,0};
+	public static final int[] JTE_LINE_INFO = {0,0,0,0,2,2,2,2,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,7,7,7,7,7,7,7,7,7,8,8,11,11,11,11,11,11,11,11,11,14,14,14,18,18,18,18,18,18,18,18,18,23,23,23,23,23,23,23,23,23,27,27,28,28,36,36,36,36,36,36,36,36,36,36,36,36,36,38,38,38,38,38,38,38,38,38,49,49,49,49,50,50,52,52,52,54,54,54,54,54,54,54,54,54,54,54,54,54,57,57,57,57,57,57,57,57,57,57,57,57,57,60,60,60,60,60,60,60,60,60,68,68,72,72,72,72,76,76,78,78,85,85,85,93,93,93,93,93,0,0,0,0};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, progressive_overlords.entities.dao.WorkoutDao template) {
 		jteOutput.writeContent("\n");
 		gg.jte.generated.ondemand.pages.layout.JtemainGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
@@ -9,7 +9,7 @@ public final class JtecreatetemplateGenerated {
 				jteOutput.writeContent("\n<div  class=\"flex flex-col gap-2 w-full md:w-[600px]\">\n    <h1 class=\"text-xl font-semibold\">");
 				jteOutput.setContext("h1", null);
 				jteOutput.writeUserContent(template != null ? "Edit template" : "Create a template");
-				jteOutput.writeContent("</h1>\n    <form\n            id=\"workoutForm\"\n           ");
+				jteOutput.writeContent("</h1>\n    <form id=\"workoutForm\"");
 				var __jte_html_attribute_0 = template == null ? "/api/v1/workouts/templates" : null;
 				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_0)) {
 					jteOutput.writeContent(" hx-post=\"");
@@ -18,7 +18,6 @@ public final class JtecreatetemplateGenerated {
 					jteOutput.setContext("form", null);
 					jteOutput.writeContent("\"");
 				}
-				jteOutput.writeContent("\n           ");
 				var __jte_html_attribute_1 = template != null ? "/api/v1/workouts/templates" : null;
 				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_1)) {
 					jteOutput.writeContent(" hx-patch=\"");
@@ -27,9 +26,9 @@ public final class JtecreatetemplateGenerated {
 					jteOutput.setContext("form", null);
 					jteOutput.writeContent("\"");
 				}
-				jteOutput.writeContent("\n            hx-trigger=\"submit\"\n            hx-target=\"this\"\n            hx-swap=\"outerHTML\"\n            class=\"flex flex-col gap-2 px-4 py-2 rounded-md border\"\n    >\n        ");
+				jteOutput.writeContent(" hx-trigger=\"submit\" hx-target=\"this\" hx-swap=\"outerHTML\" class=\"flex flex-col gap-2 px-4 py-2 rounded-md border\">\n        ");
 				if (template != null) {
-					jteOutput.writeContent("\n            <input style=\"display: none\" type=\"number\" name=\"id\" required");
+					jteOutput.writeContent("\n            <input style=\"display: none\" type=\"number\" name=\"templateId\" required");
 					var __jte_html_attribute_2 = template.getId();
 					if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_2)) {
 						jteOutput.writeContent(" value=\"");

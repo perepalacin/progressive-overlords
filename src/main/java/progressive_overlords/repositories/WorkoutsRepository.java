@@ -283,7 +283,7 @@ public class WorkoutsRepository {
                 template.getName(),
                 template.getDescription() != null ? template.getDescription() : "",
                 template.getColor() != null ? template.getColor() : "#CD4945",
-                template.getTags() != null ? template.getUnparsedTags() : "",
+                template.getUnparsedTags() != null ? template.getUnparsedTags() : "",
                 template.getId(),
                 userId
         );
@@ -294,13 +294,10 @@ public class WorkoutsRepository {
         """;
         jdbcTemplate.update(deleteExercisesSQL, template.getId(), userId);
 
-        List<Integer> updatedExerciseIds = template.getFlatSetsList().stream()
-                .map(SetDao::getExerciseId)
-                .toList();
-
         String insertExercisesSQL = "INSERT INTO workout_exercises (workout_id, exercise_id, set_num, weight, reps, user_id, exercise_num, is_warmup) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        jdbcTemplate.batchUpdate(insertExercisesSQL, template.getFlatSetsList(), template.getFlatSetsList().size(),
+        List<SetDao> sets = template.getFlatSetsList();
+        jdbcTemplate.batchUpdate(insertExercisesSQL, sets, sets.size(),
                 (ps, set) -> {
                     ps.setInt(1, template.getId());
                     ps.setInt(2, set.getExerciseId());
@@ -308,9 +305,10 @@ public class WorkoutsRepository {
                     ps.setFloat(4, set.getWeight());
                     ps.setFloat(5, set.getReps());
                     ps.setObject(6, userId);
-                    ps.setInt(7, set.getSetNum());
+                    ps.setInt(7, set.getExerciseNum());
                     ps.setBoolean(8, set.isWarmup());
                 });
+
 
         template.setId(template.getId());
         return template;

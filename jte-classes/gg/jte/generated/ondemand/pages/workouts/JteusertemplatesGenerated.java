@@ -1,7 +1,7 @@
 package gg.jte.generated.ondemand.pages.workouts;
 public final class JteusertemplatesGenerated {
 	public static final String JTE_NAME = "pages/workouts/user-templates.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,0,0,2,2,2,2,13,13,15,15,17,17,18,18,18,18,21,21,21,21,22,22,22,25,25,25,25,25,25,25,25,25,28,28,28,28,28,28,28,28,28,31,31,31,31,31,31,31,31,31,32,32,32,32,37,37,37,37,37,37,37,37,43,43,43,43,43,43,43,43,43,47,47,47,51,51,51,55,55,57,57,61,61,61,63,63,63,0,0,0,0};
+	public static final int[] JTE_LINE_INFO = {0,0,0,0,2,2,2,2,13,13,15,15,17,17,18,18,18,18,18,18,18,18,21,21,21,21,22,22,22,22,23,23,23,27,27,27,27,27,27,27,27,27,27,27,27,27,30,30,30,30,30,30,30,30,30,30,30,30,30,33,33,33,33,33,33,33,33,33,35,38,38,38,38,43,43,43,43,43,43,43,43,49,49,49,49,49,49,49,49,49,50,50,50,50,51,51,54,54,54,56,56,57,57,60,60,60,62,62,66,66,68,68,72,72,72,74,74,74,0,0,0,0};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, java.util.List<progressive_overlords.entities.dao.WorkoutDao> templates) {
 		jteOutput.writeContent("\n");
 		gg.jte.generated.ondemand.pages.layout.JtemainGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
@@ -16,14 +16,26 @@ public final class JteusertemplatesGenerated {
 						jteOutput.setContext("li", "id");
 						jteOutput.writeUserContent(template.getId());
 						jteOutput.setContext("li", null);
-						jteOutput.writeContent("\" class=\"flex flex-col items-start justify-center border rounded-md pl-6 pr-2 py-2\">\n                        <div class=\"flex flex-row relative justify-between w-full items-center\">\n                            <div class=\"flex flex-row gap-2 items-center\">\n                                <div class=\"w-[1rem] h-[1rem] rounded-md\" style=\"background-color: ");
+						jteOutput.writeContent("\" class=\"flex flex-col items-start justify-center border rounded-md pl-6 pr-2 py-2 bg-[");
+						jteOutput.setContext("li", "class");
+						jteOutput.writeUserContent(template.getColor());
+						jteOutput.setContext("li", null);
+						jteOutput.writeContent("30]\">\n                        <div class=\"flex flex-row relative justify-between w-full items-center\">\n                            <div class=\"flex flex-row gap-2 items-center\">\n                                <div class=\"min-w-[1rem] min-h-[1rem] rounded-md\" style=\"background-color: ");
 						jteOutput.setContext("div", "style");
 						jteOutput.writeUserContent(template.getColor());
 						jteOutput.setContext("div", null);
-						jteOutput.writeContent("\"></div>\n                                <p>");
+						jteOutput.writeContent("\"></div>\n                                <a href=\"/template/");
+						jteOutput.setContext("a", "href");
+						jteOutput.writeUserContent(template.getId());
+						jteOutput.setContext("a", null);
+						jteOutput.writeContent("\">\n                                    <p class=\"hover:underline w-full\">");
 						jteOutput.setContext("p", null);
 						jteOutput.writeUserContent(template.getName());
-						jteOutput.writeContent("</p>\n                            </div>\n                            <div>\n                                <button class=\"accordion-button p-2 rounded-full hover:bg-gray-200 transition\"");
+						jteOutput.writeContent("</p>\n                                </a>\n                            </div>\n                            <div>\n                                <button class=\"accordion-button p-2 rounded-full hover:bg-[");
+						jteOutput.setContext("button", "class");
+						jteOutput.writeUserContent(template.getColor());
+						jteOutput.setContext("button", null);
+						jteOutput.writeContent("40] transition\"");
 						var __jte_html_attribute_0 = template.getId();
 						if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_0)) {
 							jteOutput.writeContent(" data-id=\"");
@@ -32,7 +44,11 @@ public final class JteusertemplatesGenerated {
 							jteOutput.setContext("button", null);
 							jteOutput.writeContent("\"");
 						}
-						jteOutput.writeContent(">\n                                    <img src=\"../icons/chevron-down.svg\" class=\"accordion-icon transition-transform duration-300 ease-in-out\" style=\"width: 1rem;\" />\n                                </button>\n                                <button class=\"menu-button p-2 rounded-full hover:bg-gray-200 transition\"");
+						jteOutput.writeContent(">\n                                    <img src=\"../icons/chevron-down.svg\" class=\"accordion-icon transition-transform duration-300 ease-in-out\" style=\"width: 1rem;\" />\n                                </button>\n                                <button class=\"menu-button p-2 rounded-full hover:bg-[");
+						jteOutput.setContext("button", "class");
+						jteOutput.writeUserContent(template.getColor());
+						jteOutput.setContext("button", null);
+						jteOutput.writeContent("40] transition\"");
 						var __jte_html_attribute_1 = template.getId();
 						if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_1)) {
 							jteOutput.writeContent(" data-id=\"");
@@ -50,7 +66,8 @@ public final class JteusertemplatesGenerated {
 							jteOutput.setContext("div", null);
 							jteOutput.writeContent("\"");
 						}
-						jteOutput.writeContent(">\n                                    <a href=\"/edit-template/");
+						jteOutput.writeContent(">\n                                    <button class=\"flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-gray-100\">\n                                        ");
+						jteOutput.writeContent("\n                                        Start\n                                    </button>\n                                    <a href=\"/edit-template/");
 						jteOutput.setContext("a", "href");
 						jteOutput.writeUserContent(template.getId());
 						jteOutput.setContext("a", null);
@@ -71,13 +88,25 @@ public final class JteusertemplatesGenerated {
 							jteOutput.setContext("div", null);
 							jteOutput.writeContent("\"");
 						}
-						jteOutput.writeContent(">\n                            <div class=\"mb-2 h-[1px] bg-gray-200\"></div>\n                            <p class=\"mb-2 text-md\">\n                                <span class=\"font-semibold\">Description: </span>\n                                ");
-						jteOutput.setContext("p", null);
-						jteOutput.writeUserContent(template.getDescription());
-						jteOutput.writeContent("\n                            </p>\n                            <p>\n                                <span class=\"font-semibold\">Tags: </span>\n                                ");
-						jteOutput.setContext("p", null);
-						jteOutput.writeUserContent(template.getUnparsedTags());
-						jteOutput.writeContent("\n                            </p>\n                        </div>\n                    </li>\n                ");
+						jteOutput.writeContent(">\n                            <div class=\"mb-2 h-[1px] bg-[");
+						jteOutput.setContext("div", "class");
+						jteOutput.writeUserContent(template.getColor());
+						jteOutput.setContext("div", null);
+						jteOutput.writeContent("40]\"></div>\n                            ");
+						if (template.getDescription() != null) {
+							jteOutput.writeContent("\n                                <p class=\"mb-2 text-md\">\n                                    <span class=\"font-semibold\">Description: </span>\n                                    ");
+							jteOutput.setContext("p", null);
+							jteOutput.writeUserContent(template.getDescription());
+							jteOutput.writeContent("\n                                </p>\n                            ");
+						}
+						jteOutput.writeContent("\n                            ");
+						if (template.getUnparsedTags() != null && !template.getUnparsedTags().isEmpty()) {
+							jteOutput.writeContent("\n                                <p>\n                                    <span class=\"font-semibold\">Tags: </span>\n                                    ");
+							jteOutput.setContext("p", null);
+							jteOutput.writeUserContent(template.getUnparsedTags());
+							jteOutput.writeContent("\n                                </p>\n                            ");
+						}
+						jteOutput.writeContent("\n\n                        </div>\n                    </li>\n                ");
 					}
 					jteOutput.writeContent("\n            </ul>\n        ");
 				}

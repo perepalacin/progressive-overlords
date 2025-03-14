@@ -38,6 +38,13 @@ public class PagesController {
         return "pages/workouts/user-templates";
     }
 
+    @GetMapping("/template/{templateId}")
+    public String getTemplateView(@PathVariable int templateId, Model model) {
+        WorkoutDao template = workoutService.getUserTemplateById(templateId);
+        model.addAttribute("template", template);
+        return "pages/workouts/template-view";
+    }
+
     @GetMapping("/create-template")
     public String getCreateTemplateView(Model model) {
         model.addAttribute("template", null);
@@ -54,6 +61,9 @@ public class PagesController {
     @GetMapping("/workout/{workoutId}")
     public String getWorkoutPage(@PathVariable int workoutId, Model model) {
         WorkoutDao currentWorkout = workoutService.getWorkoutById(workoutId);
+        if (currentWorkout.isTemplate()) {
+            return "redirect:/template/" + workoutId;
+        }
         model.addAttribute("workout", currentWorkout);
         return "pages/workouts/workout-view";
     }
