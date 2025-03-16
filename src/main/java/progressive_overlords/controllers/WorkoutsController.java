@@ -58,21 +58,20 @@ public class WorkoutsController {
     }
 
     @PostMapping("/start")
-    @ResponseBody
-    public Map<String, String> startWorkout(@Valid @ModelAttribute WorkoutDto workoutDto) {
+    public ResponseEntity<Void> startWorkout(@Valid @ModelAttribute WorkoutDto workoutDto) {
         int workoutId = workoutService.startWorkout(workoutDto);
-
-        Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/workout/" + workoutId);
-
-        return response;
+        return ResponseEntity.status(303)
+                .header("HX-Redirect", "/workout/" + workoutId)
+                .build();
     }
 
 
     @PatchMapping("/finish/{workoutId}")
-    public String finishWorkout(@PathVariable int workoutId) throws IOException {
+    public ResponseEntity<Void> finishWorkout(@PathVariable int workoutId) throws IOException {
         workoutService.finishWorkout(workoutId);
-        return "redirect:/workout-finished/" + workoutId;
+        return ResponseEntity.status(303)
+                .header("HX-Redirect", "/workout-finished/" + workoutId)
+                .build();
     }
 
     @DeleteMapping("/{workoutId}")
