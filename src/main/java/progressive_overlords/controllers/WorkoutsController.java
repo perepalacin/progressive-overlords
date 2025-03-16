@@ -12,7 +12,9 @@ import progressive_overlords.entities.dto.WorkoutDto;
 import progressive_overlords.services.WorkoutService;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("${api.prefix}/workouts")
@@ -56,10 +58,16 @@ public class WorkoutsController {
     }
 
     @PostMapping("/start")
-    public String startWorkout(@Valid @ModelAttribute WorkoutDto workoutDto) throws IOException {
+    @ResponseBody
+    public Map<String, String> startWorkout(@Valid @ModelAttribute WorkoutDto workoutDto) {
         int workoutId = workoutService.startWorkout(workoutDto);
-        return "redirect:/workout/" + workoutId;
+
+        Map<String, String> response = new HashMap<>();
+        response.put("redirectUrl", "/workout/" + workoutId);
+
+        return response;
     }
+
 
     @PatchMapping("/finish/{workoutId}")
     public String finishWorkout(@PathVariable int workoutId) throws IOException {

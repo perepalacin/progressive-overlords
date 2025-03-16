@@ -32,7 +32,7 @@
                                     <img src="../icons/ellipsis-vertical.svg" style="width: 1rem"/>
                                 </button>
                                 <div class="dropdown-menu hidden absolute top-0 right-0 mt-12 w-40 bg-white border rounded-lg shadow-lg z-50" data-id="${template.getId()}">
-                                    <button hx-post="/api/v1/workouts/start" class="flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-gray-100">
+                                    <button hx-post="/api/v1/workouts/start?name=${template.getName()}&description=${template.getDescription()}&color='%23'${template.getColor().substring(1)}&unparsedTags=${template.getUnparsedTags()}&templateId=${template.getId()}" class="flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-gray-100">
                                         <%--<img src="../icons/pen.svg" style="width: 1rem"/>--%>
                                         Start
                                     </button>
@@ -70,5 +70,6 @@
         </div>
     </div>
     <script src="../scripts/accordion.js"></script>
+    <script src="../scripts/redirect.js"></script>
 `)
 

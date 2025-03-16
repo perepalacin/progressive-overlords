@@ -104,7 +104,7 @@ public class WorkoutsRepository {
         return templateList.isEmpty() ? null : templateList.get(0);
     }
 
-    public int startWorkout (WorkoutDto template) {
+    public int startWorkout (WorkoutDto workoutDto) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userId == null) {
             return 0;
@@ -113,14 +113,14 @@ public class WorkoutsRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
-                    "INSERT INTO workouts (name, description, color, tags, is_template, template_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                    "INSERT INTO workouts (name, description, color, tags, is_template, template_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, template.getName());
-            ps.setString(2, template.getDescription());
-            ps.setString(3, template.getColor());
-            ps.setString(4, template.getUnparsedTags());
+            ps.setString(1, workoutDto.getName());
+            ps.setString(2, workoutDto.getDescription());
+            ps.setString(3, workoutDto.getColor());
+            ps.setString(4, workoutDto.getUnparsedTags());
             ps.setBoolean(5, false);
-            ps.setObject(6, template.getTemplateId());
+            ps.setObject(6, workoutDto.getTemplateId());
             ps.setObject(7, userId);
             return ps;
         }, keyHolder);

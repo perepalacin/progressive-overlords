@@ -25,11 +25,9 @@ public class WorkoutService {
     public WorkoutDao getWorkoutById(int workoutId) {
         WorkoutDao workoutDao = workoutsRepository.getWorkoutById(workoutId);
         if (workoutDao == null) {
-            System.out.println("Workout is actually null!");
             return null;
-//            throw new NotFoundException("This workout doens't exist!");
         }
-        if (workoutDao.getEndDate() == null && workoutDao.getTemplateId() != null) {
+        if (workoutDao.getEndDate() == null && !workoutDao.isTemplate() && workoutDao.getTemplateId() != null) {
             WorkoutDao template = workoutsRepository.getTemplateById(workoutDao.getTemplateId());
             if (template != null) {
                 workoutDao.mergeSetsWithTemplate(template);

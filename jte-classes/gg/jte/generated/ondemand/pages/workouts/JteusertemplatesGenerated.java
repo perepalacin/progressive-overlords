@@ -1,7 +1,7 @@
 package gg.jte.generated.ondemand.pages.workouts;
 public final class JteusertemplatesGenerated {
 	public static final String JTE_NAME = "pages/workouts/user-templates.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,0,0,2,2,2,2,13,13,15,15,17,17,18,18,18,18,18,18,18,18,21,21,21,21,22,22,22,22,23,23,23,27,27,27,27,27,27,27,27,27,27,27,27,27,30,30,30,30,30,30,30,30,30,30,30,30,30,33,33,33,33,33,33,33,33,33,35,38,38,38,38,43,43,43,43,43,43,43,43,49,49,49,49,49,49,49,49,49,50,50,50,50,51,51,54,54,54,56,56,57,57,60,60,60,62,62,66,66,68,68,72,72,72,74,74,74,0,0,0,0};
+	public static final int[] JTE_LINE_INFO = {0,0,0,0,2,2,2,2,13,13,15,15,17,17,18,18,18,18,18,18,18,18,21,21,21,21,22,22,22,22,23,23,23,27,27,27,27,27,27,27,27,27,27,27,27,27,30,30,30,30,30,30,30,30,30,30,30,30,30,33,33,33,33,33,33,33,33,33,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,35,38,38,38,38,43,43,43,43,43,43,43,43,49,49,49,49,49,49,49,49,49,50,50,50,50,51,51,54,54,54,56,56,57,57,60,60,60,62,62,66,66,68,68,73,73,73,75,75,75,0,0,0,0};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, java.util.List<progressive_overlords.entities.dao.WorkoutDao> templates) {
 		jteOutput.writeContent("\n");
 		gg.jte.generated.ondemand.pages.layout.JtemainGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
@@ -66,7 +66,27 @@ public final class JteusertemplatesGenerated {
 							jteOutput.setContext("div", null);
 							jteOutput.writeContent("\"");
 						}
-						jteOutput.writeContent(">\n                                    <button class=\"flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-gray-100\">\n                                        ");
+						jteOutput.writeContent(">\n                                    <button hx-post=\"/api/v1/workouts/start?name=");
+						jteOutput.setContext("button", "hx-post");
+						jteOutput.writeUserContent(template.getName());
+						jteOutput.setContext("button", null);
+						jteOutput.writeContent("&description=");
+						jteOutput.setContext("button", "hx-post");
+						jteOutput.writeUserContent(template.getDescription());
+						jteOutput.setContext("button", null);
+						jteOutput.writeContent("&color='%23'");
+						jteOutput.setContext("button", "hx-post");
+						jteOutput.writeUserContent(template.getColor().substring(1));
+						jteOutput.setContext("button", null);
+						jteOutput.writeContent("&unparsedTags=");
+						jteOutput.setContext("button", "hx-post");
+						jteOutput.writeUserContent(template.getUnparsedTags());
+						jteOutput.setContext("button", null);
+						jteOutput.writeContent("&templateId=");
+						jteOutput.setContext("button", "hx-post");
+						jteOutput.writeUserContent(template.getId());
+						jteOutput.setContext("button", null);
+						jteOutput.writeContent("\" class=\"flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-gray-100\">\n                                        ");
 						jteOutput.writeContent("\n                                        Start\n                                    </button>\n                                    <a href=\"/edit-template/");
 						jteOutput.setContext("a", "href");
 						jteOutput.writeUserContent(template.getId());
@@ -110,7 +130,7 @@ public final class JteusertemplatesGenerated {
 					}
 					jteOutput.writeContent("\n            </ul>\n        ");
 				}
-				jteOutput.writeContent("\n        </div>\n    </div>\n    <script src=\"../scripts/accordion.js\"></script>\n");
+				jteOutput.writeContent("\n        </div>\n    </div>\n    <script src=\"../scripts/accordion.js\"></script>\n    <script src=\"../scripts/redirect.js\"></script>\n");
 			}
 		}, "Routines");
 		jteOutput.writeContent("\n\n");

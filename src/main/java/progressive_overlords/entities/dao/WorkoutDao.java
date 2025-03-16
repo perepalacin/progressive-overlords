@@ -65,7 +65,9 @@ public class WorkoutDao {
 
     public void setExercisesDaoFromSetsDao(List<SetDao> sets)  {
         if (sets == null || sets.isEmpty()) {
-            throw new BadRequestException("No sets were provided.");
+            this.exercises = null;
+            return;
+//            throw new BadRequestException("No sets were provided.");
         }
         sets.sort(Comparator.comparingInt(SetDao::getExerciseNum)
                 .thenComparingInt(SetDao::getSetNum));
@@ -97,18 +99,22 @@ public class WorkoutDao {
 
         HashSet<String> alreadyFoundSets = new HashSet<>();
         List<SetDao> result = new ArrayList<>();
-        List<SetDao> sets = this.getFlatSetsList();
 
-        for (SetDao set : sets) {
-            alreadyFoundSets.add(set.getExerciseNum() + "-" + set.getSetNum());
-            result.add(set);
-        }
-
-        List<SetDao> templateSetsList = template.getFlatSetsList();
-        for (SetDao set : templateSetsList) {
-            if (!alreadyFoundSets.contains(set.getExerciseNum() + "-" + set.getSetNum())) {
+        if (this.exercises != null) {
+            List<SetDao> sets = this.getFlatSetsList();
+            for (SetDao set : sets) {
                 alreadyFoundSets.add(set.getExerciseNum() + "-" + set.getSetNum());
                 result.add(set);
+            }
+        }
+
+        if (template.getExercises() != null) {
+            List<SetDao> templateSetsList = template.getFlatSetsList();
+            for (SetDao set : templateSetsList) {
+                if (!alreadyFoundSets.contains(set.getExerciseNum() + "-" + set.getSetNum())) {
+                    alreadyFoundSets.add(set.getExerciseNum() + "-" + set.getSetNum());
+                    result.add(set);
+                }
             }
         }
 
