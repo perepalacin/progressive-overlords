@@ -43,6 +43,6 @@
     <div id="toastContainer" class="fixed top-5 right-5 flex flex-col gap-2 z-50"></div>
 </main>
 </body>
-<script src="../scripts/dropdown.js"></script>
-<script src="../scripts/toasts.js"></script>
+<script type="module" src="../scripts/dropdown.js"></script>
+<script type="module" src="../scripts/toasts.js"></script>
 </html>

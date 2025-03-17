@@ -69,7 +69,6 @@
         @endif
         </div>
     </div>
-    <script src="../scripts/accordion.js"></script>
-    <script src="../scripts/redirect.js"></script>
+    <script type="module" src="../scripts/accordion.js"></script>
 `)
 

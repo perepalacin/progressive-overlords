@@ -1,9 +1,12 @@
 document.body.addEventListener("htmx:afterRequest", function(event) {
         let message = event.detail.xhr.getResponseHeader("X-Message");
+        showToast(message);
+});
 
-        if (!message) {
-            return;
-        }
+export function showToast (message) {
+    if (!message) {
+        return;
+    }
 
         let toastContainer = document.getElementById("toastContainer");
 
@@ -23,7 +26,7 @@ document.body.addEventListener("htmx:afterRequest", function(event) {
 
         let messageSpan = document.createElement("span");
         messageSpan.textContent = message.split(":")[1];
-            
+
         let closeButton = document.createElement("button");
         closeButton.innerHTML = "&#10006;";
         closeButton.className = "ml-4 text-white font-bold hover:text-gray-300";
@@ -43,7 +46,7 @@ document.body.addEventListener("htmx:afterRequest", function(event) {
         setTimeout(() => {
             dismissToast(toast);
         }, 3000);
-});
+}
 
 function dismissToast(toast) {
     toast.classList.remove("translate-x-0", "opacity-100");

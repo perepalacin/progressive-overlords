@@ -1,3 +1,5 @@
+import { showToast } from './toasts.js';
+
 let exerciseCounter = 0;
 
  function addExercise() {
@@ -9,7 +11,7 @@ let exerciseCounter = 0;
          <div class="exercise-item border px-4 py-2 mb-2 rounded-md">
              <div class="flex flex-row align-center justify-between py-2">
                  <label>Exercise:</label>
-                 <button type="button" onclick="removeExercise(this)" class="text-red-500 font-bold">
+                 <button type="button" data-exercise="${exerciseCounter}" class="remove-exercise-btn text-red-500 font-bold">
                      <img src="../icons/trash.svg" style="width: 1rem" />
                  </button>
              </div>
@@ -39,7 +41,7 @@ let exerciseCounter = 0;
                                  <input type="checkbox" name="warmup-${exerciseCounter}[]" value="true">
                              </td>
                              <td class="p-2 text-center">
-                                 <button type="button" onclick="removeSet(this)" class="text-red-500 font-bold">
+                                 <button type="button" data-exercise="${exerciseCounter}" class="remove-set-btn text-red-500 font-bold">
                                      <img src="../icons/trash.svg" style="width: 1rem" />
                                  </button>
                              </td>
@@ -47,7 +49,7 @@ let exerciseCounter = 0;
                      </tbody>
                  </table>
              </div>
-             <button type="button" onclick="addSet(${exerciseCounter})" class="bg-blue-500 px-4 py-2 rounded-md">
+             <button type="button" data-exercise="${exerciseCounter}" class="add-set-btn bg-blue-500 px-4 py-2 rounded-md">
                  + Add Set
              </button>
          </div>
@@ -73,7 +75,7 @@ let exerciseCounter = 0;
                  <input type="checkbox" name="warmup-${exerciseNum}[]" value="true">
              </td>
              <td class="p-2 text-center">
-                 <button type="button" onclick="removeSet(this)" class="text-red-500 font-bold">
+                 <button type="button" data-exercise="${exerciseNum}" class="remove-set-btn text-red-500 font-bold">
                      <img src="../icons/trash.svg" style="width: 1rem" />
                  </button>
              </td>
@@ -81,14 +83,6 @@ let exerciseCounter = 0;
      `;
 
      tableBody.insertAdjacentHTML("beforeend", rowHTML);
- }
-
- function removeSet(button) {
-     button.closest("tr").remove();
- }
-
- function removeExercise(button) {
-     button.closest(".exercise-item").remove();
  }
 
  function prepareDataForHTMX(formElement) {
@@ -122,6 +116,29 @@ let exerciseCounter = 0;
      return workoutData;
  }
 
+document.getElementById("exerciseContainer").addEventListener("click", function(event) {
+    const button = event.target.closest("button");
+
+    if (!button) return;
+
+    if (button.classList.contains("add-set-btn")) {
+        addSet(button.getAttribute("data-exercise"));
+    } else if (button.classList.contains("remove-set-btn")) {
+        const row = button.closest("tr");
+        const tableBody = row.closest("tbody");
+
+        row.remove();
+
+        Array.from(tableBody.children).forEach((tr, index) => {
+            tr.children[0].textContent = index + 1;
+        });
+    } else if (button.classList.contains("remove-exercise-btn")) {
+        button.closest(".exercise-item").remove();
+    }
+});
+
+document.getElementById("addExerciseBtn").addEventListener("click", addExercise);
+
 document.body.addEventListener("htmx:beforeRequest", function (event) {
     if (event.detail.elt && event.detail.elt.id === "workoutForm") {
         event.preventDefault();
@@ -136,13 +153,21 @@ document.body.addEventListener("htmx:beforeRequest", function (event) {
             body: JSON.stringify(prepareDataForHTMX(form))
         })
         .then(response => {
-            if (response.ok) {
-                return response.text();
-            } else {
-                return response.json().then(errData => {
-                    throw { status: response.status, data: errData };
-                });
+            if (response.status === 303) {
+                const redirectUrl = response.headers.get("HX-Redirect");
+                const toastMessage = response.headers.get("X-Message");
+
+                if (toastMessage) {
+                    showToast(toastMessage);
+                }
+
+                if (redirectUrl) {
+                    window.location.href = redirectUrl;
+                }
+
+                return;
             }
+
         })
         .then(html => {
             form.outerHTML = html;

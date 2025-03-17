@@ -28,7 +28,7 @@ public class SetsRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
-                    "INSERT INTO workout_exercises (workout_id, exercise_id, set_num, reps, weight, annotation, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    "INSERT INTO workout_exercises (workout_id, exercise_id, set_num, reps, weight, annotation, user_id, exercise_num) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, setDao.getWorkoutId());
             ps.setInt(2, setDao.getExerciseId());
@@ -37,6 +37,7 @@ public class SetsRepository {
             ps.setFloat(5, setDao.getWeight());
             ps.setString(6, setDao.getAnnotation());
             ps.setObject(7, userId);
+            ps.setInt(8, setDao.getExerciseNum());
             return ps;
         }, keyHolder);
 

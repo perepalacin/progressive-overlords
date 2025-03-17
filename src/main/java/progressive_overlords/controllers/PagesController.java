@@ -61,8 +61,9 @@ public class PagesController {
     @GetMapping("/workout/{workoutId}")
     public String getWorkoutPage(@PathVariable int workoutId, Model model) {
         WorkoutDao currentWorkout = workoutService.getWorkoutById(workoutId);
-        if (currentWorkout.isTemplate()) {
-            return "redirect:/template/" + workoutId;
+        if (currentWorkout == null || currentWorkout.isTemplate()) {
+            model.addAttribute("errorMessaege", "The workout you are trying to find doesn't exist!");
+            return "pages/errors/404";
         }
         model.addAttribute("workout", currentWorkout);
         return "pages/workouts/workout-view";

@@ -17,4 +17,5 @@ public class SetDao {
     private float reps;
     private float weight;
     private String annotation;
+    private boolean isCompleted;
 }

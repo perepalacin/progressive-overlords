@@ -44,17 +44,23 @@ public class WorkoutsController {
     }
 
     @PostMapping("/templates")
-    public String createTemplate (@Valid @RequestBody WorkoutDto templateDto, Model model) {
+    public ResponseEntity<Void> createTemplate (@Valid @RequestBody WorkoutDto templateDto) {
         WorkoutDao templateDao = workoutService.createTemplate(templateDto);
-        model.addAttribute("template", templateDao);
-        return "responses/workout-templates/template-created";
+        return ResponseEntity.status(303)
+                .header("HX-Redirect", "/template/" + templateDao.getId())
+                .header("HX-Trigger", "ShowToast")
+                .header("X-Message", "success: Workout edited successfully!")
+                .build();
     }
 
     @PatchMapping("/templates")
-    public String editTemplate (@Valid @RequestBody WorkoutDto templateDto, Model model) {
+    public ResponseEntity<Void> editTemplate (@Valid @RequestBody WorkoutDto templateDto) {
         WorkoutDao templateDao = workoutService.editTemplate(templateDto.getId(), templateDto);
-        model.addAttribute("template", templateDao);
-        return "responses/workout-templates/template-created";
+        return ResponseEntity.status(303)
+                .header("HX-Redirect", "/template/" + templateDao.getId())
+                .header("HX-Trigger", "ShowToast")
+                .header("X-Message", "success: Workout created successfully!")
+                .build();
     }
 
     @PostMapping("/start")

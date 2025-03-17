@@ -103,6 +103,7 @@ public class WorkoutDao {
         if (this.exercises != null) {
             List<SetDao> sets = this.getFlatSetsList();
             for (SetDao set : sets) {
+                set.setCompleted(true);
                 alreadyFoundSets.add(set.getExerciseNum() + "-" + set.getSetNum());
                 result.add(set);
             }
@@ -111,6 +112,7 @@ public class WorkoutDao {
         if (template.getExercises() != null) {
             List<SetDao> templateSetsList = template.getFlatSetsList();
             for (SetDao set : templateSetsList) {
+                set.setCompleted(false);
                 if (!alreadyFoundSets.contains(set.getExerciseNum() + "-" + set.getSetNum())) {
                     alreadyFoundSets.add(set.getExerciseNum() + "-" + set.getSetNum());
                     result.add(set);

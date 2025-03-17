@@ -171,6 +171,7 @@ public class WorkoutsRepository {
                 w.ended_at,
                 COALESCE(json_agg(
                     json_build_object(
+                        'id', we.id,
                         'exerciseId', we.exercise_id,
                         'setNum', we.set_num,
                         'weight', we.weight,
