@@ -64,13 +64,13 @@ public class PagesController {
         if (currentWorkout == null || currentWorkout.isTemplate()) {
             model.addAttribute("errorMessaege", "The workout you are trying to find doesn't exist!");
             return "pages/errors/404";
+        } else if (currentWorkout.getEndDate() != null) {
+            return "pages/workout/finished-workout-view";
         }
         model.addAttribute("workout", currentWorkout);
-        return "pages/workouts/workout-view";
+        return "pages/workouts/ongoing-workout-view";
     }
 
-    //TODO: This endpoint is only meant for when the user submits a workout! Otherwise, we will hit the /workout/workoutId endpoint!
-    //this one should only show the actual sets! not the sets from the template!!
     @GetMapping("/workout-finished/{workoutId}")
     public String getFinishWorkoutPage(@PathVariable int workoutId, Model model) {
         WorkoutDao currentWorkout = workoutService.getWorkoutById(workoutId);

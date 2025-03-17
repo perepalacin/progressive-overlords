@@ -2,86 +2,178 @@ import { showToast } from './toasts.js';
 
 let exerciseCounter = 0;
 
+const page = window.location.pathname.split('/')[1] || '';
+
  function addExercise() {
      const exerciseList = document.getElementById("exerciseList");
      if (exerciseList.querySelectorAll('.exercise-item').length > 0) {
         exerciseCounter++;
      }
-     const exerciseHTML = `
-         <div class="exercise-item border px-4 py-2 mb-2 rounded-md">
-             <div class="flex flex-row align-center justify-between py-2">
-                 <label>Exercise:</label>
-                 <button type="button" data-exercise="${exerciseCounter}" class="remove-exercise-btn text-red-500 font-bold">
-                     <img src="../icons/trash.svg" style="width: 1rem" />
+     let exerciseHTML = "";
+     if (page === "create-template" || page === "edit-template") {
+         exerciseHTML = `
+             <div class="exercise-item border px-4 py-2 mb-2 rounded-md">
+                 <div class="flex flex-row align-center justify-between py-2">
+                     <label>Exercise:</label>
+                     <button type="button" data-exercise="${exerciseCounter}" class="remove-exercise-btn text-red-500 font-bold">
+                         <img src="../icons/trash.svg" style="width: 1rem" />
+                     </button>
+                 </div>
+                 <input type="number" name="exerciseId-${exerciseCounter}" required class="border px-2 py-1 rounded-md w-full mb-2">
+
+                 <div class="sets-container" data-exercise="${exerciseCounter}">
+                     <table class="w-full border-collapse border rounded-md">
+                         <thead class="bg-gray-100">
+                             <tr>
+                                 <th class="p-2">Set</th>
+                                 <th class="p-2">Reps</th>
+                                 <th class="p-2">Weight</th>
+                                 <th class="p-2">Warmup</th>
+                                 <th class="p-2"></th>
+                             </tr>
+                         </thead>
+                         <tbody id="setTableBody-${exerciseCounter}">
+                             <tr>
+                                 <td class="p-2 text-center">1</td>
+                                 <td class="p-2">
+                                     <input type="number" name="reps-${exerciseCounter}[]" placeholder="12" required class="border px-2 py-1 rounded-md w-full text-center">
+                                 </td>
+                                 <td class="p-2">
+                                     <input type="number" name="weight-${exerciseCounter}[]" placeholder="20" required class="border px-2 py-1 rounded-md w-full text-center">
+                                 </td>
+                                 <td class="p-2 text-center">
+                                     <input type="checkbox" name="warmup-${exerciseCounter}[]" value="true">
+                                 </td>
+                                 <td class="p-2 text-center">
+                                     <button type="button" data-exercise="${exerciseCounter}" class="remove-set-btn text-red-500 font-bold">
+                                         <img src="../icons/trash.svg" style="width: 1rem" />
+                                     </button>
+                                 </td>
+                             </tr>
+                         </tbody>
+                     </table>
+                 </div>
+                 <button type="button" data-exercise="${exerciseCounter}" class="add-set-btn bg-blue-500 px-4 py-2 rounded-md">
+                     + Add Set
                  </button>
              </div>
-             <input type="number" name="exerciseId-${exerciseCounter}" required class="border px-2 py-1 rounded-md w-full mb-2">
+         `;
+     }
 
-             <div class="sets-container" data-exercise="${exerciseCounter}">
-                 <table class="w-full border-collapse border rounded-md">
-                     <thead class="bg-gray-100">
-                         <tr>
-                             <th class="p-2">Set</th>
-                             <th class="p-2">Reps</th>
-                             <th class="p-2">Weight</th>
-                             <th class="p-2">Warmup</th>
-                             <th class="p-2"></th>
-                         </tr>
-                     </thead>
-                     <tbody id="setTableBody-${exerciseCounter}">
-                         <tr>
-                             <td class="p-2 text-center">1</td>
-                             <td class="p-2">
-                                 <input type="number" name="reps-${exerciseCounter}[]" placeholder="12" required class="border px-2 py-1 rounded-md w-full text-center">
-                             </td>
-                             <td class="p-2">
-                                 <input type="number" name="weight-${exerciseCounter}[]" placeholder="44" required class="border px-2 py-1 rounded-md w-full text-center">
-                             </td>
-                             <td class="p-2 text-center">
-                                 <input type="checkbox" name="warmup-${exerciseCounter}[]" value="true">
-                             </td>
-                             <td class="p-2 text-center">
-                                 <button type="button" data-exercise="${exerciseCounter}" class="remove-set-btn text-red-500 font-bold">
-                                     <img src="../icons/trash.svg" style="width: 1rem" />
-                                 </button>
-                             </td>
-                         </tr>
-                     </tbody>
-                 </table>
-             </div>
-             <button type="button" data-exercise="${exerciseCounter}" class="add-set-btn bg-blue-500 px-4 py-2 rounded-md">
-                 + Add Set
-             </button>
-         </div>
-     `;
+     if (page === "workout") {
+     exerciseHTML = `
+                  <div class="exercise-item border px-4 py-2 mb-2 rounded-md">
+                      <div class="flex flex-row align-center justify-between py-2">
+                          <label>Exercise:</label>
+                          <button type="button" data-exercise="${exerciseCounter}" class="remove-exercise-btn text-red-500 font-bold">
+                              <img src="../icons/trash.svg" style="width: 1rem" />
+                          </button>
+                      </div>
+                      <input type="number" name="exerciseId-${exerciseCounter}" required class="border px-2 py-1 rounded-md w-full mb-2">
+
+                      <div class="sets-container" data-exercise="${exerciseCounter}">
+                          <table class="w-full border-collapse border rounded-md">
+                              <thead class="bg-gray-100">
+                                  <tr>
+                                      <th class="p-2">Set</th>
+                                      <th class="p-2">Reps</th>
+                                      <th class="p-2">Weight</th>
+                                      <th class="p-2">Warmup</th>
+                                      <th class="p-2"></th>
+                                  </tr>
+                              </thead>
+                              <tbody id="setTableBody-${exerciseCounter}">
+                                  <tr>
+                                      <td class="p-2 text-center">1</td>
+                                      <td class="p-2">
+                                          <input type="number" name="reps-${exerciseCounter}[]" placeholder="12" required class="border px-2 py-1 rounded-md w-full text-center">
+                                      </td>
+                                      <td class="p-2">
+                                          <input type="number" name="weight-${exerciseCounter}[]" placeholder="44" required class="border px-2 py-1 rounded-md w-full text-center">
+                                      </td>
+                                      <td class="p-2 text-center">
+                                          <input type="checkbox" name="warmup-${exerciseCounter}[]" value="true">
+                                      </td>
+                                      <td class="p-2 text-center">
+                                          <button type="button" data-exercise="${exerciseCounter}" class="remove-set-btn text-red-500 font-bold">
+                                              <img src="../icons/trash.svg" style="width: 1rem" />
+                                          </button>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                      <button type="button" data-exercise="${exerciseCounter}" class="add-set-btn bg-blue-500 px-4 py-2 rounded-md">
+                          + Add Set
+                      </button>
+                  </div>
+              `;
+     }
 
      exerciseList.insertAdjacentHTML("beforeend", exerciseHTML);
  }
 
  function addSet(exerciseNum) {
+ debugger;
      const tableBody = document.getElementById(`setTableBody-${exerciseNum}`);
      const setCount = tableBody.children.length + 1;
+     let rowHTML = '';
+     if (page ==="edit-template" || page === "create-template") {
+          rowHTML = `
+             <tr>
+                 <td class="p-2 text-center">${setCount}</td>
+                 <td class="p-2">
+                     <input type="number" name="reps-${exerciseNum}[]" placeholder="12" required class="border px-2 py-1 rounded-md w-full text-center">
+                 </td>
+                 <td class="p-2">
+                     <input type="number" name="weight-${exerciseNum}[]" placeholder="44" required class="border px-2 py-1 rounded-md w-full text-center">
+                 </td>
+                 <td class="p-2 text-center">
+                     <input type="checkbox" name="warmup-${exerciseNum}[]" value="true">
+                 </td>
+                 <td class="p-2 text-center">
+                     <button type="button" data-exercise="${exerciseNum}" class="remove-set-btn text-red-500 font-bold">
+                         <img src="../icons/trash.svg" style="width: 1rem" />
+                     </button>
+                 </td>
+             </tr>
+         `;
+     }
 
-     const rowHTML = `
-         <tr>
-             <td class="p-2 text-center">${setCount}</td>
-             <td class="p-2">
-                 <input type="number" name="reps-${exerciseNum}[]" placeholder="12" required class="border px-2 py-1 rounded-md w-full text-center">
-             </td>
-             <td class="p-2">
-                 <input type="number" name="weight-${exerciseNum}[]" placeholder="44" required class="border px-2 py-1 rounded-md w-full text-center">
-             </td>
-             <td class="p-2 text-center">
-                 <input type="checkbox" name="warmup-${exerciseNum}[]" value="true">
-             </td>
-             <td class="p-2 text-center">
-                 <button type="button" data-exercise="${exerciseNum}" class="remove-set-btn text-red-500 font-bold">
-                     <img src="../icons/trash.svg" style="width: 1rem" />
-                 </button>
-             </td>
-         </tr>
-     `;
-
+     if (page === "workout") {
+        rowHTML = `
+                   <form hx-post="/api/v1/sets" hx-trigger="submit" hx-target="this" hx-swap="outerHTML">
+        <tr>
+                    <td class="p-2 text-center">
+                     ${setCount}
+                     <input style="display: none" type="number" name="exerciseNum" required value="${exerciseNum}">
+                     <input style="display: none" type="number" name="workoutId" required value="12">
+                     <input style="display: none" type="number" name="exerciseId" required value="12">
+                     <input style="display: none" type="number" name="setNum" required value="${setCount}">
+                    </td>
+                    <td class="p-2 text-center">
+                     <input type="checkbox" name="warmup">
+                    </td>
+                    <td class="p-2">
+                     <input type="number" name="reps" required class="border px-2 py-1 rounded-md w-full text-center" placeholder="12" >
+                    </td>
+                    <td class="p-2">
+                     <input type="number" name="weight" required class="border px-2 py-1 rounded-md w-full text-center" placeholder="20">
+                    </td>
+                    <td class="p-2 text-center">
+                     <button type="button" data-exercise="${setCount}" class="remove-set-btn text-red-500 font-bold">
+                      <img src="../icons/trash.svg" style="width: 1rem" />
+                     </button>
+                    </td>
+                    <td class="p-2 text-center">
+                     <button type="submit" class="text-red-500 font-bold">
+                       <img src="../icons/send-horizontal.svg" style="width: 1rem" />
+                     </button>
+                    </td>
+                   </tr>
+                   </form>
+        `
+     }
      tableBody.insertAdjacentHTML("beforeend", rowHTML);
  }
 
@@ -140,6 +232,9 @@ document.getElementById("exerciseContainer").addEventListener("click", function(
 document.getElementById("addExerciseBtn").addEventListener("click", addExercise);
 
 document.body.addEventListener("htmx:beforeRequest", function (event) {
+     if (page === "workout") {
+        return;
+     }
     if (event.detail.elt && event.detail.elt.id === "workoutForm") {
         event.preventDefault();
         const form = event.target;

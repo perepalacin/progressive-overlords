@@ -28,7 +28,7 @@ public class SetsRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
-                    "INSERT INTO workout_exercises (workout_id, exercise_id, set_num, reps, weight, annotation, user_id, exercise_num) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                    "INSERT INTO workout_exercises (workout_id, exercise_id, set_num, reps, weight, annotation, user_id, exercise_num, is_warmup) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, setDao.getWorkoutId());
             ps.setInt(2, setDao.getExerciseId());
@@ -38,6 +38,7 @@ public class SetsRepository {
             ps.setString(6, setDao.getAnnotation());
             ps.setObject(7, userId);
             ps.setInt(8, setDao.getExerciseNum());
+            ps.setBoolean(9, setDao.isWarmup());
             return ps;
         }, keyHolder);
 
@@ -60,13 +61,14 @@ public class SetsRepository {
 
         String updateWorkoutSQL = """
             UPDATE workout_exercises
-            SET updated_at = CURRENT_TIMESTAMP, reps = ?, weight = ?, annotation = ?
+            SET updated_at = CURRENT_TIMESTAMP, reps = ?, weight = ?, annotation = ?, is_warmup = ?
             WHERE id = ? AND user_id = ?
         """;
         jdbcTemplate.update(updateWorkoutSQL,
                 setDao.getReps(),
                 setDao.getWeight(),
                 setDao.getAnnotation(),
+                setDao.isWarmup(),
                 setDao.getId(),
                 userId
         );

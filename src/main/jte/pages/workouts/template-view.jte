@@ -13,7 +13,7 @@
                         <img src="../icons/pen.svg" style="width: 1rem"/> Edit
                     </button>
                 </a>
-                <button hx-swap="innerHTML" hx-target="#template-page" hx-delete="/api/v1/workouts/${template.getId()}" class="flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-gray-100">
+                <button hx-swap="none" hx-target="#template-page" hx-delete="/api/v1/workouts/${template.getId()}" class="flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-gray-100">
                     <img src="../icons/trash.svg" style="width: 1rem"/> Delete
                 </button>
             </div>
