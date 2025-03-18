@@ -1,7 +1,7 @@
 package gg.jte.generated.ondemand.pages.workouts;
 public final class JteongoingworkoutviewGenerated {
 	public static final String JTE_NAME = "pages/workouts/ongoing-workout-view.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,0,0,2,2,2,2,5,5,5,7,7,7,8,8,8,8,15,15,15,15,15,15,15,15,15,18,18,19,19,23,23,23,23,23,23,23,23,23,27,27,27,27,27,27,27,27,27,27,27,27,27,29,29,29,29,29,29,29,29,29,41,41,41,41,42,42,45,45,45,46,46,47,47,47,47,47,47,47,47,47,48,48,49,49,49,49,49,49,49,49,49,50,50,50,50,50,50,50,50,50,51,51,51,51,51,51,51,51,51,52,52,52,52,52,52,52,52,52,55,55,55,55,55,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,64,64,64,64,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,71,71,73,73,75,75,80,80,84,84,84,84,84,84,84,84,84,88,88,90,90,101,101,101,107,107,107,109,109,109,0,0,0,0};
+	public static final int[] JTE_LINE_INFO = {0,0,0,0,2,2,2,2,5,5,5,7,7,7,8,8,8,8,15,15,15,15,15,15,15,15,15,18,18,19,19,23,23,23,23,23,23,23,23,23,27,27,27,27,27,27,27,27,27,27,27,27,27,28,28,28,28,28,28,28,28,28,38,38,38,38,38,38,38,38,38,38,38,38,38,39,39,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,43,43,44,44,44,44,44,44,44,44,44,45,45,46,46,46,46,46,46,46,46,46,47,47,47,47,47,47,47,47,47,48,48,48,48,48,48,48,48,48,49,49,49,49,49,49,49,49,49,52,52,52,55,55,55,55,55,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,64,64,65,65,65,65,68,68,72,72,74,74,76,76,81,81,85,85,85,85,85,85,85,85,85,89,89,91,91,102,102,102,108,108,108,110,110,110,0,0,0,0};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, progressive_overlords.entities.dao.WorkoutDao workout) {
 		jteOutput.writeContent("\n");
 		gg.jte.generated.ondemand.pages.layout.JtemainGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
@@ -51,7 +51,7 @@ public final class JteongoingworkoutviewGenerated {
 							jteOutput.setContext("input", null);
 							jteOutput.writeContent("\"");
 						}
-						jteOutput.writeContent(">\n\n       <div class=\"sets-container border-collapse border rounded-md\"");
+						jteOutput.writeContent(">\n       <div class=\"sets-container border-collapse border rounded-md\"");
 						var __jte_html_attribute_3 = i;
 						if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_3)) {
 							jteOutput.writeContent(" data-exercise=\"");
@@ -60,57 +60,53 @@ public final class JteongoingworkoutviewGenerated {
 							jteOutput.setContext("div", null);
 							jteOutput.writeContent("\"");
 						}
-						jteOutput.writeContent(">\n        <table class=\"w-full \">\n         <thead class=\"bg-gray-100\">\n         <tr>\n          <th class=\"p-2\">Set</th>\n          <th class=\"p-2\">Warmup</th>\n          <th class=\"p-2\">Reps</th>\n          <th class=\"p-2\">Weight</th>\n          <th class=\"p-2\"></th>\n          <th class=\"p-2\"></th>\n         </tr>\n         </thead>\n         <tbody id=\"setTableBody-");
-						jteOutput.setContext("tbody", "id");
+						jteOutput.writeContent(">\n        <section class=\"w-full\">\n         <ul class=\"flex flex-row items-center bg-gray-100\">\n          <li class=\"w-[10%] text-center p-2\">Set</li>\n          <li class=\"w-[20%] text-center p-2\">Warmup</li>\n          <li class=\"w-[25%] text-center p-2\">Reps</li>\n          <li class=\"w-[25%] text-center p-2\">Weight</li>\n          <li class=\"w-[10%] text-center p-2\"></li>\n          <li class=\"w-[10%] text-center p-2\"></li>\n         </ul>\n         <ul id=\"setTableBody-");
+						jteOutput.setContext("ul", "id");
 						jteOutput.writeUserContent(i);
-						jteOutput.setContext("tbody", null);
-						jteOutput.writeContent("\">\n         ");
+						jteOutput.setContext("ul", null);
+						jteOutput.writeContent("\"");
+						var __jte_html_attribute_4 = workout.getExercises().get(i).getExerciseId();
+						if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_4)) {
+							jteOutput.writeContent(" data-exercise-id=\"");
+							jteOutput.setContext("ul", "data-exercise-id");
+							jteOutput.writeUserContent(__jte_html_attribute_4);
+							jteOutput.setContext("ul", null);
+							jteOutput.writeContent("\"");
+						}
+						jteOutput.writeContent(">\n         ");
 						for (progressive_overlords.entities.dao.SetDao set : workout.getExercises().get(i).getSets()) {
-							jteOutput.writeContent("\n           <tr>\n            <td class=\"p-2 text-center\">\n             ");
-							jteOutput.setContext("td", null);
-							jteOutput.writeUserContent(set.getSetNum() +1);
-							jteOutput.writeContent("\n             ");
+							jteOutput.writeContent("\n          <form");
+							var __jte_html_attribute_5 = set.isCompleted() ? null : "/api/v1/sets";
+							if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_5)) {
+								jteOutput.writeContent(" hx-post=\"");
+								jteOutput.setContext("form", "hx-post");
+								jteOutput.writeUserContent(__jte_html_attribute_5);
+								jteOutput.setContext("form", null);
+								jteOutput.writeContent("\"");
+							}
+							var __jte_html_attribute_6 = set.isCompleted() ? "/api/v1/sets": null;
+							if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_6)) {
+								jteOutput.writeContent(" hx-patch=\"");
+								jteOutput.setContext("form", "hx-patch");
+								jteOutput.writeUserContent(__jte_html_attribute_6);
+								jteOutput.setContext("form", null);
+								jteOutput.writeContent("\"");
+							}
+							jteOutput.writeContent(" hx-trigger=\"submit\" hx-target=\"this\" hx-swap=\"innerHTML\">\n           <li class=\"flex flex-row items-center\">\n\n            ");
 							if (set.getId() != 0) {
-								jteOutput.writeContent("\n              <input style=\"display: none\" type=\"number\" name=\"id\" required");
-								var __jte_html_attribute_4 = set.getId();
-								if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_4)) {
+								jteOutput.writeContent("\n             <input style=\"display: none\" type=\"number\" name=\"id\" required");
+								var __jte_html_attribute_7 = set.getId();
+								if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_7)) {
 									jteOutput.writeContent(" value=\"");
 									jteOutput.setContext("input", "value");
-									jteOutput.writeUserContent(__jte_html_attribute_4);
+									jteOutput.writeUserContent(__jte_html_attribute_7);
 									jteOutput.setContext("input", null);
 									jteOutput.writeContent("\"");
 								}
-								jteOutput.writeContent(">\n             ");
+								jteOutput.writeContent(">\n            ");
 							}
-							jteOutput.writeContent("\n             <input style=\"display: none\" type=\"number\" name=\"exerciseNum\" required");
-							var __jte_html_attribute_5 = set.getExerciseNum();
-							if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_5)) {
-								jteOutput.writeContent(" value=\"");
-								jteOutput.setContext("input", "value");
-								jteOutput.writeUserContent(__jte_html_attribute_5);
-								jteOutput.setContext("input", null);
-								jteOutput.writeContent("\"");
-							}
-							jteOutput.writeContent(">\n             <input style=\"display: none\" type=\"number\" name=\"workoutId\" required");
-							var __jte_html_attribute_6 = workout.getId();
-							if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_6)) {
-								jteOutput.writeContent(" value=\"");
-								jteOutput.setContext("input", "value");
-								jteOutput.writeUserContent(__jte_html_attribute_6);
-								jteOutput.setContext("input", null);
-								jteOutput.writeContent("\"");
-							}
-							jteOutput.writeContent(">\n             <input style=\"display: none\" type=\"number\" name=\"exerciseId\" required");
-							var __jte_html_attribute_7 = set.getExerciseId();
-							if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_7)) {
-								jteOutput.writeContent(" value=\"");
-								jteOutput.setContext("input", "value");
-								jteOutput.writeUserContent(__jte_html_attribute_7);
-								jteOutput.setContext("input", null);
-								jteOutput.writeContent("\"");
-							}
-							jteOutput.writeContent(">\n             <input style=\"display: none\" type=\"number\" name=\"setNum\" required");
-							var __jte_html_attribute_8 = set.getSetNum();
+							jteOutput.writeContent("\n            <input style=\"display: none\" type=\"number\" name=\"exerciseNum\" required");
+							var __jte_html_attribute_8 = set.getExerciseNum();
 							if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_8)) {
 								jteOutput.writeContent(" value=\"");
 								jteOutput.setContext("input", "value");
@@ -118,13 +114,17 @@ public final class JteongoingworkoutviewGenerated {
 								jteOutput.setContext("input", null);
 								jteOutput.writeContent("\"");
 							}
-							jteOutput.writeContent(">\n            </td>\n            <td class=\"p-2 text-center\">\n             <input type=\"checkbox\" name=\"warmup\"");
-							var __jte_html_attribute_9 = set.isWarmup();
-							if (__jte_html_attribute_9) {
-							jteOutput.writeContent(" checked");
+							jteOutput.writeContent(">\n            <input style=\"display: none\" type=\"number\" name=\"workoutId\" required");
+							var __jte_html_attribute_9 = workout.getId();
+							if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_9)) {
+								jteOutput.writeContent(" value=\"");
+								jteOutput.setContext("input", "value");
+								jteOutput.writeUserContent(__jte_html_attribute_9);
+								jteOutput.setContext("input", null);
+								jteOutput.writeContent("\"");
 							}
-							jteOutput.writeContent(">\n            </td>\n            <td class=\"p-2\">\n             <input type=\"number\" name=\"reps\" required class=\"border px-2 py-1 rounded-md w-full text-center\"");
-							var __jte_html_attribute_10 = set.isCompleted() ? set.getReps() : null;
+							jteOutput.writeContent(">\n            <input style=\"display: none\" type=\"number\" name=\"exerciseId\" required");
+							var __jte_html_attribute_10 = set.getExerciseId();
 							if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_10)) {
 								jteOutput.writeContent(" value=\"");
 								jteOutput.setContext("input", "value");
@@ -132,67 +132,80 @@ public final class JteongoingworkoutviewGenerated {
 								jteOutput.setContext("input", null);
 								jteOutput.writeContent("\"");
 							}
-							var __jte_html_attribute_11 = set.getReps();
+							jteOutput.writeContent(">\n            <input style=\"display: none\" type=\"number\" name=\"setNum\" required");
+							var __jte_html_attribute_11 = set.getSetNum();
 							if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_11)) {
-								jteOutput.writeContent(" placeholder=\"");
-								jteOutput.setContext("input", "placeholder");
+								jteOutput.writeContent(" value=\"");
+								jteOutput.setContext("input", "value");
 								jteOutput.writeUserContent(__jte_html_attribute_11);
 								jteOutput.setContext("input", null);
 								jteOutput.writeContent("\"");
 							}
-							jteOutput.writeContent(" >\n            </td>\n            <td class=\"p-2\">\n             <input type=\"number\" name=\"weight\" required class=\"border px-2 py-1 rounded-md w-full text-center\"");
-							var __jte_html_attribute_12 = set.isCompleted() ? set.getWeight() : null;
-							if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_12)) {
+							jteOutput.writeContent(">\n\n            <div class=\"w-[10%] text-center p-2\">\n             ");
+							jteOutput.setContext("div", null);
+							jteOutput.writeUserContent(set.getSetNum() +1);
+							jteOutput.writeContent("\n            </div>\n            <div class=\"w-[20%] text-center p-2\">\n             <input type=\"checkbox\" name=\"warmup\"");
+							var __jte_html_attribute_12 = set.isWarmup();
+							if (__jte_html_attribute_12) {
+							jteOutput.writeContent(" checked");
+							}
+							jteOutput.writeContent(">\n            </div>\n            <div class=\"w-[25%] text-center p-2\">\n             <input type=\"number\" name=\"reps\" required class=\"border px-2 py-1 rounded-md w-full text-center\"");
+							var __jte_html_attribute_13 = set.isCompleted() ? set.getReps() : null;
+							if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_13)) {
 								jteOutput.writeContent(" value=\"");
 								jteOutput.setContext("input", "value");
-								jteOutput.writeUserContent(__jte_html_attribute_12);
-								jteOutput.setContext("input", null);
-								jteOutput.writeContent("\"");
-							}
-							jteOutput.writeContent(" ");
-							var __jte_html_attribute_13 = set.getReps();
-							if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_13)) {
-								jteOutput.writeContent(" placeholder=\"");
-								jteOutput.setContext("input", "placeholder");
 								jteOutput.writeUserContent(__jte_html_attribute_13);
 								jteOutput.setContext("input", null);
 								jteOutput.writeContent("\"");
 							}
-							jteOutput.writeContent(">\n            </td>\n            <td class=\"p-2 text-center\">\n             <button hx-delete=\"/api/v1/sets/");
-							jteOutput.setContext("button", "hx-delete");
-							jteOutput.writeUserContent(set.getId());
-							jteOutput.setContext("button", null);
-							jteOutput.writeContent("\" hx-target=\"this\" hx-swap=\"innerHTML\" class=\"text-red-500 font-bold\">\n              <img src=\"../icons/trash.svg\" style=\"width: 1rem\" />\n             </button>\n            </td>\n            <td class=\"p-2 text-center\">\n             <form");
-							var __jte_html_attribute_14 = set.isCompleted() ? null : "/api/v1/sets";
+							var __jte_html_attribute_14 = set.getReps();
 							if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_14)) {
-								jteOutput.writeContent(" hx-post=\"");
-								jteOutput.setContext("form", "hx-post");
+								jteOutput.writeContent(" placeholder=\"");
+								jteOutput.setContext("input", "placeholder");
 								jteOutput.writeUserContent(__jte_html_attribute_14);
-								jteOutput.setContext("form", null);
+								jteOutput.setContext("input", null);
 								jteOutput.writeContent("\"");
 							}
-							var __jte_html_attribute_15 = set.isCompleted() ? "/api/v1/sets": null;
+							jteOutput.writeContent(" >\n            </div>\n            <div class=\"w-[25%] text-center p-2\">\n             <input type=\"number\" name=\"weight\" required class=\"border px-2 py-1 rounded-md w-full text-center\"");
+							var __jte_html_attribute_15 = set.isCompleted() ? set.getWeight() : null;
 							if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_15)) {
-								jteOutput.writeContent(" hx-patch=\"");
-								jteOutput.setContext("form", "hx-patch");
+								jteOutput.writeContent(" value=\"");
+								jteOutput.setContext("input", "value");
 								jteOutput.writeUserContent(__jte_html_attribute_15);
-								jteOutput.setContext("form", null);
+								jteOutput.setContext("input", null);
 								jteOutput.writeContent("\"");
 							}
-							jteOutput.writeContent(" hx-trigger=\"submit\" hx-target=\"this\" hx-swap=\"innerHTML\">\n             <button type=\"submit\" class=\"text-red-500 font-bold\">\n              ");
+							jteOutput.writeContent(" ");
+							var __jte_html_attribute_16 = set.getReps();
+							if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_16)) {
+								jteOutput.writeContent(" placeholder=\"");
+								jteOutput.setContext("input", "placeholder");
+								jteOutput.writeUserContent(__jte_html_attribute_16);
+								jteOutput.setContext("input", null);
+								jteOutput.writeContent("\"");
+							}
+							jteOutput.writeContent(">\n            </div>\n            <div class=\"w-[10%] text-center p-2 text-center\">\n             ");
+							if (set.isCompleted()) {
+								jteOutput.writeContent("\n             <button hx-delete=\"/api/v1/sets/");
+								jteOutput.setContext("button", "hx-delete");
+								jteOutput.writeUserContent(set.getId());
+								jteOutput.setContext("button", null);
+								jteOutput.writeContent("\" hx-target=\"this\" hx-swap=\"innerHTML\" class=\"text-red-500 font-bold\">\n              <img src=\"../icons/trash.svg\" style=\"width: 1rem\" />\n             </button>\n             ");
+							}
+							jteOutput.writeContent("\n            </div>\n            <div class=\"w-[10%] text-center p-2 text-center\">\n             <button type=\"submit\" class=\"text-red-500 font-bold\">\n              ");
 							if (set.isCompleted()) {
 								jteOutput.writeContent("\n               <img src=\"../icons/check.svg\" style=\"width: 1rem\" />\n              ");
 							} else {
 								jteOutput.writeContent("\n               <img src=\"../icons/send-horizontal.svg\" style=\"width: 1rem\" />\n              ");
 							}
-							jteOutput.writeContent("\n             </button>\n             </form>\n            </td>\n           </tr>\n         ");
+							jteOutput.writeContent("\n             </button>\n            </div>\n           </li>\n          </form>\n         ");
 						}
-						jteOutput.writeContent("\n         </tbody>\n        </table>\n       </div>\n       <button type=\"button\"");
-						var __jte_html_attribute_16 = i;
-						if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_16)) {
+						jteOutput.writeContent("\n         </ul>\n        </section>\n       </div>\n       <button type=\"button\"");
+						var __jte_html_attribute_17 = i;
+						if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_17)) {
 							jteOutput.writeContent(" data-exercise=\"");
 							jteOutput.setContext("button", "data-exercise");
-							jteOutput.writeUserContent(__jte_html_attribute_16);
+							jteOutput.writeUserContent(__jte_html_attribute_17);
 							jteOutput.setContext("button", null);
 							jteOutput.writeContent("\"");
 						}

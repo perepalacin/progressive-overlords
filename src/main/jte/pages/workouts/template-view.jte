@@ -37,36 +37,35 @@
                             </div>
                             <h4>${template.getExercises().get(i).getExerciseId()}</h4>
                             <div class="sets-container border-collapse border rounded-md">
-                                <table class="w-full ">
-                                    <thead class="bg-gray-100">
-                                    <tr>
-                                        <th class="p-2">Sets</th>
-                                        <th class="p-2">Reps</th>
-                                        <th class="p-2">Weight</th>
-                                        <th class="p-2">Warmup</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @for (progressive_overlords.entities.dao.SetDao set : template.getExercises().get(i).getSets())
-                                        <tr>
-                                            <td class="p-2 text-center">${set.getSetNum() +1}</td>
-                                            <td class="p-2">
-                                                <p class="px-2 py-1 w-full text-center">${set.getReps()}</p>
-                                            </td>
-                                            <td class="p-2">
-                                                <p class="px-2 py-1 w-full text-center">${set.getWeight()}</p>
-                                            </td>
-                                            <td class="p-2 text-center">
+                                <section class="w-full ">
+                                    <ul class="flex flex-row items-center bg-gray-100">
+                                        <li class="w-[15%] text-center p-2">Set</li>
+                                        <li class="w-[25%] text-center p-2">Warmup</li>
+                                        <li class="w-[30%] text-center p-2">Reps</li>
+                                        <li class="w-[30%] text-center p-2">Weight</li>
+                                    </ul>
+                                    <ul>
+                                        @for (progressive_overlords.entities.dao.SetDao set : template.getExercises().get(i).getSets())
+                                        <li class="flex flex-row items-center">
+                                            <div class="w-[15%] p-2 text-center">
+                                                ${set.getSetNum() +1}
+                                            </div>
+                                            <div class="w-[25%] text-center p-2 text-center">
                                                 <input type="checkbox" disabled="true" checked="${set.isWarmup()}">
-                                            </td>
-                                        </tr>
+                                            </div>
+                                            <div class="w-[30%] text-center p-2">
+                                                <p class="px-2 py-1 w-full text-center">${set.getReps()}</p>
+                                            </div>
+                                            <div class="w-[30%] text-center p-2">
+                                                <p class="px-2 py-1 w-full text-center">${set.getWeight()}</p>
+                                            </div>
+                                        </li>
                                     @endfor
-                                    </tbody>
-                                </table>
+                                    </ul>
+                                </section>
                             </div>
                         </div>
                     @endfor
-
                 @endif
             </div>
     </div>

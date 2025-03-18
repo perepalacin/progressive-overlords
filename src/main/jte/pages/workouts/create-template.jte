@@ -37,38 +37,36 @@
                             <input type="number" name="exerciseId-${i}" required class="border px-2 py-1 rounded-md w-full mb-2" value="${template.getExercises().get(i).getExerciseId()}">
 
                             <div class="sets-container border-collapse border rounded-md" data-exercise="${i}">
-                                <table class="w-full ">
-                                    <thead class="bg-gray-100">
-                                    <tr>
-                                        <th class="p-2">Sets</th>
-                                        <th class="p-2">Warmup</th>
-                                        <th class="p-2">Reps</th>
-                                        <th class="p-2">Weight</th>
-                                        <th class="p-2"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="setTableBody-${i}">
+                                <section class="w-full ">
+                                    <ul class="flex flex-row items-center bg-gray-100">
+                                        <li class="w-[15%] text-center p-2">Set</li>
+                                        <li class="w-[20%] text-center p-2">Warmup</li>
+                                        <li class="w-[25%] text-center p-2">Reps</li>
+                                        <li class="w-[25%] text-center p-2">Weight</li>
+                                        <li class="w-[15%] text-center p-2"></li>
+                                    </ul>
+                                    <ul id="setTableBody-${i}">
                                     @for (progressive_overlords.entities.dao.SetDao set : template.getExercises().get(i).getSets())
-                                    <tr>
-                                        <td class="p-2 text-center">${set.getSetNum() +1}</td>
-                                        <td class="p-2 text-center">
+                                    <li class="flex flex-row items-center">
+                                        <div class="w-[15%] text-center p-2 text-center">${set.getSetNum() +1}</div>
+                                        <div class="w-[20%] text-center p-2 text-center">
                                             <input type="checkbox" name="warmup-${i}[]" checked="${set.isWarmup()}">
-                                        </td>
-                                        <td class="p-2">
+                                        </div>
+                                        <div class="w-[25%] text-center p-2">
                                             <input type="number" name="reps-${i}[]" placeholder="12" required class="border px-2 py-1 rounded-md w-full text-center" value="${set.getReps()}">
-                                        </td>
-                                        <td class="p-2">
+                                        </div>
+                                        <div class="w-[25%] text-center p-2">
                                             <input type="number" name="weight-${i}[]" placeholder="44" required class="border px-2 py-1 rounded-md w-full text-center" value="${set.getWeight()}">
-                                        </td>
-                                        <td class="p-2 text-center">
+                                        </div>
+                                        <div class="w-[15%] text-center p-2 text-center">
                                             <button type="button" data-exercise="${i}"  class="remove-set-btn text-red-500 font-bold">
                                                 <img src="../icons/trash.svg" style="width: 1rem" />
                                             </button>
-                                        </td>
-                                    </tr>
+                                        </div>
+                                    </li>
                                     @endfor
-                                    </tbody>
-                                </table>
+                                    </ul>
+                                </section>
                             </div>
                             <button type="button" data-exercise="${i}" class="add-set-btn bg-blue-500 px-4 py-2 rounded-md">
                                 + Add Set

@@ -78,4 +78,5 @@ public class PagesController {
         return "pages/workouts/finish-workout-view";
     }
 
+    //TODO: workouts (list of current + finished workouts!)
 }

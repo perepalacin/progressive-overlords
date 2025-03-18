@@ -23,9 +23,13 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<GenericResponse> registerNewUser (@ModelAttribute AuthRequest signUpRequest) {
+    public ResponseEntity<Void> registerNewUser (@ModelAttribute AuthRequest signUpRequest) {
         userService.registerUser(signUpRequest);
-        return new ResponseEntity<>(new GenericResponse("Successful register"), HttpStatus.CREATED);
+        return ResponseEntity.status(303)
+                .header("HX-Redirect", "/sign-in")
+                .header("HX-Trigger", "ShowToast")
+                .header("X-Message", "success: Successfully Registered!")
+                .build();
     }
 
 
@@ -41,19 +45,21 @@ public class AuthController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Set-Cookie", "SESSION_ID=" + sessionToken + "; Path=/; HttpOnly; Secure");
-        headers.add(HttpHeaders.LOCATION, "/");
+        headers.add("HX-Redirect", "/");
 
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
+        return ResponseEntity.status(303).headers(headers).build();
     }
 
     @PostMapping("/logout")
-    public String logout (HttpServletResponse response) throws IOException {
+    public ResponseEntity<Void> logout (HttpServletResponse response) throws IOException {
         System.out.println("Logging out!");
         Cookie sessionCookie = new Cookie("SESSION_ID", null);
         sessionCookie.setHttpOnly(true);
         sessionCookie.setPath("/");
         sessionCookie.setMaxAge(0);
         response.addCookie(sessionCookie);
-        return "redirect:/sign-in";
+        return ResponseEntity.status(303)
+                .header("HX-Redirect", "/sign-in")
+                .build();
     }
 }
