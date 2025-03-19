@@ -5,7 +5,7 @@ function startElapsedTimer(startTimestamp) {
 
     if (isNaN(startTime.getTime())) {
         console.error("Invalid timestamp:", startTimestamp);
-        timerElement.textContent = "Invalid Time";
+        timerElement.textContent = "00:00:00";
         return;
     }
 
@@ -16,7 +16,6 @@ function startElapsedTimer(startTimestamp) {
         const hours = String(Math.floor(elapsedTime / 3600)).padStart(2, '0');
         const minutes = String(Math.floor((elapsedTime % 3600) / 60)).padStart(2, '0');
         const seconds = String(elapsedTime % 60).padStart(2, '0');
-
         timerElement.textContent = `${hours}:${minutes}:${seconds}`;
     }
 

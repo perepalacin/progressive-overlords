@@ -8,9 +8,9 @@ if (page === "workout") {
     workoutId = Number(window.location.pathname.split('/')[2]);
 }
 function addExercise() {
-    const exerciseList = document.getElementById("exerciseList");
+    const exerciseList = document.getElementById("exerciseContainer");
     if (exerciseList.querySelectorAll('.exercise-item').length > 0) {
-        exerciseCounter++;
+        exerciseCounter = exerciseList.querySelectorAll('.exercise-item').length
     }
     console.log(exerciseCounter);
     let exerciseHTML = "";
@@ -63,9 +63,7 @@ function addExercise() {
         </button>
     </div>
 `;
-    }
-
-    if (page === "workout") {
+    } else if (page === "workout") {
         exerciseHTML = `
 <div class="exercise-item border px-4 py-2 mb-2 rounded-md">
     <div class="flex flex-row align-center justify-between py-2">
@@ -86,19 +84,19 @@ function addExercise() {
                 <li class="w-[10%] text-center p-2"></li>
                 <li class="w-[10%] text-center p-2"></li>
             </ul>
-            <ul id="setTableBody-${exerciseCounter}" class="flex flex-row items-center">
+            <ul id="setTableBody-${exerciseCounter}">
                 <li class="flex flex-row items-center">
                     <div class="w-[10%] text-center p-2">1</div>
-                    <div class="w-[20%] text-center p-2">
+                    <div class="w-[20%] text-center p-2 text-center">
+                        <input type="checkbox" name="warmup-${exerciseCounter}[]" value="true">
+                    </div>
+                    <div class="w-[25%] text-center p-2">
                         <input type="number" name="reps-${exerciseCounter}[]" placeholder="12" required
                             class="border px-2 py-1 rounded-md w-full text-center">
                     </div>
                     <div class="w-[25%] text-center p-2">
                         <input type="number" name="weight-${exerciseCounter}[]" placeholder="44" required
                             class="border px-2 py-1 rounded-md w-full text-center">
-                    </div>
-                    <div class="w-[25%] text-center p-2 text-center">
-                        <input type="checkbox" name="warmup-${exerciseCounter}[]" value="true">
                     </div>
                     <div class="w-[10%] text-center p-2 text-center">
                         <button type="button" data-exercise="${exerciseCounter}"
@@ -126,7 +124,6 @@ function addExercise() {
 }
 
 function addSet(exerciseNum) {
-    //TODO: Fix this
     const tableBody = document.getElementById(`setTableBody-${exerciseNum}`);
     const setCount = tableBody.children.length + 1;
     let rowHTML = '';
@@ -135,15 +132,15 @@ function addSet(exerciseNum) {
         <li class="flex flex-row items-center">
             <div class="w-[15%] p-2 text-center">${setCount}</div>
             <div class="w-[20%] text-center p-2">
+                <input type="checkbox" name="warmup-${exerciseNum}[]" value="true">
+            </div>
+            <div class="w-[25%] text-center p-2">
                 <input type="number" name="reps-${exerciseNum}[]" placeholder="12" required
                     class="border px-2 py-1 rounded-md w-full text-center">
             </div>
             <div class="w-[25%] text-center p-2">
                 <input type="number" name="weight-${exerciseNum}[]" placeholder="44" required
                     class="border px-2 py-1 rounded-md w-full text-center">
-            </div>
-            <div class="w-[25%] text-center p-2">
-                <input type="checkbox" name="warmup-${exerciseNum}[]" value="true">
             </div>
             <div class="w-[15%] text-center p-2">
                 <button type="button" data-exercise="${exerciseNum}" class="remove-set-btn text-red-500 font-bold">
@@ -156,7 +153,6 @@ function addSet(exerciseNum) {
     }
 
     if (page === "workout") {
-    debugger;
     let tbody = document.querySelector(`#setTableBody-${exerciseNum}`);
     let exerciseId = tbody ? tbody.getAttribute("data-exercise-id") : null;
     let newForm = document.createElement("form");
@@ -220,7 +216,7 @@ function prepareDataForHTMX(formElement) {
         const exerciseId = exerciseElement.querySelector(`input[name="exerciseId-${index}"]`).value;
         const sets = [];
 
-        const setRows = exerciseElement.querySelectorAll(`#setTableBody-${index} tr`);
+        const setRows = exerciseElement.querySelectorAll(`#setTableBody-${index} li`);
         setRows.forEach((row, setIndex) => {
             const newSet = {
                 exerciseId: exerciseId,
@@ -249,14 +245,11 @@ document.getElementById("exerciseContainer").addEventListener("click", function 
         row.remove();
 
         if (Array.from(tableBody.children).length > 0) {
-        Array.from(tableBody.children).forEach((tr, index) => {
-            tr.children[0].textContent = index + 1;
-        });
-        } else {
-        //TODO: fix this
-        //    button.closest(".exercise-item").remove();
+            Array.from(tableBody.children).forEach((tr, index) => {
+                tr.children[0].textContent = index + 1;
+            });
         }
-    } else if (button.classList.contains("remove-exercise-btn")) {
+    } else if (page !== "workout" && button.classList.contains("remove-exercise-btn")) {
         button.closest(".exercise-item").remove();
     }
 });

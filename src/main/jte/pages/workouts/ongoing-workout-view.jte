@@ -18,10 +18,10 @@
     <h3 class="font-bold mt-4">Exercises</h3>
     @if (workout != null && workout.getExercises() != null)
      @for(int i = 0; i < workout.getExercises().size(); i++)
-      <div class="exercise-item border px-4 py-2 mb-2 rounded-md">
+      <div id="exercise-item-${i}" class="exercise-item-${i} border px-4 py-2 mb-2 rounded-md">
        <div class="flex flex-row align-center justify-between py-2">
         <label>Exercise:</label>
-        <button type="button" data-exercise="${i}" class="remove-exercise-btn text-red-500 font-bold">
+        <button hx-delete="/api/v1/sets/exercises?exerciseId=${workout.getExercises().get(i).getExerciseId()}&workoutId=${workout.getId()}" hx-swap="outerHTML" hx-target="#exercise-item-${i}" type="button" data-exercise="${i}" class="remove-exercise-btn text-red-500 font-bold">
          <img src="../icons/trash.svg" style="width: 1rem" />
         </button>
        </div>
