@@ -31,8 +31,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder(12);
     }
 
-
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -44,7 +42,9 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-    }    @Bean
+    }
+
+    @Bean
     SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -60,7 +60,6 @@ public class SecurityConfig {
                 .addFilterBefore(sessionCookieFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
 
     @Bean
     public SessionCookieFilter sessionCookieFilter() {

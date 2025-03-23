@@ -21,6 +21,7 @@
       <div id="exercise-item-${i}" class="exercise-item-${i} border px-4 py-2 mb-2 rounded-md">
        <div class="flex flex-row align-center justify-between py-2">
         <label>Exercise:</label>
+        @template.responses.exercises.exercises-dropdown-list(exercises = null)
         <button hx-delete="/api/v1/sets/exercises?exerciseId=${workout.getExercises().get(i).getExerciseId()}&workoutId=${workout.getId()}" hx-swap="outerHTML" hx-target="#exercise-item-${i}" type="button" data-exercise="${i}" class="remove-exercise-btn text-red-500 font-bold">
          <img src="../icons/trash.svg" style="width: 1rem" />
         </button>

@@ -27,7 +27,6 @@ public class UserService {
         if (userDetails != null) {
             throw new UsernameAlreadyExistsExcpetion("This username is already taken, please try another one.");
         }
-
         usersRepository.save(UserDao.builder().username(signUpRequest.getUsername()).password(encoder.encode(signUpRequest.getPassword())).build());
         return "Account created";
     }
