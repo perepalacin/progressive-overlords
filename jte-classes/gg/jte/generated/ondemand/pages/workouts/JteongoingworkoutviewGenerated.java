@@ -38,7 +38,7 @@ public final class JteongoingworkoutviewGenerated {
 						jteOutput.writeUserContent(i);
 						jteOutput.setContext("div", null);
 						jteOutput.writeContent(" border px-4 py-2 mb-2 rounded-md\">\n       <div class=\"flex flex-row align-center justify-between py-2\">\n        <label>Exercise:</label>\n        ");
-						gg.jte.generated.ondemand.responses.exercises.JteexercisesdropdownlistGenerated.render(jteOutput, jteHtmlInterceptor, null);
+						gg.jte.generated.ondemand.components.JteexercisesdropdownGenerated.render(jteOutput, jteHtmlInterceptor, i);
 						jteOutput.writeContent("\n        <button hx-delete=\"/api/v1/sets/exercises?exerciseId=");
 						jteOutput.setContext("button", "hx-delete");
 						jteOutput.writeUserContent(workout.getExercises().get(i).getExerciseId());

@@ -1,6 +1,9 @@
 package progressive_overlords.controllers;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +14,8 @@ import progressive_overlords.services.ExercisesService;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.OK;
+
 @Controller
 @RequestMapping("${api.prefix}/exercises")
 @RequiredArgsConstructor
@@ -18,10 +23,22 @@ public class ExercisesController {
 
     private final ExercisesService exercisesService;
 
+    @GetMapping("/all")
+    public ResponseEntity<List<ExerciseDao>> getAllExercises(@RequestParam String secretKey) {
+        if ("grantedAccess".equals(secretKey)) {
+            List<ExerciseDao> exercisesDao = exercisesService.getAll();
+            return ResponseEntity.status(OK).body(exercisesDao);
+        }
+        return null;
+    }
+
     @GetMapping
-    public String getExercises(@RequestParam int page, @RequestParam (required = false) String query, Model model) {
+    public String getExercises(HttpServletResponse httpServletResponse, @RequestParam int page, @RequestParam(required = false) String query, Model model) {
         List<ExerciseDao> exercisesDao = exercisesService.getExercises(page, query);
         model.addAttribute("exercises", exercisesDao);
+        model.addAttribute("page", page);
+        model.addAttribute("query", query);
         return "responses/exercises/exercises-dropdown-list";
     }
 }
+

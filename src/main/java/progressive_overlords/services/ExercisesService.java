@@ -25,25 +25,45 @@ public class ExercisesService {
         maxPages = inMemoryExerciseList.size() / pageSize;
     }
 
+    public List<ExerciseDao> getAll() {
+        return exercisesRepository.getAll();
+    }
+
+    public ExerciseDao getById(int id) {
+        for (int i = 0; i < inMemoryExerciseList.size(); i++) {
+            if (inMemoryExerciseList.get(i).getId() == id) {
+                return inMemoryExerciseList.get(i);
+            }
+        }
+        return null;
+    }
+
     public List<ExerciseDao> getExercises(int page, String query) {
-        if (page * pageSize >= maxPages) {
-            throw new BadRequestException("Page exceeds the limit. The maximum page is " + maxPages);
+        System.out.println(maxPages);
+        if (page >= maxPages) {
+            return null;
         }
 
         List<ExerciseDao> result = new ArrayList<>();
-//        if (query != null) {
-//            int matches = 0;
-//            for (int i = 0; i < inMemoryExerciseList.size(); i++) {
-//                if (inMemoryExerciseList.get(i).getName().toLowerCase().equals((query))) {
-//                    matches++;
-//                    if ()
-//                }
-//                result.add(inMemoryExerciseList.get(i));
-//            }
-//        }
-        for (int i = page*20; i < (page+1)*20; i++) {
-            result.add(inMemoryExerciseList.get(i));
+        if (query != null && !query.isEmpty()) {
+            int matches = 0;
+            for (int i = 0; i < inMemoryExerciseList.size(); i++) {
+                System.out.println(inMemoryExerciseList.get(i).getName().toLowerCase() + " - " + query + " = " + inMemoryExerciseList.get(i).getName().toLowerCase().contains((query)));
+                if (inMemoryExerciseList.get(i).getName().toLowerCase().contains((query))) {
+                    if (matches >= page*20 && matches < (page+1)*20) {
+                        result.add(inMemoryExerciseList.get(i));
+                    }
+                    matches++;
+                    if (matches > (page+1)*20) {
+                        return result;
+                    }
+                }
+            }
+        } else {
+            for (int i = page*20; i < (page+1)*20; i++) {
+                result.add(inMemoryExerciseList.get(i));
+            }
         }
-        return exercisesRepository.getWithoutQuery(page);
+        return result;
     }
 }

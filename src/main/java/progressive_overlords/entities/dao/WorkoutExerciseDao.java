@@ -10,6 +10,7 @@ import java.util.List;
 @Setter
 @Builder
 public class WorkoutExerciseDao {
+    private ExerciseDao exercise;
     private int exerciseId;
     private int exerciseNum;
     private List<SetDao> sets;

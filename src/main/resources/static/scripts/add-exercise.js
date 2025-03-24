@@ -300,3 +300,4 @@ document.body.addEventListener("htmx:beforeRequest", function (event) {
             });
     }
 });
+
