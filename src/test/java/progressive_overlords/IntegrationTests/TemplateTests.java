@@ -1,12 +1,10 @@
 package progressive_overlords.IntegrationTests;
 
 import lombok.RequiredArgsConstructor;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import progressive_overlords.entities.dao.WorkoutDao;
 import progressive_overlords.entities.dto.WorkoutDto;
-import progressive_overlords.services.WorkoutService;
 
 @RequiredArgsConstructor
 public class TemplateTests {

@@ -4,7 +4,6 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import progressive_overlords.entities.dao.ExerciseDao;
-import progressive_overlords.exceptions.BadRequestException;
 import progressive_overlords.repositories.ExercisesRepository;
 
 import java.util.ArrayList;
@@ -36,6 +35,16 @@ public class ExercisesService {
             }
         }
         return null;
+    }
+
+    public List<ExerciseDao> getListByIds(List<Integer> ids) {
+        List<ExerciseDao> result = new ArrayList<>();
+        for (int i = 0; i < inMemoryExerciseList.size(); i++) {
+            if (ids.contains(inMemoryExerciseList.get(i).getId())) {
+                result.add(inMemoryExerciseList.get(i));
+            }
+        }
+        return result;
     }
 
     public List<ExerciseDao> getExercises(int page, String query) {

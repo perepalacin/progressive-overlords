@@ -1,0 +1,147 @@
+:root {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  --main-bg: #FFFFFF;
+  --secondary-bg: #F1F2F3;
+  --tertiary-bg: #DCDDDD;
+  --active-color: #DC2937;
+  --main-foreground: #000000;
+  --hover-bg-color: #DCDDDD;
+  --active-bg-color: #FFCACE;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: var(--main-foreground);
+}
+
+/* NAV COMPONENTS */
+
+.logo {
+  color: var(--active-color);
+  font-weight: 700;
+}
+
+.logo img {
+  width: 4rem;
+  height: 4rem;
+  filter: invert(17%) sepia(100%) saturate(7496%) hue-rotate(359deg);
+}
+
+.sidebar {
+  width: 10%;
+  height: 100vh;
+  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2); 
+}
+
+nav {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  background-color: var(--secondary-bg);
+  padding: 1rem 1rem;
+}
+
+nav a {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  width: 100%;
+  align-items: center;
+  padding: 0.5rem 0.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.25rem;
+  box-sizing: border-box;
+}
+
+nav a:hover:not(.active) {
+  background-color: var(--hover-bg-color);
+}
+
+.active {
+  color: red;
+  background-color: var(--active-bg-color)
+}
+
+.active img {
+  filter: invert(17%) sepia(100%) saturate(7496%) hue-rotate(359deg);
+}
+
+nav a img {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.logout-section {
+  display: flex;
+  flex-direction: row; 
+  align-items: center; 
+  justify-content: space-between;
+}
+
+@media (max-width: 1300px) {
+  .sidebar {
+    width: 20%;
+    box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+  }
+
+  .logout-section {
+    display: none;
+  }
+  
+  nav {
+      flex-direction: row;
+      justify-content: space-around;
+      width: 100%;
+      height: auto;
+      padding: 0.25rem 0rem;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      position: fixed;
+      background: var(--secondary-bg);
+  }
+
+  nav a:first-child {
+    display: none;
+  }
+
+  nav a {
+      flex-direction: column;
+      gap: 0.25rem;
+      width: auto;
+      padding: 0.25rem 1rem;
+      font-size: 0.8rem;
+  }
+}

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.stereotype.Service;
 import progressive_overlords.entities.dao.SecurityUser;
 import progressive_overlords.entities.dao.UserDao;

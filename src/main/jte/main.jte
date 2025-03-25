@@ -10,39 +10,37 @@
             integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq"
             crossorigin="anonymous"></script>
     <script src="https://unpkg.com/htmx-ext-response-targets@2.0.0/response-targets.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href="../styles/index.css" rel="stylesheet">
 </head>
 <body>
-<main class="w-full h-screen flex flex-row justify-between">
-    <nav class="flex flex-col w-1/5 justify-between items-start border-r px-2 py-2 ">
-        <div class="flex flex-col gap-2">
-            <a href="/" class="flex flex-row gap-1 mb-2">
-                <img src="https://unpkg.com/lucide-static@latest/icons/chart-no-axes-column-increasing.svg" class="font-bold"/>
-                <p class="text-xl font-semibold">Progressive Overlords</p>
+<main class="">
+    <nav class="">
+        <div class="">
+            <a href="/" class="">
+                <img src="https://unpkg.com/lucide-static@latest/icons/chart-no-axes-column-increasing.svg" />
+                <p>Progressive Overlords</p>
             </a>
             <a href="/">Feed</a>
-            <a href="/templates">Templates</a>
+            <a href="/routines">Routines</a>
         </div>
-        <div class="w-full flex flex-row justify-between">
+        <div>
             <div>
                 <img src=""/>
                 <p>Username</p>
             </div>
             <button hx-post="/api/v1/auth/logout" hx-swap="none">
-                <img src="https://unpkg.com/lucide-static@latest/icons/log-out.svg" class="w-2/3"/>
+                <img src="https://unpkg.com/lucide-static@latest/icons/log-out.svg" />
             </button>
         </div>
     </nav>
-    <section class="py-2">
+    <section >
         ${content}
     </section>
-    <aside class="flex flex-col w-1/5">
+    <aside>
         <p>Side section!</p>
     </aside>
-    <div id="toastContainer" class="fixed top-5 right-5 flex flex-col gap-2 z-50"></div>
+    <div id="toastContainer"></div>
 </main>
 </body>
-<script type="module" src="../scripts/dropdown.js"></script>
 <script type="module" src="../scripts/toasts.js"></script>
 </html>

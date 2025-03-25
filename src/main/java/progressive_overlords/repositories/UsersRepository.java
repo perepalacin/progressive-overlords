@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import progressive_overlords.entities.dao.UserDao;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
