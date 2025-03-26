@@ -15,16 +15,27 @@
   --active-bg-color: #FFCACE;
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+
 body {
   margin: 0;
-  display: flex;
-  flex-direction: column;
   height: 100%;
+  background-color: var(--main-bg);
 }
 
 main {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  width: 100%;
   height: 100%;
 }
 
@@ -36,6 +47,69 @@ p {
 a {
   text-decoration: none;
   color: var(--main-foreground);
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+input, textarea {
+  padding: 0.5rem 1rem;
+  text-align: start;
+  border-radius: 0.25rem;
+  border: 2px solid var(--main-bg);
+  background-color: white;
+  transition: box-shadow 0.1s ease-in-out, border-color 0.1s ease-in-out; 
+  outline: none;
+  box-shadow: 0 0 0 1px var(--tertiary-bg); 
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border: 2px solid var(--active-color);
+}
+
+
+/* GENERIC CLASSES */
+
+.m-0 {
+  margin: 0;
+}
+
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
+}
+
+.w-full {
+  width: 100% !important;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-025 {
+  gap: 0.25rem;
+}
+
+.border-none {
+  border: none;
+  box-shadow: none;
 }
 
 /* NAV COMPONENTS */
@@ -55,6 +129,11 @@ a {
   width: 10%;
   height: 100vh;
   box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2); 
+}
+
+.sidebar-filler {
+  min-width: 10%;
+  width: 10%;
 }
 
 nav {
@@ -104,6 +183,134 @@ nav a img {
   justify-content: space-between;
 }
 
+.main-button {
+  border: none;
+  background-color: var(--active-color);
+  padding: 0.5rem 0.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: var(--main-bg);
+}
+
+.main-button:hover {
+  background-color: var(--secondary-bg);
+}
+
+.main-button:active {
+  background-color: var(--tertiary-bg);
+}
+
+.ghost-button {
+  border: none;
+  background-color: var(--active-color);
+  padding: 0.5rem 0.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.ghost-button:hover {
+  background-color: var(--secondary-bg);
+}
+
+.ghost-button:active {
+  background-color: var(--tertiary-bg);
+}
+
+
+.ghost-button-icon {
+  border: none;
+  background-color: inherit;
+  padding: 0.5rem 0.5rem;
+  border-radius: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.ghost-button-icon:hover {
+  background-color: var(--secondary-bg);
+}
+
+.ghost-button-icon:active {
+  background-color: var(--tertiary-bg);
+}
+
+/* TEMPLATE PAGE! */
+
+#workoutForm {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--tertiary-bg);
+  background-color: var(--main-bg);
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+}
+
+.exerciseContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.exerciseContainer h3 {
+  margin: 1rem 0rem;
+}
+
+.exerciseContainer > li {
+  border: 1px solid var(--tertiary-bg);
+  border-radius: 0.5rem;
+  padding: 1rem 1rem;
+}
+
+.exerciseContainer input {
+  text-align: center;
+}
+
+.template-input-grid {
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--secondary-bg);
+}
+
+.template-input-grid > ul {
+  display: grid;
+  grid-template-columns: 15% 20% 25% 25% 15%;
+}
+
+.template-input-grid > ul:nth-of-type(odd) {
+  background-color: var(--secondary-bg);
+}
+
+.template-input-grid ul li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.5rem;
+  overflow: hidden;
+}
+
+.template-input-grid ul:first-child {
+  font-weight: 600;
+  padding: 0.25rem 0rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  background-color: var(--active-bg-color);
+}
+
+.template-input-grid ul li input {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/* MEDIA BREAK POINTS! */
+
 @media (max-width: 1300px) {
   .sidebar {
     width: 20%;
@@ -112,8 +319,18 @@ nav a img {
 }
 
 @media (max-width: 768px) {
+  main {
+    display: flex;
+    flex-direction: column;
+  }
+
   .sidebar {
     width: 100%;
+    height: 0%;
+  }
+
+  .sidebar-filler {
+    display: none;
   }
 
   .logout-section {
