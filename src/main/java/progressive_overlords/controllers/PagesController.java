@@ -18,4 +18,10 @@ public class PagesController {
         model.addAttribute("tabName", "Register");
         return "pages/sign-up";
     }
+
+    @GetMapping("/")
+    public String getHomeScreen (Model model) {
+        model.addAttribute("tabName", "Home");
+        return "pages/home";
+    }
 }

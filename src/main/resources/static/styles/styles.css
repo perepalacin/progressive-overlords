@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -7,12 +13,15 @@
   font-weight: 400;
   font-style: normal;
   --main-bg: #FFFFFF;
-  --secondary-bg: #F1F2F3;
+  --secondary-bg: #FAF9FB;
   --tertiary-bg: #DCDDDD;
-  --active-color: #DC2937;
+  --fourth-bg: #bbbcbc;
   --main-foreground: #000000;
   --hover-bg-color: #DCDDDD;
-  --active-bg-color: #FFCACE;
+  --active-color: #C4554D;
+  --secondary-color: #5D1715;
+  --tertiary-color: rgba(215, 38, 21, 0.68);
+  --active-bg-color: rgba(243, 136, 118, 0.07);
 }
 
 input[type="number"]::-webkit-inner-spin-button,
@@ -29,7 +38,7 @@ input[type="number"] {
 body {
   margin: 0;
   height: 100%;
-  background-color: var(--main-bg);
+  background-color: var(--secondary-bg);
 }
 
 main {
@@ -64,6 +73,14 @@ input, textarea {
   transition: box-shadow 0.1s ease-in-out, border-color 0.1s ease-in-out; 
   outline: none;
   box-shadow: 0 0 0 1px var(--tertiary-bg); 
+  font-family: inherit;
+  font-size: 1rem;
+  letter-spacing: normal;
+  line-height: 1.5;
+}
+
+textarea {
+  resize: none;
 }
 
 input:focus, textarea:focus {
@@ -74,8 +91,24 @@ input:focus, textarea:focus {
 
 /* GENERIC CLASSES */
 
+.w-full {
+  width: 100%;
+}
+
+.px-1 {
+  padding: 0rem 1rem;
+}
+
+.px-2 {
+  padding: 0rem 2rem;
+}
+
 .m-0 {
   margin: 0;
+}
+
+.mt-1 {
+  margin-top: 1rem;
 }
 
 .mb-1 {
@@ -84,6 +117,10 @@ input:focus, textarea:focus {
 
 .mb-2 {
   margin-bottom: 2rem;
+}
+
+.mb-6 {
+  margin-bottom: 6rem;
 }
 
 .w-full {
@@ -103,14 +140,53 @@ input:focus, textarea:focus {
   justify-content: space-between;
 }
 
+.justify-end {
+  justify-content: end;
+}
+
 .gap-025 {
   gap: 0.25rem;
+}
+
+.gap-05 {
+  gap: 0.5rem
+}
+
+.gap-1 {
+  gap: 1rem
 }
 
 .border-none {
   border: none;
   box-shadow: none;
 }
+
+.font-bold {
+  font-weight: 600;
+}
+
+.sticky-top {
+  position: sticky;
+  top: 0;
+}
+
+.mobile-hidden {
+  display: flex !important;
+}
+
+.desktop-hidden {
+  display: none !important;
+}
+
+@media (max-width: 1300px) {
+  .mobile-hidden {
+    display: none !important;
+  }
+  .desktop-hidden {
+    display: flex !important;
+  }
+}
+
 
 /* NAV COMPONENTS */
 
@@ -122,28 +198,29 @@ input:focus, textarea:focus {
 .logo img {
   width: 4rem;
   height: 4rem;
-  filter: invert(17%) sepia(100%) saturate(7496%) hue-rotate(359deg);
+  filter: invert(56%) sepia(46%) saturate(5926%) hue-rotate(332deg) brightness(84%) contrast(78%);
 }
 
 .sidebar {
-  width: 10%;
+  width: 15%;
+  position: fixed;
   height: 100vh;
-  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2); 
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-between;
+  background-color: var(--secondary-bg);
+  border-right: 1px solid var(--hover-bg-color);
+  padding: 1rem;  
 }
 
 .sidebar-filler {
-  min-width: 10%;
+  min-width: 15%;
   width: 10%;
 }
 
 nav {
   width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  background-color: var(--secondary-bg);
-  padding: 1rem 1rem;
 }
 
 nav a {
@@ -163,12 +240,12 @@ nav a:hover:not(.active) {
 }
 
 .active {
-  color: red;
+  color: var(--active-color);
   background-color: var(--active-bg-color)
 }
 
 .active img {
-  filter: invert(17%) sepia(100%) saturate(7496%) hue-rotate(359deg);
+  filter: invert(56%) sepia(46%) saturate(5926%) hue-rotate(332deg) brightness(84%) contrast(78%);
 }
 
 nav a img {
@@ -177,41 +254,75 @@ nav a img {
 }
 
 .logout-section {
+  width: 100%;
   display: flex;
   flex-direction: row; 
   align-items: center; 
   justify-content: space-between;
 }
 
+.user-logo {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--active-bg-color);
+  color: var(--active-color);
+}
+
+.button {
+  padding: 0rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  height: 35px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
 .main-button {
   border: none;
   background-color: var(--active-color);
-  padding: 0.5rem 0.5rem;
-  border-radius: 0.5rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   color: var(--main-bg);
 }
 
+.muted-button {
+  border: 1px solid var(--hover-bg-color);
+  background-color: var(--active-bg-color);
+  color: var(--tertiary-color);
+}
+
 .main-button:hover {
-  background-color: var(--secondary-bg);
+  background-color: var(--tertiary-color);
+}
+
+.muted-button:hover {
+  background-color: var(--hover-bg-color);
 }
 
 .main-button:active {
-  background-color: var(--tertiary-bg);
+  background-color: var(--secondary-color);
 }
+
+.muted-button:active {
+  background-color: var(--fourth-bg);
+}
+
 
 .ghost-button {
   border: none;
-  background-color: var(--active-color);
+  background-color: inherit;
   padding: 0.5rem 0.5rem;
-  border-radius: 0.5rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  font-size: 1rem;
 }
 
 .ghost-button:hover {
@@ -232,6 +343,7 @@ nav a img {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .ghost-button-icon:hover {
@@ -246,45 +358,42 @@ nav a img {
 
 #workoutForm {
   display: flex;
+  width: 100%;
   flex-direction: column;
-  border: 1px solid var(--tertiary-bg);
-  background-color: var(--main-bg);
+  gap: 1rem;
   padding: 1rem 2rem;
   border-radius: 0.5rem;
 }
 
-.exerciseContainer {
+#exerciseContainer {
   display: flex;
   flex-direction: column;
+  gap: 2rem;
 }
 
-.exerciseContainer h3 {
+#exerciseContainer h3 {
   margin: 1rem 0rem;
 }
 
-.exerciseContainer > li {
+#exerciseContainer > li {
   border: 1px solid var(--tertiary-bg);
   border-radius: 0.5rem;
   padding: 1rem 1rem;
+  background-color: var(--main-bg);
 }
 
-.exerciseContainer input {
+#exerciseContainer input {
   text-align: center;
 }
 
 .template-input-grid {
   margin-bottom: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid var(--secondary-bg);
 }
 
 .template-input-grid > ul {
   display: grid;
   grid-template-columns: 15% 20% 25% 25% 15%;
-}
-
-.template-input-grid > ul:nth-of-type(odd) {
-  background-color: var(--secondary-bg);
 }
 
 .template-input-grid ul li {
@@ -301,7 +410,6 @@ nav a img {
   padding: 0.25rem 0rem;
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
-  background-color: var(--active-bg-color);
 }
 
 .template-input-grid ul li input {
@@ -309,12 +417,78 @@ nav a img {
   max-width: 100%;
 }
 
+.exercises-drop-down {
+  position: relative;
+  width: 400px;
+}
+
+.exercises-drop-down input {
+  width: 100%;
+  padding: 0.5rem 0.5rem;
+  text-align: left !important;
+  border: 1px solid var(--hover-bg-color);
+  border-radius: 0.5rem;
+
+}
+
+.exercises-drop-down-response {
+  position: absolute;
+  width: 100%;
+  display: block;
+  background-color: var(--main-bg);
+  border: 1px solid var(--hover-bg-color);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  margin-top: 1rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.exercise-preview {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.exercise-preview img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 100%;
+}
+
+.exercise-dropdown-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  min-height: 2rem;
+  cursor: pointer;
+}
+
+.exercise-dropdown-item img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 100%;
+}
+
+.exercise-dropdown-item:hover {
+  background-color: var(--hover-bg-color);
+}
+
 /* MEDIA BREAK POINTS! */
 
 @media (max-width: 1300px) {
   .sidebar {
-    width: 20%;
-    box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.2);
+    width: 25%;
+  }
+  .sidebar-filler {
+    width: 25%;
+    min-width: 25%;
   }
 }
 
@@ -326,6 +500,7 @@ nav a img {
 
   .sidebar {
     width: 100%;
+    padding: 0;
     height: 0%;
   }
 
@@ -338,6 +513,7 @@ nav a img {
   }
   
   nav {
+      display: flex;
       flex-direction: row;
       justify-content: space-around;
       width: 100%;
@@ -360,5 +536,22 @@ nav a img {
       width: auto;
       padding: 0.25rem 1rem;
       font-size: 0.8rem;
+  }
+
+  #workoutForm {
+    padding: 0.5rem 0.5rem;
+  }
+
+  .exercises-drop-down {
+    padding: 1rem 1rem;
+  }
+  
+  .exercises-drop-down input, .exercises-drop-down-response {
+    width: 70%;
+    max-width: 70%;
+  }
+
+  #exerciseContainer > li {
+    padding: 0.25rem;
   }
 }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import progressive_overlords.entities.dao.ExerciseDao;
@@ -38,7 +39,19 @@ public class ExercisesController {
         model.addAttribute("exercises", exercisesDao);
         model.addAttribute("page", page);
         model.addAttribute("query", query);
-        return "responses/exercises/exercises-dropdown-list";
+        return "responses/exercises/exercises-dropdown";
+    }
+
+    @GetMapping("/preview/{exerciseId}")
+    public String getExercisePreviewById(@PathVariable int exerciseId, Model model) {
+        ExerciseDao exercise = exercisesService.getById(exerciseId);
+        model.addAttribute("exercise", exercise);
+        return "responses/exercises/exercise-header";
+    }
+
+    @GetMapping("/selector")
+    public String getExerciseSelector() {
+        return "responses/exercises/exercises-selector";
     }
 }
 

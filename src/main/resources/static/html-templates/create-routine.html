@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="htmx-config" content='{"responseHandling": [{"code":".*", "swap": true}]}'>
+    <link rel="icon" href="https://www.notion.so/icons/gym_red.svg?mode=light">
+    <title>Routine - Progressive Overlords</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@2.0.3"
+            integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq"
+            crossorigin="anonymous"></script>
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/htmx-ext-response-targets@2.0.0/response-targets.js"></script>
+    <link href="../styles/styles.css" rel="stylesheet">
+</head>
+<body>
+<main>
+    <section class="sidebar">
+        <nav>
+            <a href="/" class="logo">
+                <img style="width: 2rem; height: 2rem;" src="https://unpkg.com/lucide-static@latest/icons/chart-no-axes-column-increasing.svg" />
+                <div>
+                    <p>Progressive</p>
+                    <p>Overlords</p>
+                </div>
+            </a>
+            <a href="/">
+                <img src="../icons/dashboard.svg" />
+                Feed
+            </a>
+            <a class="active" href="/routines">
+                <img src="../icons/dumbell.svg" />
+                Routines
+            </a>
+            <a href="/stats">
+                <img src="../icons/chart-column.svg" />
+                Statistics
+            </a>
+            <a href="/compare">
+                <img src="../icons/users.svg" />
+                Compare
+            </a>
+        </nav>
+        <div class="logout-section">
+            <div class="flex-row align-center gap-05">
+                <p class="user-logo">P</p>
+                <p>Username</p>
+            </div>
+            <button hx-post="/api/v1/auth/logout" hx-swap="none" class="ghost-button-icon">
+                <img src="https://unpkg.com/lucide-static@latest/icons/log-out.svg" style="width: 1.2rem" />
+            </button>
+        </div>
+    </section>
+    <div class="sidebar-filler">
+    </div>
+    <section class="w-full mb-6">
+        <form id="workoutForm" hx-trigger="submit">
+            <div class="flex-row align-center justify-between">
+                <h1>Create a template</h1>
+                <button class="button main-button" type="submit">
+                    Create template
+                </button>
+            </div>
+            <!-- @if (template != null)
+                <input style="display: none" type="number" name="templateId" required value="${template.getId()}">
+            @endif -->
+                <label>Template Name:</label>
+            <input type="text" name="name" required placeholder="Enter template name" class="mb-1">
+            <label class="block font-semibold">Description:</label>
+            <textarea maxlength="511" rows="3" type="text" class="mb-1" name="description"placeholder="Enter description"></textarea>
+    
+            <ul id="exerciseContainer">
+                <h3 class="m-0">Exercises</h3>
+                            <li class="exercise-item">
+                                <div class="flex-row align-center justify-between mb-1">
+                                    <label>Exercise:</label>
+                                    <div class="flex-row gap-025">
+                                        <button type="button" class="ghost-button-icon">
+                                            <img src="../icons/repeat-2.svg" style="width: 1rem" />
+                                        </button>
+                                        <button type="button" class="ghost-button-icon remove-exercise-btn">
+                                            <img src="../icons/trash.svg" style="width: 1rem" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- <input type="number" name="exerciseId-0" required> -->
+                                <section class="template-input-grid">
+                                        <ul>
+                                            <li>Set</li>
+                                            <li>Warmup</li>
+                                            <li>Reps</li>
+                                            <li>Weight</li>
+                                            <li>
+                                                <button type="button"  class="button muted-button mobile-hidden add-set-btn">
+                                                    + Add Set
+                                                </button>
+                                            </li>
+                                        </ul>
+                                        <ul class="setTableRow">
+                                            <li class="font-bold set-num">1</li>
+                                            <li>
+                                                <input class="border-none" type="checkbox" name="warmup-[]">
+                                            </li>
+                                            <li>
+                                                <input type="number" placeholder="Previous: 12" required>
+                                            </li>
+                                            <li>
+                                                <input type="number" placeholder="Previous: 44" required >
+                                            </li>
+                                            <li>
+                                                <button type="button"  class="ghost-button-icon remove-set-btn" >
+                                                    <img src="../icons/x.svg" style="width: 1rem" />
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </section>
+                                    <div class="desktop-hidden w-full" style="padding: 0rem 1rem;">
+                                        <button type="button"  class="button muted-button w-full add-set-btn">
+                                            + Add Set
+                                        </button>
+                                    </div>
+                            </li>
+            </ul>
+            <div class="flex-row justify-end">
+                <button class="button main-button" type="button" id="addExerciseBtn">+ Add Exercise</button>
+            </div>
+        </form>
+    </section>
+    <div id="toastContainer"></div>
+</main>
+
+<template id="setRowTemplate">
+    <ul class="setTableRow">
+        <li class="font-bold set-num">1</li>
+        <li>
+            <input class="border-none" type="checkbox" name="warmup-[]">
+        </li>
+        <li>
+            <input type="number" placeholder="12" required>
+        </li>
+        <li>
+            <input type="number" placeholder="44" required >
+        </li>
+        <li>
+            <button type="button"  class="ghost-button-icon remove-set-btn" >
+                <img src="../icons/x.svg" style="width: 1rem" />
+            </button>
+        </li>
+    </ul>
+</template>
+
+<template id="exerciseTemplate">
+    <li class="exercise-item">
+        <div class="flex-row align-center justify-between mb-1">
+            <label>Exercise:</label>
+            <div class="flex-row gap-025">
+                <button type="button" class="ghost-button-icon">
+                    <img src="../icons/repeat-2.svg" style="width: 1rem" />
+                </button>
+                <button type="button" class="ghost-button-icon remove-exercise-btn" style="display: none;">
+                    <img src="../icons/trash.svg" style="width: 1rem" />
+                </button>
+            </div>
+        </div>
+            <section class="template-input-grid">
+                <ul>
+                    <li>Set</li>
+                    <li>Warmup</li>
+                    <li>Reps</li>
+                    <li>Weight</li>
+                    <li>
+                        <button type="button" class="button muted-button mobile-hidden add-set-btn">
+                            + Add Set
+                        </button>
+                    </li>
+                </ul>
+                <ul class="setTableRow">
+                    <li class="font-bold set-num">1</li>
+                    <li>
+                        <input class="border-none" type="checkbox" name="warmup-[]">
+                    </li>
+                    <li>
+                        <input type="number" placeholder="Previous: 12" required>
+                    </li>
+                    <li>
+                        <input type="number" placeholder="Previous: 44" required >
+                    </li>
+                    <li>
+                        <button type="button" class="ghost-button-icon remove-set-btn" >
+                            <img src="../icons/x.svg" style="width: 1rem" />
+                        </button>
+                    </li>
+                </ul>
+            </section>
+            <div class="desktop-hidden w-full" style="padding: 0.5rem 1rem;">
+                <button type="button" class="button muted-button w-full add-set-btn">
+                    + Add Set
+                </button>
+            </div>
+    </li>
+</template>
+
+
+</body>
+<script type="module" src="../scripts/create-template.js"></script>
+<!-- <script type="module" src="../scripts/toasts.js"></script> -->
+</html>

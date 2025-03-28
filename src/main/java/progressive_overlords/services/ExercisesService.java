@@ -29,9 +29,9 @@ public class ExercisesService {
     }
 
     public ExerciseDao getById(int id) {
-        for (int i = 0; i < inMemoryExerciseList.size(); i++) {
-            if (inMemoryExerciseList.get(i).getId() == id) {
-                return inMemoryExerciseList.get(i);
+        for (ExerciseDao exerciseDao : inMemoryExerciseList) {
+            if (exerciseDao.getId() == id) {
+                return exerciseDao;
             }
         }
         return null;
