@@ -1,5 +1,5 @@
 <section class="w-full mb-6">
-    <form id="workoutForm" hx-trigger="submit">
+    <form id="workoutForm" hx-trigger="submit" hx-post="/api/v1/routines" hx-swap="none">
         <div class="flex-row align-center justify-between">
             <h1>Create a template</h1>
             <button class="button main-button" type="submit">
@@ -11,6 +11,7 @@
         <label class="block font-semibold">Description:</label>
         <textarea maxlength="511" rows="3" type="text" class="mb-1" name="description"placeholder="Enter description"></textarea>
 
+        <input class="hidden" type="checkbox" checked="true" name="isTemplate" />
         <ul id="exerciseContainer">
             <h3 class="m-0">Exercises</h3>
             <li class="exercise-item">
@@ -30,13 +31,13 @@
                     <ul class="setTableRow">
                         <li class="font-bold set-num">1</li>
                         <li>
-                            <input class="border-none" type="checkbox">
+                            <input class="border-none" name="warmups[]" checked="checked" type="checkbox" hx-vals='{"purchased": "false"}'>
                         </li>
                         <li>
-                            <input type="number" placeholder="12" required>
+                            <input type="number" name="reps[]" placeholder="12" required>
                         </li>
                         <li>
-                            <input type="number" placeholder="44" required >
+                            <input type="number" name="weights[]" placeholder="44" required >
                         </li>
                         <li>
                             <button type="button"  class="ghost-button-icon remove-set-btn" >
@@ -46,7 +47,7 @@
                     </ul>
                 </section>
                 <div class="desktop-hidden w-full mb-1" style="padding: 0rem 1rem;">
-                    <button type="button"  class="button muted-button w-full add-set-btn">
+                    <button type="button" class="button muted-button w-full add-set-btn">
                         + Add Set
                     </button>
                 </div>
@@ -62,13 +63,13 @@
     <ul class="setTableRow">
         <li class="font-bold set-num">1</li>
         <li>
-            <input class="border-none" type="checkbox" >
+            <input class="border-none" name="warmups[]" type="checkbox" >
         </li>
         <li>
-            <input type="number" placeholder="12" required>
+            <input type="number" name="reps[]" placeholder="12" required>
         </li>
         <li>
-            <input type="number" placeholder="44" required >
+            <input type="number" name="weights[]" placeholder="44" required >
         </li>
         <li>
             <button type="button"  class="ghost-button-icon remove-set-btn" >
@@ -96,13 +97,13 @@
             <ul class="setTableRow">
                 <li class="font-bold set-num">1</li>
                 <li>
-                    <input class="border-none" type="checkbox">
+                    <input class="border-none" name="warmups[]" type="checkbox">
                 </li>
                 <li>
-                    <input type="number" placeholder="12" required>
+                    <input type="number" name="reps[]" placeholder="12" required>
                 </li>
                 <li>
-                    <input type="number" placeholder="44" required >
+                    <input type="number" name="weights[]" placeholder="44" required >
                 </li>
                 <li>
                     <button type="button" class="ghost-button-icon remove-set-btn" >
@@ -119,3 +120,4 @@
     </li>
 </template>
 <script type="module" src="../scripts/create-template.js"></script>
+<script type="module" src="../scripts/send-template.js"></script>

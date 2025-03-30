@@ -10,4 +10,5 @@
             <img src="../icons/trash.svg" style="width: 1rem" />
         </button>
     </div>
+    <input class="hidden" value="${exercise.getId()}" name="exerciseIds[]" required/>
 </div>
