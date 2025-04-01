@@ -62,7 +62,6 @@ CREATE TABLE IF NOT EXISTS progressive_overlords.workouts (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(511),
-    color VARCHAR(255),
     tags VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -83,7 +82,7 @@ CREATE TABLE IF NOT EXISTS progressive_overlords.workout_exercises (
     workout_id INT NOT NULL,
     exercise_id INT NOT NULL,
     exercise_num INT NOT NULL,
-    set_num SERIAL INT NOT NULL,
+    set_num INT NOT NULL,
     reps DECIMAL NOT NULL,
     weight DECIMAL NOT NULL,
     annotation VARCHAR(255),
@@ -96,7 +95,7 @@ CREATE TABLE IF NOT EXISTS progressive_overlords.workout_exercises (
     CONSTRAINT fk_exercise_in_workout FOREIGN KEY (exercise_id)
         REFERENCES progressive_overlords.exercises (id) ON DELETE CASCADE,
     CONSTRAINT fk_user_in_workouts FOREIGN KEY (user_id)
-        REFERENCES progressive_overlords.users (id) ON DELETE CASCADE
+        REFERENCES progressive_overlords.users (id) ON DELETE CASCADE,
     CONSTRAINT unique_workout_exercise_set UNIQUE (workout_id, exercise_num, set_num)
 );
 

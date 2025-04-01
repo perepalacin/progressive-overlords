@@ -14,7 +14,7 @@ public class WorkoutMapper {
 
         WorkoutDao workout = WorkoutDao.builder().name(workoutDto.getName()).description(workoutDto.getDescription()).isTemplate(workoutDto.isTemplate()).templateId(workoutDto.getTemplateId()).build();
 
-        if (workoutDto.getReps() == null || workoutDto.getWarmups() == null || workoutDto.getWeights() == null || workoutDto.getSetNums() == null || workoutDto.getExercisesId() == null) {
+        if (workoutDto.getReps() == null || workoutDto.getWarmups() == null || workoutDto.getWeights() == null || workoutDto.getSetNums() == null || workoutDto.getExerciseIds() == null) {
             throw new RuntimeException("Workout not formatted properly");
         }
 
@@ -29,13 +29,15 @@ public class WorkoutMapper {
         for (int i = 0; i < workoutDto.getReps().size(); i++) {
             if (workoutDto.getSetNums().get(i) == 1) {
                 if ( i != 0) {
+                    newExercise.setSets(sets);
                     workout.getExercises().add(newExercise);
+                    exerciseNum++;
                 }
-                newExercise = WorkoutExerciseDao.builder().exerciseNum(exerciseNum).exerciseId(workoutDto.getExercisesId().get(exerciseNum)).sets(new ArrayList<>()).build();
+                newExercise = WorkoutExerciseDao.builder().exerciseNum(exerciseNum).exerciseId(workoutDto.getExerciseIds().get(exerciseNum)).sets(new ArrayList<>()).build();
                 sets = new ArrayList<>();
             }
             sets.add(SetDao.builder()
-                    .exerciseId(workoutDto.getExercisesId().get(exerciseNum))
+                    .exerciseId(workoutDto.getExerciseIds().get(exerciseNum))
                     .setNum(workoutDto.getSetNums().get(i))
                     .warmup(workoutDto.getWarmups().get(i))
                     .reps(workoutDto.getReps().get(i))
@@ -45,8 +47,10 @@ public class WorkoutMapper {
                     .exerciseNum(exerciseNum)
                     .build());
         }
-
+        if (newExercise != null && newExercise.getSets() != null) {
+            newExercise.setSets(sets);
+            workout.getExercises().add(newExercise);
+        }
         return workout;
-
     }
 }

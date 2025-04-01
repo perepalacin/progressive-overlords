@@ -21,7 +21,7 @@ public class WorkoutDto {
     private List<Integer> setNums;
     private List<Float> weights;
     private List<Boolean> warmups;
-    private List<Integer> exercisesId;
+    private List<Integer> exerciseIds;
     private Integer templateId;
     private boolean isTemplate;
 }

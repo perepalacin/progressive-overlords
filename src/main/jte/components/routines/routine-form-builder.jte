@@ -1,15 +1,18 @@
+@param progressive_overlords.entities.dao.WorkoutDao routine
 <section class="w-full mb-6">
-    <form id="workoutForm" hx-trigger="submit" hx-post="/api/v1/routines" hx-swap="none">
+    <form id="workoutForm" hx-trigger="submit" hx-post="${routine == null ? "/api/v1/routines" : null}" hx-patch="${routine != null ? "/api/v1/routines" : null}" hx-swap="none">
         <div class="flex-row align-center justify-between">
             <h1>Create a template</h1>
             <button class="button main-button" type="submit">
-                Create template
+                Submit
             </button>
         </div>
         <label>Template Name:</label>
-        <input type="text" name="name" required placeholder="Enter template name" class="mb-1">
+        <input type="text" name="name" required placeholder="Enter template name" class="mb-1" value="${routine != null ? routine.getName() : ""}">
         <label class="block font-semibold">Description:</label>
-        <textarea maxlength="511" rows="3" type="text" class="mb-1" name="description"placeholder="Enter description"></textarea>
+        <textarea maxlength="511" rows="3" type="text" class="mb-1" name="description"placeholder="Enter description">
+            ${routine != null ? routine.getDescription() : ""}
+        </textarea>
 
         <input class="hidden" type="checkbox" checked="true" name="isTemplate" />
         <ul id="exerciseContainer">

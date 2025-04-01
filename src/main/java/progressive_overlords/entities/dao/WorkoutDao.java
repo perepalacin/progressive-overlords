@@ -5,7 +5,6 @@ import progressive_overlords.entities.dto.SetDto;
 import progressive_overlords.exceptions.BadRequestException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -63,4 +62,6 @@ public class WorkoutDao {
 //
 //        this.setExercisesDaoFromSetsDao(result);
 //    }
+
+
 }

@@ -26,7 +26,7 @@ public class WorkoutDaoTests {
                 new SetDto(1,  10, 100, false)
         );
 
-        sut.setExercisesDaoFromSetsDto(sets);
+        sut.setExerciseListFromSets(sets);
 
         List<SetDao> flatSets = sut.getFlatSetsList();
 
@@ -55,7 +55,7 @@ public class WorkoutDaoTests {
                 new SetDto(0,  10, 90, false)
         );
 
-        sut.setExercisesDaoFromSetsDto(sets);
+        sut.setExerciseListFromSets(sets);
 
         List<SetDao> flatSets = sut.getFlatSetsList();
         List<Integer> actualExerciseNum = new ArrayList<>();
@@ -86,7 +86,7 @@ public class WorkoutDaoTests {
                 new SetDto(2,  10, 90, false)
         );
 
-        sut.setExercisesDaoFromSetsDto(sets);
+        sut.setExerciseListFromSets(sets);
 
         List<SetDao> flatSets = sut.getFlatSetsList();
         List<Integer> actualExerciseNum = new ArrayList<>();
@@ -120,7 +120,7 @@ public class WorkoutDaoTests {
                 new SetDto(2,  10, 90, false)
         );
 
-        sut.setExercisesDaoFromSetsDto(sets);
+        sut.setExerciseListFromSets(sets);
 
         List<SetDao> flatSets = sut.getFlatSetsList();
         List<Integer> actualExerciseNum = new ArrayList<>();
@@ -143,7 +143,7 @@ public class WorkoutDaoTests {
         WorkoutDao sut = new WorkoutDao();
 
         BadRequestException exception = Assert.assertThrows(BadRequestException.class, () ->
-                sut.setExercisesDaoFromSetsDto(sets)
+                sut.setExerciseListFromSets(sets)
         );
 
         Assert.assertEquals("No sets were provided.", exception.getMessage());
@@ -153,7 +153,7 @@ public class WorkoutDaoTests {
     public void parseSetsFromRequest_NullInput() {
         WorkoutDao sut = new WorkoutDao();
         BadRequestException exception = Assert.assertThrows(BadRequestException.class, () ->
-                sut.setExercisesDaoFromSetsDto(null)
+                sut.setExerciseListFromSets(null)
         );
 
         Assert.assertEquals("No sets were provided.", exception.getMessage());

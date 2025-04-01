@@ -6,9 +6,9 @@
     <title>Login</title>
     <link rel="stylesheet" href="../styles/styles.css">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body >
-
 
 <div class="login-container">
     <div class="login-card">
@@ -39,8 +39,9 @@
         </form>
 
         <div class="signup-link">
-            <p>Don't have an account yet? <a href="/register">Sign Up</a></p>
+            <p>Don't have an account yet? <a href="/sign-up">Sign Up</a></p>
         </div>
+        <div id="error-message" class="text-red-600 text-center mt-3"></div>
     </div>
 </div>
 

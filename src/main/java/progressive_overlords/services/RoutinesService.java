@@ -14,6 +14,10 @@ public class RoutinesService {
 
     private final RoutinesRepository routinesRepository;
 
+    public WorkoutDao getById (int routineId) {
+        return routinesRepository.getById(routineId);
+    }
+
     public WorkoutDao saveRoutine (WorkoutDto routineRequest) {
         WorkoutDao newRoutine;
         try {

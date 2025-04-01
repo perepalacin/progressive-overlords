@@ -4,9 +4,15 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import progressive_overlords.entities.dao.ExerciseDao;
+import progressive_overlords.entities.dao.SetDao;
+import progressive_overlords.entities.dao.WorkoutExerciseDao;
+import progressive_overlords.entities.dto.SetDto;
+import progressive_overlords.exceptions.BadRequestException;
 import progressive_overlords.repositories.ExercisesRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -74,5 +80,34 @@ public class ExercisesService {
             }
         }
         return result;
+    }
+
+    public ArrayList<WorkoutExerciseDao> generateExerciseListFromSets(List<SetDao> sets)  {
+        if (sets == null || sets.isEmpty()) {
+            throw new BadRequestException("No sets were provided.");
+        }
+
+        HashMap<Integer, WorkoutExerciseDao> exerciseMap = new HashMap<>();
+
+        try {
+            for (SetDao set : sets) {
+                if (exerciseMap.containsKey(set.getExerciseId())) {
+                    SetDao newSet = SetDao.builder().id(set.getId()).exerciseNum(exerciseMap.get(set.getExerciseId()).getSets().get(0).getExerciseNum()).setNum(exerciseMap.get(set.getExerciseId()).getSets().size()).exerciseId(set.getExerciseId()).reps(set.getReps()).weight(set.getWeight()).warmup(set.isWarmup()).build();
+                    exerciseMap.get(set.getExerciseId()).getSets().add(newSet);
+                } else {
+                    ExerciseDao exerciseDao = this.getById(set.getExerciseId());
+                    WorkoutExerciseDao newExercise = WorkoutExerciseDao.builder().exerciseNum(exerciseMap.size()).exerciseId(set.getExerciseId()).sets(new ArrayList<>()).exercise(exerciseDao).build();
+                    SetDao newSet = SetDao.builder().id(set.getId()).exerciseNum(exerciseMap.size()).setNum(0).exerciseId(set.getExerciseId()).reps(set.getReps()).weight(set.getWeight()).warmup(set.isWarmup()).build();
+                    newExercise.getSets().add(newSet);
+                    exerciseMap.put(set.getExerciseId(), newExercise);
+                }
+            }
+
+            ArrayList<WorkoutExerciseDao> result  = new ArrayList<>(exerciseMap.values());
+            result.sort(Comparator.comparingInt(WorkoutExerciseDao::getExerciseNum));
+            return result;
+        } catch (Exception e) {
+            throw new BadRequestException("There is a mismatch between the number of exercises and sets selected. Please review your template.");
+        }
     }
 }

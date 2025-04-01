@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class PagesController {
 
-    @GetMapping("/login")
+    @GetMapping("/sign-in")
     public String getLoginPage (Model model) {
         model.addAttribute("tabName", "Login");
         return "pages/sign-in";
     }
 
-    @GetMapping("/register")
+    @GetMapping("/sign-up")
     public String getRegisterPage (Model model) {
         model.addAttribute("tabName", "Register");
         return "pages/sign-up";

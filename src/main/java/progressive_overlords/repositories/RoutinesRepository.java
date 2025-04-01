@@ -1,5 +1,7 @@
 package progressive_overlords.repositories;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -8,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import progressive_overlords.entities.dao.SetDao;
 import progressive_overlords.entities.dao.WorkoutDao;
+import progressive_overlords.services.ExercisesService;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -20,6 +23,62 @@ import java.util.UUID;
 public class RoutinesRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final ExercisesService exercisesService;
+
+    public WorkoutDao getById(int routineId) {
+
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            return null;
+        }
+
+        String sql = """
+            SELECT
+                wt.id,
+                wt.name,
+                wt.description,
+                COALESCE(json_agg(
+                    json_build_object(
+                        'exerciseId', wte.exercise_id,
+                        'exerciseNum', wte.exercise_num,
+                        'setNum', wte.set_num,
+                        'weight', wte.weight,
+                        'reps', wte.reps,
+                        'warmup', wte.is_warmup
+                    )
+                ) FILTER (WHERE wte.exercise_id IS NOT NULL), '[]') AS exercises
+            FROM workouts wt
+            LEFT JOIN workout_exercises wte ON wt.id = wte.workout_id
+            WHERE wt.user_id = ? AND wt.id = ? AND wt.template_id IS NULL AND wt.is_template = true
+            GROUP BY wt.id
+        """;
+
+        List<WorkoutDao> templateList = jdbcTemplate.query(sql, (rs, rowNum) -> {
+            String setsJson = rs.getString("exercises");
+
+            List<SetDao> setList = null;
+            try {
+                setList = new ObjectMapper().readValue(
+                        setsJson,
+                        new com.fasterxml.jackson.core.type.TypeReference<>() {}
+                );
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+
+            WorkoutDao routine = WorkoutDao.builder()
+                    .id(rs.getInt("id"))
+                    .name(rs.getString("name"))
+                    .description(rs.getString("description"))
+                    .build();
+
+            routine.setExercises(exercisesService.generateExerciseListFromSets(setList));
+
+            return routine;
+        }, userId, routineId);
+
+        return templateList.isEmpty() ? null : templateList.get(0);
+    }
 
     public WorkoutDao saveRoutine (WorkoutDao routine) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
