@@ -18,6 +18,10 @@ public class RoutinesService {
         return routinesRepository.getById(routineId);
     }
 
+    public boolean findIfExists (int routineId) {
+        return routinesRepository.findIfExists(routineId);
+    }
+
     public WorkoutDao saveRoutine (WorkoutDto routineRequest) {
         WorkoutDao newRoutine;
         try {
@@ -26,5 +30,22 @@ public class RoutinesService {
             throw new BadRequestException("Routine request is not properly formatted");
         }
         return routinesRepository.saveRoutine(newRoutine);
+    }
+
+    public WorkoutDao editRoutine (WorkoutDto routineRequest) {
+        if (!this.findIfExists(routineRequest.getId())) {
+            throw new BadRequestException("Routine with this id doesn't exist");
+        }
+        WorkoutDao newRoutine;
+        try {
+            newRoutine = WorkoutMapper.mapDtoToDao(routineRequest);
+        } catch (Exception e) {
+            throw new BadRequestException("Routine request is not properly formatted");
+        }
+        return routinesRepository.updateRoutine(newRoutine);
+    }
+
+    public boolean delete (int routineId) {
+        return routinesRepository.delete(routineId);
     }
 }

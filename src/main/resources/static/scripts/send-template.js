@@ -8,6 +8,9 @@ document.body.addEventListener("htmx:beforeRequest", function (event) {
 
         formData.delete("warmups[]");
 
+        const inputId = form.querySelector("#workout-id-input");
+        formData.append("id", inputId.value);
+
         form.querySelectorAll("input[type='checkbox']").forEach(input => {
             if (!input.checked) {
                 formData.append(input.name, "false");

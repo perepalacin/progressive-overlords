@@ -25,8 +25,27 @@ public class RoutinesRepository {
     private final JdbcTemplate jdbcTemplate;
     private final ExercisesService exercisesService;
 
-    public WorkoutDao getById(int routineId) {
+    public boolean findIfExists (int routineId) {
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            return false;
+        }
+        String sql = """
+            SELECT
+                wt.id
+            FROM workouts wt
+            WHERE wt.user_id = ? AND wt.id = ? AND wt.template_id IS NULL AND wt.is_template = true
+        """;
 
+        List<Integer> routines = jdbcTemplate.query(sql, (rs, rowNum) -> {
+            return (rs.getInt("id"));
+        }, userId, routineId);
+
+        return !routines.isEmpty();
+
+    }
+
+    public WorkoutDao getById(int routineId) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userId == null) {
             return null;
@@ -122,30 +141,69 @@ public class RoutinesRepository {
 
         routine.setId(routineId);
         return routine;
-
-
     }
 
-//        int workoutTemplateId = ((Number) keys.get("id")).intValue(); // Correct casting
-//
-//        String insertExercisesSQL = "INSERT INTO workout_exercises (workout_id, exercise_id, set_num, weight, reps, user_id, exercise_num, is_warmup) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-//
-//        List<SetDao> sets = template.getFlatSetsList();
-//        jdbcTemplate.batchUpdate(insertExercisesSQL, sets, sets.size(),
-//                (ps, set) -> {
-//                    ps.setInt(1, workoutTemplateId);
-//                    ps.setInt(2, set.getExerciseId());
-//                    ps.setInt(3, set.getSetNum());
-//                    ps.setFloat(4, set.getWeight());
-//                    ps.setFloat(5, set.getReps());
-//                    ps.setObject(6, userId);
-//                    ps.setInt(7, set.getExerciseNum());
-//                    ps.setBoolean(8, set.isWarmup());
-//                });
-//
-//        template.setId(workoutTemplateId);
-//        return template;
-//
-//    }
+    public WorkoutDao updateRoutine (WorkoutDao routine) {
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            return null;
+        }
+
+        String updateRoutineSQL = """
+            UPDATE workouts
+            SET name = ?, description = ?, updated_at = CURRENT_TIMESTAMP
+            WHERE id = ? AND user_id = ? AND is_template = true AND template_id IS NULL
+        """;
+
+        jdbcTemplate.update(updateRoutineSQL,
+                routine.getName(),
+                routine.getDescription() != null ? routine.getDescription() : "",
+                routine.getId(),
+                userId
+        );
+
+        String deleteExercisesSQL = """
+            DELETE FROM workout_exercises
+            WHERE workout_id = ? AND user_id = ?
+        """;
+        jdbcTemplate.update(deleteExercisesSQL, routine.getId(), userId);
+
+        String insertExercisesSQL = "INSERT INTO workout_exercises (workout_id, exercise_id, set_num, weight, reps, user_id, exercise_num, is_warmup) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        List<SetDao> sets = routine.getFlatSetsList();
+        jdbcTemplate.batchUpdate(insertExercisesSQL, sets, sets.size(),
+                (ps, set) -> {
+                    ps.setInt(1, routine.getId());
+                    ps.setInt(2, set.getExerciseId());
+                    ps.setInt(3, set.getSetNum());
+                    ps.setFloat(4, set.getWeight());
+                    ps.setFloat(5, set.getReps());
+                    ps.setObject(6, userId);
+                    ps.setInt(7, set.getExerciseNum());
+                    ps.setBoolean(8, set.isWarmup());
+                });
+
+        return routine;
+    }
+
+    public boolean delete (int routineId) {
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            return false;
+        }
+
+        try {
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement("DELETE FROM workouts WHERE id = ? AND user_id = ?");
+                ps.setInt(1, routineId);
+                ps.setObject(2, userId);
+                return ps;
+            });
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }

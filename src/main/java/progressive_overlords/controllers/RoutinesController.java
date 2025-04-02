@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import progressive_overlords.entities.dao.WorkoutDao;
 import progressive_overlords.entities.dto.WorkoutDto;
 import progressive_overlords.services.RoutinesService;
@@ -46,6 +43,36 @@ public class RoutinesController {
                 .header("HX-Redirect", "/routine/" + routine.getId())
                 .header("HX-Trigger", "ShowToast")
                 .header("X-Message", "success: Routine created successfully!")
+                .build();
+    }
+
+    @PatchMapping("/api/v1/routines")
+    public ResponseEntity<Void> editRoutine (@ModelAttribute WorkoutDto workoutDto) {
+        try {
+            WorkoutDao routine = routinesService.editRoutine(workoutDto);
+        System.out.println("Routine saved successfully");
+        return ResponseEntity.status(303)
+                .header("HX-Redirect", "/routine/" + routine.getId())
+                .header("HX-Trigger", "ShowToast")
+                .header("X-Message", "success: Routine created successfully!")
+                .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @DeleteMapping("/api/v1/routines/{routineId}")
+    public ResponseEntity<Void> deleteRoutine(@PathVariable int routineId) {
+        if (routinesService.delete(routineId)) {
+            return ResponseEntity.status(201)
+                    .header("HX-Trigger", "ShowToast")
+                    .header("X-Message", "success: Routine deleted successfully!")
+                    .build();
+        }
+        return ResponseEntity.status(500)
+                .header("HX-Trigger", "ShowToast")
+                .header("X-Message", "error: Failed to delete the routine, please try again later!")
                 .build();
     }
 

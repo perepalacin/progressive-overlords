@@ -1,7 +1,7 @@
 @param gg.jte.Content content
 @param String tabName
 <!DOCTYPE html>
-<html lang="cat">
+<html lang="en">
 <head>
     <meta charset="UTF-8" name="htmx-config" content='{"responseHandling": [{"code":".*", "swap": true}]}'>
     <link rel="icon" href="https://www.notion.so/icons/gym_red.svg?mode=light">

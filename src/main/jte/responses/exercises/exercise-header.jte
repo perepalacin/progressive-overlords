@@ -1,5 +1,6 @@
 @param progressive_overlords.entities.dao.ExerciseDao exercise
 !{String randomId = "exercise-" + String.valueOf(new java.util.Random().nextInt(900000) + 100000);}
+
 <div class="flex-row align-center justify-between mb-1 px-1 exercise-header" id="${randomId}">
     @template.components.exercises.exercise-preview(exercise = exercise)
     <div class="flex-row gap-025">
@@ -10,5 +11,5 @@
             <img src="../icons/trash.svg" style="width: 1rem" />
         </button>
     </div>
-    <input class="hidden" value="${exercise.getId()}" name="exerciseIds[]" required/>
+    <input class="hidden" value="${exercise.getId()}" name="exerciseIds[]" required />
 </div>

@@ -12,7 +12,7 @@ public class WorkoutMapper {
 
     public static WorkoutDao mapDtoToDao (WorkoutDto workoutDto) throws RuntimeException {
 
-        WorkoutDao workout = WorkoutDao.builder().name(workoutDto.getName()).description(workoutDto.getDescription()).isTemplate(workoutDto.isTemplate()).templateId(workoutDto.getTemplateId()).build();
+        WorkoutDao workout = WorkoutDao.builder().id(workoutDto.getId()).name(workoutDto.getName()).description(workoutDto.getDescription()).isTemplate(workoutDto.isTemplate()).templateId(workoutDto.getTemplateId()).build();
 
         if (workoutDto.getReps() == null || workoutDto.getWarmups() == null || workoutDto.getWeights() == null || workoutDto.getSetNums() == null || workoutDto.getExerciseIds() == null) {
             throw new RuntimeException("Workout not formatted properly");
