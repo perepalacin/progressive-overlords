@@ -28,11 +28,11 @@ public class RoutinesController {
         return "pages/routines/create-edit-routine";
     }
 
-    @GetMapping("/routines/{routineId}")
+    @GetMapping("/routine/{routineId}")
     public String getRoutineView (@PathVariable int routineId, Model model) {
         WorkoutDao routine = routinesService.getById(routineId);
         model.addAttribute("routine", routine);
-        return "pages/routine-view";
+        return "pages/routines/routine-view";
     }
 
     @PostMapping("/api/v1/routines")
@@ -65,7 +65,7 @@ public class RoutinesController {
     @DeleteMapping("/api/v1/routines/{routineId}")
     public ResponseEntity<Void> deleteRoutine(@PathVariable int routineId) {
         if (routinesService.delete(routineId)) {
-            return ResponseEntity.status(201)
+            return ResponseEntity.status(204)
                     .header("HX-Trigger", "ShowToast")
                     .header("X-Message", "success: Routine deleted successfully!")
                     .build();

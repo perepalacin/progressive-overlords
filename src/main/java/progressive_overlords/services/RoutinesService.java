@@ -40,12 +40,17 @@ public class RoutinesService {
         try {
             newRoutine = WorkoutMapper.mapDtoToDao(routineRequest);
         } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getClass().getName());
             throw new BadRequestException("Routine request is not properly formatted");
         }
         return routinesRepository.updateRoutine(newRoutine);
     }
 
     public boolean delete (int routineId) {
+        if (!this.findIfExists(routineId)) {
+            throw new BadRequestException("Routine with this id doesn't exist");
+        }
         return routinesRepository.delete(routineId);
     }
 }

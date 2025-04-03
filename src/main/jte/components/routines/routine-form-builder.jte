@@ -35,7 +35,7 @@
                             </ul>
                             <ul class="setTableRow">
                                 @for(progressive_overlords.entities.dao.SetDao set : exercise.getSets())
-                                <li class="font-bold set-num">${set.getSetNum()}</li>
+                                <li class="font-bold set-num">${set.getSetNum() +1}</li>
                                 <li>
                                     <input class="border-none" name="warmups[]" checked="${set.isWarmup()}" type="checkbox">
                                 </li>
