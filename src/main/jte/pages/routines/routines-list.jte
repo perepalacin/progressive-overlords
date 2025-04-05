@@ -34,7 +34,7 @@
                                         <img src="../icons/ellipsis-vertical.svg" style="width: 1rem"/>
                                     </button>
                                     <div class="dropdown-menu flex-column hidden" data-id="${routine.getId()}">
-                                        <button hx-post="/api/v1/workouts/start" class="dropdown-item"><img src="../icons/send-horizontal.svg" style="width: 1rem"/>Start</button>
+                                        <button hx-post="/api/v1/workouts/start?name=${routine.getName()}&description=${routine.getDescription()}&templateId=${routine.getId()}&isTemplate=false" class="dropdown-item"><img src="../icons/send-horizontal.svg" style="width: 1rem"/>Start</button>
                                         <a href="/create-routine/${routine.getId()}">
                                             <button class="dropdown-item">
                                                 <img src="../icons/pen.svg" style="width: 1rem"/> Edit

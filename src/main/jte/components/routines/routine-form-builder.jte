@@ -33,8 +33,8 @@
                                     </button>
                                 </li>
                             </ul>
+                            @for(progressive_overlords.entities.dao.SetDao set : exercise.getSets())
                             <ul class="setTableRow">
-                                @for(progressive_overlords.entities.dao.SetDao set : exercise.getSets())
                                 <li class="font-bold set-num">${set.getSetNum() +1}</li>
                                 <li>
                                     <input class="border-none" name="warmups[]" checked="${set.isWarmup()}" type="checkbox">
@@ -50,8 +50,8 @@
                                         <img src="../icons/x.svg" style="width: 1rem" />
                                     </button>
                                 </li>
-                                @endfor
                             </ul>
+                            @endfor
                         </section>
                         <div class="desktop-hidden w-full mb-1" style="padding: 0rem 1rem;">
                             <button type="button" class="button muted-button w-full add-set-btn">

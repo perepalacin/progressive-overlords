@@ -1,7 +1,7 @@
 package gg.jte.generated.ondemand.pages.routines;
 public final class JteroutineslistGenerated {
 	public static final String JTE_NAME = "pages/routines/routines-list.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,0,0,2,2,2,2,3,3,16,16,18,18,20,20,21,21,21,21,23,23,23,23,24,24,24,27,27,28,28,28,28,28,28,28,28,28,31,31,32,32,32,32,32,32,32,32,32,35,35,35,35,35,35,35,35,35,37,37,37,37,42,42,42,42,42,42,42,42,48,48,48,48,48,48,48,48,48,50,50,53,53,53,55,55,59,59,61,61,67,67,67,67,67,0,0,0,0};
+	public static final int[] JTE_LINE_INFO = {0,0,0,0,2,2,2,2,3,3,16,16,18,18,20,20,21,21,21,21,23,23,23,23,24,24,24,27,27,28,28,28,28,28,28,28,28,28,31,31,32,32,32,32,32,32,32,32,32,35,35,35,35,35,35,35,35,35,36,36,36,36,36,36,36,36,36,36,36,36,37,37,37,37,42,42,42,42,42,42,42,42,48,48,48,48,48,48,48,48,48,50,50,53,53,53,55,55,59,59,61,61,67,67,67,67,67,0,0,0,0};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, java.util.List<progressive_overlords.entities.dao.WorkoutDao> routines) {
 		jteOutput.writeContent("\n");
 		gg.jte.generated.ondemand.JtemainGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
@@ -56,7 +56,19 @@ public final class JteroutineslistGenerated {
 							jteOutput.setContext("div", null);
 							jteOutput.writeContent("\"");
 						}
-						jteOutput.writeContent(">\n                                        <button hx-post=\"/api/v1/workouts/start\" class=\"dropdown-item\"><img src=\"../icons/send-horizontal.svg\" style=\"width: 1rem\"/>Start</button>\n                                        <a href=\"/create-routine/");
+						jteOutput.writeContent(">\n                                        <button hx-post=\"/api/v1/workouts/start?name=");
+						jteOutput.setContext("button", "hx-post");
+						jteOutput.writeUserContent(routine.getName());
+						jteOutput.setContext("button", null);
+						jteOutput.writeContent("&description=");
+						jteOutput.setContext("button", "hx-post");
+						jteOutput.writeUserContent(routine.getDescription());
+						jteOutput.setContext("button", null);
+						jteOutput.writeContent("&templateId=");
+						jteOutput.setContext("button", "hx-post");
+						jteOutput.writeUserContent(routine.getId());
+						jteOutput.setContext("button", null);
+						jteOutput.writeContent("&isTemplate=false\" class=\"dropdown-item\"><img src=\"../icons/send-horizontal.svg\" style=\"width: 1rem\"/>Start</button>\n                                        <a href=\"/create-routine/");
 						jteOutput.setContext("a", "href");
 						jteOutput.writeUserContent(routine.getId());
 						jteOutput.setContext("a", null);
