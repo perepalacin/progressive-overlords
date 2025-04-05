@@ -8,6 +8,8 @@ import progressive_overlords.exceptions.BadRequestException;
 import progressive_overlords.mappers.WorkoutMapper;
 import progressive_overlords.repositories.RoutinesRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RoutinesService {
@@ -17,6 +19,11 @@ public class RoutinesService {
     public WorkoutDao getById (int routineId) {
         return routinesRepository.getById(routineId);
     }
+
+    public List<WorkoutDao> getAllFromUser () {
+        return routinesRepository.getAllFromUser();
+    }
+
 
     public boolean findIfExists (int routineId) {
         return routinesRepository.findIfExists(routineId);

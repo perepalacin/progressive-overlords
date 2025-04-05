@@ -10,7 +10,7 @@
                         Edit
                     </button>
                 </a>
-                <button class="button muted-button gap-05" hx-trigger="click" hx-delete="/api/v1/routines/123${routine.getId()}" hx-target="this" hx-swap="none">
+                <button class="button muted-button gap-05" hx-trigger="click" hx-delete="/api/v1/routines/${routine.getId()}?redirect=true" hx-target="this" hx-swap="none">
                     <img src="../icons/trash.svg" style="width: 1rem" />
                     Delete
                 </button>

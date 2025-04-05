@@ -1,6 +1,20 @@
+window.addEventListener("DOMContentLoaded", () => {
+    const message = localStorage.getItem("toastMessage");
+    if (message) {
+        showToast(message); // your custom toast function
+        localStorage.removeItem("toastMessage");
+    }
+});
+
 document.body.addEventListener("htmx:afterRequest", function(event) {
-    let message = event.detail.xhr.getResponseHeader("X-Message");
-    showToast(message);
+    const message = event.detail.xhr.getResponseHeader("X-Message");
+    const redirectUrl = event.detail.xhr.getResponseHeader("HX-Redirect");
+
+    if (redirectUrl && message) {
+        localStorage.setItem("toastMessage", toastMessage);
+    } else if (message) {
+        showToast(message);
+    }
 });
 
 export function showToast (message) {

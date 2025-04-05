@@ -9,7 +9,9 @@ document.body.addEventListener("htmx:beforeRequest", function (event) {
         formData.delete("warmups[]");
 
         const inputId = form.querySelector("#workout-id-input");
-        formData.append("id", inputId.value);
+        if (inputId) {
+            formData.append("id", inputId.value);
+        }
 
         form.querySelectorAll("input[type='checkbox']").forEach(input => {
             if (!input.checked) {
@@ -38,15 +40,13 @@ document.body.addEventListener("htmx:beforeRequest", function (event) {
             if (response.status === 303) {
                 const redirectUrl = response.headers.get("HX-Redirect");
                 const toastMessage = response.headers.get("X-Message");
-
                 if (toastMessage) {
-                    showToast(toastMessage);
+                    localStorage.setItem("toastMessage", toastMessage);
                 }
-
+                
                 if (redirectUrl) {
                     window.location.href = redirectUrl;
                 }
-
                 return;
             }
 
@@ -60,6 +60,7 @@ document.body.addEventListener("htmx:beforeRequest", function (event) {
             if (error.status === 500) {
                 console.error("An error occurred. Please try again.", "error");
             }
+
         });
     }
 });

@@ -99,6 +99,21 @@ public class RoutinesRepository {
         return templateList.isEmpty() ? null : templateList.get(0);
     }
 
+    public List<WorkoutDao> getAllFromUser () {
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            return null;
+        }
+        String sqlStatement = "SELECT id, name, description FROM workouts WHERE template_id IS NULL AND is_template = true AND user_id = ? ORDER BY name";
+        return jdbcTemplate.query(sqlStatement, (rs, rowNum) -> {
+            return WorkoutDao.builder()
+                    .id(rs.getInt("id"))
+                    .name(rs.getString("name"))
+                    .description(rs.getString("description"))
+                    .build();
+        }, userId);
+    }
+
     public WorkoutDao saveRoutine (WorkoutDao routine) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userId == null) {

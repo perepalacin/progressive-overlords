@@ -149,6 +149,10 @@ input:focus, textarea:focus {
   margin-bottom: 6rem;
 }
 
+.mr-1 {
+  margin-right: 1rem;
+}
+
 .w-full {
   width: 100% !important;
 }
@@ -156,6 +160,11 @@ input:focus, textarea:focus {
 .flex-row {
   display: flex;
   flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
 }
 
 .align-center {
@@ -182,6 +191,10 @@ input:focus, textarea:focus {
   gap: 1rem
 }
 
+.gap-2 {
+  gap: 1rem
+}
+
 .border-none {
   border: none;
   box-shadow: none;
@@ -201,11 +214,15 @@ input:focus, textarea:focus {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .desktop-hidden {
   display: none !important;
+}
+
+.relative {
+  position: relative;
 }
 
 @media (max-width: 1300px) {
@@ -342,6 +359,47 @@ nav a img {
   background-color: var(--fourth-bg);
 }
 
+.dropdown-menu {
+  position: absolute;
+  top: 2.5rem;           
+  right: 1rem;
+  width: fit-content;        
+  background-color: var(--main-bg);
+  border: 1px solid var(--hover-bg-color); 
+  border-radius: 0.5rem;     
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); 
+  z-index: 50;
+}
+
+.dropdown-item {
+  width: 100%;
+  border: none;
+  border-radius: none;
+  background-color: inherit;
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  font-size: 1rem;
+  gap: 1rem;
+  color: var(--main-foreground);
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: var(--hover-bg-color);
+}
+
+.dropdown-item:first-child {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.dropdown-item:last-child {
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
 
 .ghost-button {
   border: none;
@@ -352,6 +410,7 @@ nav a img {
   justify-content: center;
   align-items: center;
   font-size: 1rem;
+  color: var(--main-foreground);
 }
 
 .ghost-button:hover {
@@ -562,8 +621,51 @@ nav a img {
   cursor: pointer;
 }
 
-.toast-close:hover {
-  color: rgba(255, 255, 255, 0.099); 
+.routines-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.routines-list > li {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: start;
+  justify-items: center;
+  border: 1px solid var(--hover-bg-color);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.routines-list > li > div {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.routine-name:hover {
+  text-decoration: underline;
+}
+
+.routine-description-box {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.separator {
+    height: 1px;
+    background-color: var(--hover-bg-color);
+    width: 100%;
+    border: none;
+}
+
+.accordion-icon {
+  transition: transform 0.3s ease;
 }
 
 /* MEDIA BREAK POINTS! */
@@ -647,20 +749,22 @@ nav a img {
 
   .toast {
     max-width: 50%;
+    position: fixed;
     max-height: fit-content;
+    top: 1rem; 
+    left: 50%; 
+    transform: translateX(-50%) translateY(-100%); 
+    max-width: 50%;
     width: 50%;
-    top: 1rem;
-    right: 0;
-    transform: translateX(50%);
   }
 
   .toast-hidden {
-    transform: translateY(100%);
+    transform: translateX(-50%) translateY(-100%);
     opacity: 0;
   }
   
   .toast-visible {
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
 }
