@@ -484,6 +484,11 @@ nav a img {
   grid-template-columns: 15% 20% 25% 25% 15%;
 }
 
+.template-input-grid > form > ul {
+  display: grid;
+  grid-template-columns: 15% 20% 25% 25% 15%;
+}
+
 .template-view-grid > ul {
   display: grid;
   grid-template-columns: 20% 15% 32.5% 32.5%;

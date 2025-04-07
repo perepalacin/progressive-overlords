@@ -34,34 +34,4 @@ public class WorkoutDao {
         }
         return sets;
     }
-
-//    public void mergeSetsWithTemplate(WorkoutDao template) {
-//
-//        HashSet<String> alreadyFoundSets = new HashSet<>();
-//        List<SetDao> result = new ArrayList<>();
-//
-//        if (this.exercises != null) {
-//            List<SetDao> sets = this.getFlatSetsList();
-//            for (SetDao set : sets) {
-//                set.setCompleted(true);
-//                alreadyFoundSets.add(set.getExerciseNum() + "-" + set.getSetNum());
-//                result.add(set);
-//            }
-//        }
-//
-//        if (template.getExercises() != null) {
-//            List<SetDao> templateSetsList = template.getFlatSetsList();
-//            for (SetDao set : templateSetsList) {
-//                set.setCompleted(false);
-//                if (!alreadyFoundSets.contains(set.getExerciseNum() + "-" + set.getSetNum())) {
-//                    alreadyFoundSets.add(set.getExerciseNum() + "-" + set.getSetNum());
-//                    result.add(set);
-//                }
-//            }
-//        }
-//
-//        this.setExercisesDaoFromSetsDao(result);
-//    }
-
-
 }

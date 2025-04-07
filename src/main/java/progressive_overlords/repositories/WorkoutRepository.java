@@ -37,6 +37,10 @@ public class WorkoutRepository {
                 wt.id,
                 wt.name,
                 wt.description,
+                wt.is_template,
+                wt.template_id,
+                wt.started_at,
+                wt.ended_at,
                 COALESCE(json_agg(
                     json_build_object(
                         'exerciseId', wte.exercise_id,
@@ -70,6 +74,10 @@ public class WorkoutRepository {
                     .id(rs.getInt("id"))
                     .name(rs.getString("name"))
                     .description(rs.getString("description"))
+                    .templateId(rs.getInt("template_id"))
+                    .isTemplate(rs.getBoolean("is_template"))
+                    .startDate(rs.getString("started_at"))
+                    .endDate(rs.getString("ended_at"))
                     .build();
 
             if (setList != null && !setList.isEmpty()) {
