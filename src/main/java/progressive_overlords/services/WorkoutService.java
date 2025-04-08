@@ -2,7 +2,6 @@ package progressive_overlords.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import progressive_overlords.entities.dao.ExerciseDao;
 import progressive_overlords.entities.dao.SetDao;
 import progressive_overlords.entities.dao.WorkoutDao;
 import progressive_overlords.entities.dao.WorkoutExerciseDao;
@@ -10,7 +9,6 @@ import progressive_overlords.entities.dto.WorkoutDto;
 import progressive_overlords.repositories.WorkoutRepository;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -43,6 +41,7 @@ public class WorkoutService {
             if (routine.getExercises() == null || routine.getExercises().isEmpty()) {
                 return new ArrayList<>();
             }
+            routine.getExercises().forEach(workoutExerciseDao -> workoutExerciseDao.getSets().forEach(set -> set.setWorkoutId(workout.getId())));
             return routine.getExercises();
         }
 
@@ -52,38 +51,49 @@ public class WorkoutService {
 
         List<WorkoutExerciseDao> result = new ArrayList<>();
 
-        for (WorkoutExerciseDao exercise : routine.getExercises()) {
-            result.add(exercise);
-            for(SetDao set : exercise.getSets()) {
-                set.setCompleted(false);
-            }
-        }
+        routine.getExercises().forEach(workoutExerciseDao -> workoutExerciseDao.getSets().forEach(set -> set.setWorkoutId(workout.getId())));
 
-        int resultExerciseNum = 0;
-        for (WorkoutExerciseDao workoutExercise : workout.getExercises()) {
-            for (int  i = resultExerciseNum; i < result.size(); i++ ) {
-                if (workoutExercise.getExerciseNum() == result.get(i).getExerciseNum()) {
-                    resultExerciseNum = i;
-                    if (workoutExercise.getExerciseId() == result.get(i).getExerciseId()) {
-                        List<SetDao> resultingSets = new ArrayList<>();
-                        int workoutSetIndex = 0;
-                        for (SetDao set : result.get(i).getSets()) {
-                            if (workoutSetIndex >= workoutExercise.getSets().size()) {
-                                break;
-                            }
-                            if (set.getSetNum() == workoutExercise.getSets().get(workoutSetIndex).getSetNum()) {
-                                workoutExercise.getSets().get(workoutSetIndex).setCompleted(true);
-                                resultingSets.add(workoutExercise.getSets().get(workoutSetIndex));
-                                workoutSetIndex++;
+        for (WorkoutExerciseDao routineExercise : routine.getExercises()) {
+
+            WorkoutExerciseDao newExercise = WorkoutExerciseDao.builder()
+                    .exercise(routineExercise.getExercise())
+                    .exerciseNum(routineExercise.getExerciseNum())
+                    .exerciseId(routineExercise.getExerciseId())
+                    .sets(routineExercise.getSets())
+                    .build();
+
+            for (WorkoutExerciseDao workoutExercise : workout.getExercises()) {
+                if (workoutExercise.getExerciseNum() == newExercise.getExerciseNum()) {
+                    if (workoutExercise.getExerciseId() == newExercise.getExerciseId()) {
+                        for (int i = 0; i < newExercise.getSets().size(); i++) {
+                            for (SetDao workoutSet : workoutExercise.getSets()) {
+                                if (workoutSet.getSetNum() == newExercise.getSets().get(i).getSetNum()) {
+                                    workoutSet.setCompleted(true);
+                                    newExercise.getSets().set(i, workoutSet);
+                                }
                             }
                         }
-                        result.get(i).setSets(resultingSets);
                     } else {
-                        result.set(i, new WorkoutExerciseDao(workoutExercise.getExercise(), workoutExercise.getExerciseId(), workoutExercise.getExerciseNum(), workoutExercise.getSets()));
+                        for(SetDao setDao : workoutExercise.getSets()) {
+                            setDao.setCompleted(true);
+                        }
+
+                        newExercise = WorkoutExerciseDao.builder()
+                                .exercise(workoutExercise.getExercise())
+                                .exerciseNum(workoutExercise.getExerciseNum())
+                                .exerciseId(workoutExercise.getExerciseId())
+                                .sets(workoutExercise.getSets())
+                                .build();
+                        //TODO: fill blank sets with empty forms on the server side!!
                     }
+                    //Add the exercise to the found exercises set;
+                    break;
                 }
             }
+            //TODO: Add exercises that are not in the routine
+            result.add(newExercise);
         }
+
         return result;
     }
 

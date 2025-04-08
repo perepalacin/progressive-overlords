@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function addSet(exerciseItem) {
         const setsSection = exerciseItem.querySelectorAll(".setTableRow");
         let setNum = 0;
-        if (!setsSection && setsSection.length > 0) {
+        if (!setsSection || setsSection.length === 0) {
             return;
         }
         setNum = setsSection.length + 1;
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     function updateSetNumbers(exerciseItem) {
         const setsSection = exerciseItem.querySelectorAll(".setTableRow");
-        if (!setsSection && setsSection.length > 0) {
+        if (!setsSection || setsSection.length === 0) {
             return;
         }
         setsSection.forEach((set, index) => {

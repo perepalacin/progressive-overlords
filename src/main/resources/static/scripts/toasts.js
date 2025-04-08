@@ -7,6 +7,12 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 document.body.addEventListener("htmx:afterRequest", function(event) {
+    const func = event.detail.xhr.getResponseHeader("HX-Trigger");
+
+    if (func !== "ShowToast") {
+        return;
+    }
+
     const message = event.detail.xhr.getResponseHeader("X-Message");
     const redirectUrl = event.detail.xhr.getResponseHeader("HX-Redirect");
 
@@ -18,9 +24,9 @@ document.body.addEventListener("htmx:afterRequest", function(event) {
 });
 
 export function showToast (message) {
-if (!message) {
-    return;
-}
+    if (!message) {
+        return;
+    }
 
     let toastContainer = document.getElementById("toastContainer");
 

@@ -12,18 +12,24 @@ public class SetsService {
     private final SetsRepository setsRepository;
 
     public SetDao getById(int id) {
-        return setsRepository.getById(id);
+        SetDao set = setsRepository.getById(id);
+        set.setCompleted(true);
+        return set;
     }
 
     public SetDao uploadWorkoutSet (SetDao newSet) {
-        return setsRepository.createSet(newSet);
+        SetDao set = setsRepository.createSet(newSet);
+        set.setCompleted(true);
+        return set;
     }
 
     public SetDao editSet (SetDao newSet) {
-        return setsRepository.updateSet(newSet);
+        SetDao set = setsRepository.updateSet(newSet);
+        set.setCompleted(true);
+        return set;
     }
 
-    public void deleteSet(int workoutId, int exerciseNum, int setId) {
-
+    public void deleteSet(int setId) {
+        setsRepository.deleteSet(setId);
     }
 }

@@ -43,6 +43,7 @@ public class WorkoutRepository {
                 wt.ended_at,
                 COALESCE(json_agg(
                     json_build_object(
+                        'id', wte.id,
                         'exerciseId', wte.exercise_id,
                         'exerciseNum', wte.exercise_num,
                         'setNum', wte.set_num,
@@ -81,7 +82,7 @@ public class WorkoutRepository {
                     .build();
 
             if (setList != null && !setList.isEmpty()) {
-                workout.setExercises(exercisesService.generateExerciseListFromSets(setList));
+                workout.setExercises(exercisesService.generateExerciseListFromSets(setList, workoutId));
             }
 
             return workout;

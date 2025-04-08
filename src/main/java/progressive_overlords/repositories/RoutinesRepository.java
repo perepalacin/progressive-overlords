@@ -91,7 +91,7 @@ public class RoutinesRepository {
                     .description(rs.getString("description"))
                     .build();
 
-            routine.setExercises(exercisesService.generateExerciseListFromSets(setList));
+            routine.setExercises(exercisesService.generateExerciseListFromSets(setList, routineId));
 
             return routine;
         }, userId, routineId);

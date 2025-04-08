@@ -11,6 +11,7 @@ import progressive_overlords.entities.dto.SetDto;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -20,17 +21,53 @@ public class SetsRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public
+    public SetDao getById(int id) {
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            //TODO: Throw invalid!;
+        }
+
+    String sqlStatement = """
+            SELECT
+                id,
+                workout_id,
+                exercise_id,
+                exercise_num,
+                set_num,
+                reps,
+                weight,
+                is_warmup,
+                user_id
+            FROM workout_exercises we
+            WHERE we.id = ? AND we.user_id = ?
+        """;
+
+        List<SetDao> setList = jdbcTemplate.query(sqlStatement, (rs, rowNum) -> {
+        SetDao set = SetDao.builder()
+                .id(rs.getInt("id"))
+                .workoutId(rs.getInt("workout_id"))
+                .exerciseId(rs.getInt("exercise_id"))
+                .exerciseNum(rs.getInt("exercise_num"))
+                .setNum(rs.getInt("set_num"))
+                .reps(rs.getFloat("reps"))
+                .weight(rs.getFloat("weight"))
+                .warmup(rs.getBoolean("is_warmup"))
+                .build();
+            return set;
+        }, id, userId);
+        return setList.isEmpty() ? null : setList.get(0);
+}
 
     public SetDao createSet(SetDao newSet) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userId == null) {
-            //TODO: Throw unvalid!;
+            //TODO: Throw invalid!;
         }
+
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
-                    "INSERT INTO workout_exercises (workout_id, exercise_id, exercise_num, set_num, reps, weight, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    "INSERT INTO workout_exercises (workout_id, exercise_id, exercise_num, set_num, reps, weight, is_warmup, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, newSet.getWorkoutId());
             ps.setInt(2, newSet.getExerciseId());
@@ -38,7 +75,8 @@ public class SetsRepository {
             ps.setInt(4, newSet.getSetNum());
             ps.setDouble(5, newSet.getReps());
             ps.setDouble(6, newSet.getWeight());
-            ps.setObject(7, userId);
+            ps.setBoolean(7, newSet.isWarmup());
+            ps.setObject(8, userId);
             return ps;
         }, keyHolder);
 
@@ -72,4 +110,18 @@ public class SetsRepository {
         newSet.setCompleted(true);
         return newSet;
     }
+
+    public void deleteSet(int setId) {
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            // TODO: Throw an exception to unauthorized request maybe?
+        }
+
+        String deleteSetsSQL = """
+            DELETE FROM workout_exercises
+            WHERE id = ? AND user_id = ?
+        """;
+        jdbcTemplate.update(deleteSetsSQL, setId, userId);
+    }
+
 }

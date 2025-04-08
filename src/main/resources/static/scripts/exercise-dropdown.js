@@ -11,7 +11,6 @@ export function processExerciseDropdowns () {
              dropdownList.style.display = "block";
          }
 
-
         function hideDropdown(event) {
             if (!dropdown.contains(event.relatedTarget)) {
                 dropdownList.style.display = "none";
