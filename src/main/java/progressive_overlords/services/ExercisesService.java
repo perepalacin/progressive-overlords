@@ -10,10 +10,7 @@ import progressive_overlords.entities.dto.SetDto;
 import progressive_overlords.exceptions.BadRequestException;
 import progressive_overlords.repositories.ExercisesRepository;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -88,13 +85,14 @@ public class ExercisesService {
         }
 
         HashMap<Integer, WorkoutExerciseDao> exerciseMap = new HashMap<>();
+        HashSet<Integer> foundExercisesAndSets = new HashSet<>();
 
         try {
             for (SetDao set : sets) {
-                if (exerciseMap.containsKey(set.getExerciseId())) {
+                if (exerciseMap.containsKey(set.getExerciseNum())) {
                     SetDao newSet = SetDao.builder()
                             .id(set.getId())
-                            .exerciseNum(exerciseMap.get(set.getExerciseId()).getSets().get(0).getExerciseNum())
+                            .exerciseNum(set.getExerciseNum())
                             .setNum(set.getSetNum())
                             .exerciseId(set.getExerciseId())
                             .reps(set.getReps())
@@ -102,18 +100,18 @@ public class ExercisesService {
                             .warmup(set.isWarmup())
                             .workoutId(workoutId)
                             .build();
-                    exerciseMap.get(set.getExerciseId()).getSets().add(newSet);
+                    exerciseMap.get(set.getExerciseNum()).getSets().add(newSet);
                 } else {
                     ExerciseDao exerciseDao = this.getById(set.getExerciseId());
                     WorkoutExerciseDao newExercise = WorkoutExerciseDao.builder()
-                            .exerciseNum(exerciseMap.size())
+                            .exerciseNum(set.getExerciseNum())
                             .exerciseId(set.getExerciseId())
                             .sets(new ArrayList<>())
                             .exercise(exerciseDao)
                             .build();
                     SetDao newSet = SetDao.builder().
                             id(set.getId())
-                            .exerciseNum(exerciseMap.size())
+                            .exerciseNum(set.getExerciseNum())
                             .setNum(set.getSetNum())
                             .exerciseId(set.getExerciseId())
                             .reps(set.getReps())
@@ -122,7 +120,7 @@ public class ExercisesService {
                             .warmup(set.isWarmup())
                             .build();
                     newExercise.getSets().add(newSet);
-                    exerciseMap.put(set.getExerciseId(), newExercise);
+                    exerciseMap.put(set.getExerciseNum(), newExercise);
                 }
             }
 

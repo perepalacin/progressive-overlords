@@ -46,6 +46,8 @@ public class ExercisesController {
     public String getExercisePreviewById(@PathVariable int exerciseId, Model model) {
         ExerciseDao exercise = exercisesService.getById(exerciseId);
         model.addAttribute("exercise", exercise);
+        model.addAttribute("workoutExercise", null);
+        model.addAttribute("workoutId", 0);
         return "responses/exercises/exercise-header";
     }
 

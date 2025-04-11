@@ -91,6 +91,26 @@ public class WorkoutRepository {
         return workoutList.isEmpty() ? null : workoutList.get(0);
     }
 
+    public boolean findIfExists (int workoutId) {
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            return false;
+        }
+        String sql = """
+            SELECT
+                wt.id
+            FROM workouts wt
+            WHERE wt.user_id = ? AND wt.id = ? AND wt.is_template = false
+        """;
+
+        List<Integer> routines = jdbcTemplate.query(sql, (rs, rowNum) -> {
+            return (rs.getInt("id"));
+        }, userId, workoutId);
+
+        return !routines.isEmpty();
+
+    }
+
     public int startWorkout (WorkoutDto workoutDto) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userId == null) {
@@ -131,6 +151,41 @@ public class WorkoutRepository {
         }
 
         return ((Number) keys.get("id")).intValue();
+    }
+
+    public void updateWorkoutEndDate(int workoutId) {
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            //TODO: Throw unvalid!;
+        }
+
+        String sqlStatement = """
+                UPDATE workouts SET
+                ended_at = CURRENT_TIMESTAMP,
+                updated_at = CURRENT_TIMESTAMP
+                WHERE id = ? AND user_id = ?
+                """;
+        jdbcTemplate.update(sqlStatement, workoutId, userId);
+    }
+
+    public boolean delete (int workoutId) {
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            return false;
+        }
+
+        try {
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement("DELETE FROM workouts WHERE id = ? AND user_id = ?");
+                ps.setInt(1, workoutId);
+                ps.setObject(2, userId);
+                return ps;
+            });
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

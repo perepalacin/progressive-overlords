@@ -20,7 +20,7 @@
             @if(routine != null && !routine.getExercises().isEmpty())
                 @for(progressive_overlords.entities.dao.WorkoutExerciseDao exercise : routine.getExercises())
                     <li class="exercise-item">
-                        @template.responses.exercises.exercise-header(exercise = exercise.getExercise())
+                        @template.responses.exercises.exercise-header(workoutId = 0, exercise = exercise.getExercise(), workoutExercise = null)
                         <section class="template-input-grid">
                             <ul>
                                 <li>Set</li>
@@ -35,7 +35,7 @@
                             </ul>
                             @for(progressive_overlords.entities.dao.SetDao set : exercise.getSets())
                             <ul class="setTableRow">
-                                <li class="font-bold set-num">${set.getSetNum() +1}</li>
+                                <li class="font-bold set-num">${set.getSetNum()}</li>
                                 <li>
                                     <input class="border-none" name="warmups[]" checked="${set.isWarmup()}" type="checkbox">
                                 </li>

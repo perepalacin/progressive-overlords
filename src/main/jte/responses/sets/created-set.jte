@@ -1,5 +1,5 @@
 @param progressive_overlords.entities.dao.SetDao set
-    <form hx-post="${set.isCompleted() ? null : "/api/v1/sets"}" hx-patch="${set.isCompleted() ? "/api/v1/sets" : null}" hx-target="this" hx-swap="outerHTML" id="${set.isCompleted() ? "workout-set-" + set.getId() : null}">
+    <form hx-post="${set.isCompleted() ? null : "/api/v1/sets"}" hx-patch="${set.isCompleted() ? "/api/v1/sets/" + set.getId() : null}" hx-target="this" hx-swap="outerHTML" id="${set.isCompleted() ? "workout-set-" + set.getId() : null}">
         <ul class="setTableRow">
             <li class="font-bold set-num">
                 ${set.getSetNum() +1}

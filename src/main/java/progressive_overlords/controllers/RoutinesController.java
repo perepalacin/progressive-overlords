@@ -33,9 +33,6 @@ public class RoutinesController {
     @GetMapping("/create-routine/{routineId}")
     public String getCreateRoutineView (@PathVariable int routineId, Model model) {
         WorkoutDao routine = routinesService.getById(routineId);
-//        if (routine == null) {
-//            return 404;
-//        }
         model.addAttribute("routine", routine);
         return "pages/routines/create-edit-routine";
     }
@@ -76,14 +73,15 @@ public class RoutinesController {
     @DeleteMapping("/api/v1/routines/{routineId}")
     public ResponseEntity<Void> deleteRoutine(@PathVariable int routineId, @RequestParam (required = false) boolean redirect) {
         if (routinesService.delete(routineId)) {
-            ResponseEntity<Void> response = ResponseEntity.status(204)
+            var responseBuilder = ResponseEntity.status(204)
                     .header("HX-Trigger", "ShowToast")
-                    .header("X-Message", "success: Routine deleted successfully!")
-                    .build();
+                    .header("X-Message", "success: Routine deleted successfully!");
+
             if (redirect) {
-                response.getHeaders().add("HX-Redirect", "/routines");
+                responseBuilder = responseBuilder.header("HX-Redirect", "/routines");
             }
-            return response;
+
+            return responseBuilder.build();
         }
         return ResponseEntity.status(500)
                 .header("HX-Trigger", "ShowToast")

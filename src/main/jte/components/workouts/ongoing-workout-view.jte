@@ -1,3 +1,4 @@
+<%--TODO: changing is warmup on patch doesn't work we need to create the send-set.js file and change the event listener--%>
 @param progressive_overlords.entities.dao.WorkoutDao workout
 <section class="w-full mb-6">
     <div id="workoutForm">
@@ -5,7 +6,7 @@
             <h1>${workout.getName()}</h1>
             <div class="flex-row gap-1 align-center">
                 <p id="timer">00:00:00</p>
-                <button class="button main-button" type="submit">
+                <button hx-patch="/api/v1/workouts/finish/${workout.getId()}" hx-swap="none" hx-trigger="click" class="button main-button" type="submit">
                     Finish
                 </button>
             </div>
@@ -15,7 +16,7 @@
 
                 @for(progressive_overlords.entities.dao.WorkoutExerciseDao exercise : workout.getExercises())
                     <li class="exercise-item">
-                        @template.responses.exercises.exercise-header(exercise = exercise.getExercise())
+                        @template.responses.exercises.exercise-header(workoutId = workout.getId(), exercise = exercise.getExercise(), workoutExercise = exercise)
                         <section class="template-input-grid">
                             <ul>
                                 <li>Set</li>
@@ -57,13 +58,13 @@
                         <ul class="setTableRow">
                             <li class="font-bold set-num">1</li>
                             <li>
-                                <input class="border-none" name="warmups[]" checked="checked" type="checkbox">
+                                <input class="border-none" name="warmup" checked="checked" type="checkbox">
                             </li>
                             <li>
-                                <input type="number" name="reps[]" placeholder="12" required>
+                                <input type="number" name="reps" placeholder="12" required>
                             </li>
                             <li>
-                                <input type="number" name="weights[]" placeholder="44" required >
+                                <input type="number" name="weight" placeholder="44" required >
                             </li>
                             <li>
                                 <button type="button"  class="ghost-button-icon remove-set-btn" >
@@ -117,11 +118,65 @@
     </form>
 </template>
 
+<template id="exerciseTemplate">
+    <li class="exercise-item">
+        @template.responses.exercises.exercises-selector()
+    </li>
+</template>
+
+<template id="setTableTemplate">
+    <section class="template-input-grid">
+        <ul>
+            <li>Set</li>
+            <li>Warmup</li>
+            <li>Reps</li>
+            <li>Weight</li>
+            <li>
+                <button type="button" class="button muted-button mobile-hidden add-set-btn">
+                    + Add Set
+                </button>
+            </li>
+        </ul>
+        <form hx-post="/api/v1/sets" hx-target="this" hx-swap="outerHTML">
+            <ul class="setTableRow">
+                <li class="font-bold set-num">
+                    ${1}
+                    <input class="hidden" required value="0" name="workoutId" />
+                    <input class="hidden" required value="0" name="exerciseId" />
+                    <input class="hidden" required value="1" name="setNum" />
+                    <input class="hidden" required value="0" name="exerciseNum" />
+                </li>
+                <li>
+                    <input class="border-none" name="warmup" checked="false" type="checkbox">
+                </li>
+                <li>
+                    <input type="number" name="reps" placeholder="12" required>
+                </li>
+                <li>
+                    <input type="number" name="weight" placeholder="25" required>
+                </li>
+                <li class="flex-row gap-05">
+                    <button type="button"  class="ghost-button-icon remove-set-btn" >
+                        <img src="../icons/x.svg" style="width: 1rem" />
+                    </button>
+                    <button type="submit"  class="ghost-button-icon" >
+                        <img src="../icons/send-horizontal.svg" style="width: 1rem" />
+                    </button>
+                </li>
+            </ul>
+        </form>
+    </section>
+    <div class="desktop-hidden w-full mb-1" style="padding: 0.5rem 1rem;">
+        <button type="button" class="button muted-button w-full add-set-btn">
+            + Add Set
+        </button>
+    </div>
+</template>
+
 <script src="../scripts/timer.js">
 </script>
 <script>
     startElapsedTimer("${workout.getStartDate()}");
 </script>
 <script type="module" src="../scripts/create-workout.js"></script>
-<%--<script type="module" src="../scripts/create-template.js"></script>--%>
 <script type="module" src="../scripts/send-template.js"></script>

@@ -32,6 +32,7 @@ public class RoutinesService {
     public WorkoutDao saveRoutine (WorkoutDto routineRequest) {
         WorkoutDao newRoutine;
         try {
+            // TODO: Fix routine with duplicated exercises!
             newRoutine = WorkoutMapper.mapDtoToDao(routineRequest);
         } catch (Exception e) {
             throw new BadRequestException("Routine request is not properly formatted");
