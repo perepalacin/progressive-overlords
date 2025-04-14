@@ -137,6 +137,15 @@ input:focus, textarea:focus {
   margin-top: 1rem;
 }
 
+.mt-2 {
+  margin-top: 2rem;
+}
+
+.mt-6 {
+    margin-top: 6rem;
+}
+
+
 .mb-1 {
   margin-bottom: 1rem;
 }
@@ -213,6 +222,10 @@ input:focus, textarea:focus {
   top: 0;
 }
 
+.text-center {
+    text-align: center;
+}
+
 .mobile-hidden {
   display: flex !important;
 }
@@ -229,7 +242,7 @@ input:focus, textarea:focus {
   position: relative;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 768px) {
   .mobile-hidden {
     display: none !important;
   }
@@ -677,9 +690,33 @@ nav a img {
   transition: transform 0.3s ease;
 }
 
+.user-suggestion-sidebar {
+    padding: 0.5rem 1rem;
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid var(--hover-bg-color);
+    background-color: var(--main-bg);
+}
+
+.user-details-sidebar {
+    padding: 0.5rem 1rem;
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid var(--hover-bg-color);
+    background-color: var(--main-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
 #balloon-container {
   height: 100vh;
+  width: 100%;
   padding: 1em;
+  position: absolute;
+  top: 0;
+  left: 0;
   box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
@@ -723,6 +760,11 @@ nav a img {
 @keyframes float {
   from {transform: translateY(100vh);}
   to {transform: translateY(-100vh);}
+}
+
+canvas {
+  position: absolute;
+  z-index: 1;
 }
 
 /* MEDIA BREAK POINTS! */

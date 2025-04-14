@@ -34,4 +34,12 @@ public class TimeDiffHelper {
         return hours + "h " + remainingMinutes + "min";
     }
 
+    public static long getTimeDifferenceInMillis(String startDate, String endDate) {
+        LocalDateTime start = LocalDateTime.parse(startDate, FORMATTER);
+        LocalDateTime end = LocalDateTime.parse(endDate, FORMATTER);
+
+        Duration duration = Duration.between(start, end);
+        return duration.toMillis();
+    }
+
 }

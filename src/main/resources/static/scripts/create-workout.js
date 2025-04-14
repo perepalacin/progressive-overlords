@@ -161,7 +161,6 @@ function removeUnfilledExercise(exerciseItem) {
         return;
     }
     exerciseItem.remove();
-    }
 }
 
 function removeCompletedSet(setId) {

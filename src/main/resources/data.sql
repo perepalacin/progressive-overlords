@@ -1,7 +1,24 @@
-INSERT INTO "users" (
-    "username", "password", "weight_units", "enabled"
-) VALUES
-    ('dbtest', 'test1234', 'kg', TRUE);
+INSERT INTO "users"
+    ("username", "password", "weight_units", "enabled" )
+VALUES
+    ('test1', 'test1234', 'kg', true),
+    ('test2', 'test1234', 'kg', true),
+    ('test3', 'test1234', 'kg', true),
+	('32312', 'test1234', 'kg', true),
+	('231233243', 'test1234', 'kg', true),
+	('sdsdewd', 'test1234', 'kg', true),
+	('1323wfe', 'test1234', 'kg', true),
+	('4erfgerew', 'test1234', 'kg', true),
+	('fewwfweff', 'test1234', 'kg', true),
+	('23214r23rfed', 'test1234', 'kg', true),
+	('ewqeqqfewfwe', 'test1234', 'kg', true),
+	('dfvvvsd', 'test1234', 'kg', true),
+	('ipioppo', 'test1234', 'kg', true),
+	('2312sda', 'test1234', 'kg', true),
+	('122132121', 'test1234', 'kg', true),
+	('poeqwpeeowq', 'test1234', 'kg', true),
+	('wefvnfvvfdv', 'test1234', 'kg', true),
+	('2wqewqew', 'test1234', 'kg', true);
 
 INSERT INTO "exercises" ("name", "description", "thumbnail", "muscle", "body_part", "motion", "upper_or_lower", "resistance", "isometric") VALUES
 ('Push-up', 'A basic upper body exercise that works the chest, shoulders, and triceps.', NULL, 'Chest', 'arms', 'push', 'upper', 'bodyWeight', false),

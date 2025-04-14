@@ -155,9 +155,6 @@ public class WorkoutRepository {
 
     public void updateWorkoutEndDate(int workoutId) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            //TODO: Throw unvalid!;
-        }
 
         String sqlStatement = """
                 UPDATE workouts SET

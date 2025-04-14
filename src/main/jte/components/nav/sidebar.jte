@@ -16,9 +16,9 @@
             <img src="../icons/dumbell.svg" />
             Routines
         </a>
-        <a class="${"statistics".equals(activeTab) ? "active" : ""}" href="/stats">
+        <a class="${"Records".equals(activeTab) ? "active" : ""}" href="/stats">
             <img src="../icons/chart-column.svg" />
-            Statistics
+            Records
         </a>
         <a class="${"compare".equals(activeTab) ? "active" : ""}" href="/compare">
             <img src="../icons/users.svg" />
@@ -27,7 +27,7 @@
     </nav>
     <div class="logout-section">
         <div class="flex-row align-center gap-05">
-            <p class="user-logo">P</p>
+            @template.components.friends.user-logo(username = "perepalacin")
             <p>Username</p>
         </div>
         <button hx-post="/api/v1/auth/logout" hx-swap="none" class="ghost-button-icon">

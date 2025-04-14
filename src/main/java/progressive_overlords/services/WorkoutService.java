@@ -3,11 +3,13 @@ package progressive_overlords.services;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import progressive_overlords.entities.dao.AggregatedWorkoutDataDao;
 import progressive_overlords.entities.dao.SetDao;
 import progressive_overlords.entities.dao.WorkoutDao;
 import progressive_overlords.entities.dao.WorkoutExerciseDao;
@@ -21,6 +23,7 @@ public class WorkoutService {
 
     private final WorkoutRepository workoutRepository;
     private final RoutinesService routinesService;
+    private final WorkoutSummaryService workoutSummaryService;
 
     public WorkoutDao getById(int workoutId) {
         WorkoutDao workoutDao = workoutRepository.getById(workoutId);
@@ -49,7 +52,18 @@ public class WorkoutService {
     }
 
     public void finishWorkout(int workoutId) {
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            return;
+        }
         workoutRepository.updateWorkoutEndDate(workoutId);
+        this.generateWorkoutSummary(workoutId, userId);
+    }
+
+    @Async
+    private void generateWorkoutSummary (int workoutId, UUID userId) {
+        WorkoutDao finishedWorkout = this.getById(workoutId);
+        workoutSummaryService.createWorkoutSummary(finishedWorkout, userId);
     }
 
     private List<WorkoutExerciseDao> mergeSetsWithTemplate(WorkoutDao workout, WorkoutDao routine) {

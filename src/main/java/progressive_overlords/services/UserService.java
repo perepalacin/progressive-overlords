@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import progressive_overlords.entities.dao.PublicUserDao;
 import progressive_overlords.entities.dao.UserDao;
 import progressive_overlords.entities.requests.AuthRequest;
 import progressive_overlords.exceptions.UsernameAlreadyExistsExcpetion;
@@ -40,5 +41,9 @@ public class UserService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDao userDao = usersRepository.findByUsername(loginRequest.getUsername().toLowerCase());
         return SessionsService.generateToken(userDao);
+    }
+
+    public PublicUserDao getOwnUserDetails () {
+        return usersRepository.getOwnPublicDetails();
     }
 }
