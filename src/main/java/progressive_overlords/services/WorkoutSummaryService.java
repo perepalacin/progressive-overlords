@@ -18,9 +18,9 @@ public class WorkoutSummaryService {
 
     private final WorkoutSummaryRepository workoutSummaryRepository;
 
-//    public List<WorkoutSummaryDao> getFriendsActivitySummary (int page) {
-//        return workoutSummaryRepository.getFriendsActivity(page);
-//    }
+    public List<WorkoutSummaryDao> getFriendsActivitySummary (int page) {
+        return workoutSummaryRepository.getFriendsActivity(page);
+    }
 
     @Async
     public void createWorkoutSummary (WorkoutDao finishedWorkout, UUID userId) {

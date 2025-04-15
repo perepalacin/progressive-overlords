@@ -19,11 +19,11 @@
         <p>Trained on: <span class="font-bold">${progressive_overlords.utils.DateFormatter.formatToFriendlyDate(workout.getStartDate())}</span></p>
         <div class="flex-row gap-2">
             <div>
-                <span>Volume:</span>
+                <span class="label">Volume:</span>
                 <p class="font-bold">${workout.getAggregatedWorkoutData().getVolume()} kg</p>
             </div>
             <div>
-                <span>Duration:</span>
+                <span class="label">Duration:</span>
                 <p class="font-bold">${workout.getAggregatedWorkoutData().getDuration()}</p>
             </div>
         </div>

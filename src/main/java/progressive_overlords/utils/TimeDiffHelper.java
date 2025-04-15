@@ -16,22 +16,22 @@ public class TimeDiffHelper {
         long seconds = duration.getSeconds();
 
         if (seconds < 60) {
-            return seconds + "secs";
+            return seconds + " secs";
         }
 
         long minutes = seconds / 60;
         if (minutes < 60) {
-            return minutes + "min";
+            return minutes + " min";
         }
 
         long hours = minutes / 60;
         long remainingMinutes = minutes % 60;
 
         if (remainingMinutes == 0) {
-            return hours + "h";
+            return hours + " h";
         }
 
-        return hours + "h " + remainingMinutes + "min";
+        return hours + " h " + remainingMinutes + " min";
     }
 
     public static long getTimeDifferenceInMillis(String startDate, String endDate) {
@@ -40,6 +40,28 @@ public class TimeDiffHelper {
 
         Duration duration = Duration.between(start, end);
         return duration.toMillis();
+    }
+
+    public static String getTimeDifference(long timeStamp) {
+        long seconds = timeStamp/1000;
+
+        if (seconds < 60) {
+            return seconds + " secs";
+        }
+
+        long minutes = seconds / 60;
+        if (minutes < 60) {
+            return minutes + " min";
+        }
+
+        long hours = minutes / 60;
+        long remainingMinutes = minutes % 60;
+
+        if (remainingMinutes == 0) {
+            return hours + " h";
+        }
+
+        return hours + " h " + remainingMinutes + " min";
     }
 
 }

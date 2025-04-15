@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import progressive_overlords.entities.dao.PublicUserDao;
+import progressive_overlords.entities.dao.WorkoutSummaryDao;
+import progressive_overlords.repositories.WorkoutSummaryRepository;
 import progressive_overlords.services.FriendsService;
 import progressive_overlords.services.UserService;
 import progressive_overlords.services.WorkoutSummaryService;
@@ -17,6 +19,7 @@ public class PagesController {
 
     private final FriendsService friendsService;
     private final UserService userService;
+    private final WorkoutSummaryService workoutSummaryService;
 
     @GetMapping("/sign-in")
     public String getLoginPage (Model model) {
@@ -34,7 +37,9 @@ public class PagesController {
     public String getHomeScreen (Model model) {
         List<PublicUserDao> userSuggestionList = friendsService.getRecommendedFriends();
         PublicUserDao ownUserDetails = userService.getOwnUserDetails();
+        List<WorkoutSummaryDao> feedActivity =  workoutSummaryService.getFriendsActivitySummary(0);
         model.addAttribute("ownUserDetails", ownUserDetails);
+        model.addAttribute("feedActivity", feedActivity);
         model.addAttribute("userSuggestionList", userSuggestionList);
         model.addAttribute("tabName", "Home");
         return "pages/home";

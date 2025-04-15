@@ -16,4 +16,5 @@ public class WorkoutExerciseDao {
     private int exerciseId;
     private int exerciseNum;
     private List<SetDao> sets;
+    private int setsCount; // Optional flag for summarized workout data
 }

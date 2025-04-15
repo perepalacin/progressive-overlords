@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class WorkoutSummaryDao {
+    private String name;
     private int id;
     private int workoutId;
     private PublicUserDao publicUserDao;
