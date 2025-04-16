@@ -22,7 +22,7 @@ public final class JtesidebarGenerated {
 			jteOutput.writeContent("\"");
 		}
 		jteOutput.writeContent(" href=\"/routines\">\n            <img src=\"../icons/dumbell.svg\" />\n            Routines\n        </a>\n        <a");
-		var __jte_html_attribute_2 = "Records".equals(activeTab) ? "active" : "";
+		var __jte_html_attribute_2 = "records".equals(activeTab) ? "active" : "";
 		if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_2)) {
 			jteOutput.writeContent(" class=\"");
 			jteOutput.setContext("a", "class");

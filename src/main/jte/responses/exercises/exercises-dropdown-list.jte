@@ -11,7 +11,7 @@
 @else
     @for(progressive_overlords.entities.dao.ExerciseDao exercise : exercises)
         <li class="exercise-dropdown-item" hx-trigger="click" hx-get="/api/v1/exercises/preview/${exercise.getId()}" hx-target="closest .exercise-header" hx-swap="outerHTML">
-            <img src="${exercise.getThumbnail()}" />
+            <img loading="lazy" src="${exercise.getThumbnail()}" />
             <p>${exercise.getName()}</p>
         </li>
     @endfor

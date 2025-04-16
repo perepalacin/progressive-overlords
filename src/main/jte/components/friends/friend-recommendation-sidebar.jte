@@ -1,5 +1,7 @@
 @param java.util.List<progressive_overlords.entities.dao.PublicUserDao> userSuggestionList
 
+
+
 @if (!userSuggestionList.isEmpty())
     <aside class="user-suggestion-sidebar">
         <p class="font-bold mb-1">Suggested users</p>
@@ -8,7 +10,7 @@
                 <li class="flex-row w-full align-center justify-between gap-1">
                     <div class="flex-row gap-2 align-center">
                         @template.components.friends.user-logo(username = user.getUsername())
-                        <p>${user.getUsername()}</p>
+                        <p class="w-12">${user.getUsername()}</p>
                     </div>
                     @template.components.friends.follow-button(userId = user.getUserId())
                 </li>

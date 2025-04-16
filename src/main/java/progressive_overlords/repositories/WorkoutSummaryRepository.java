@@ -77,7 +77,7 @@ public class WorkoutSummaryRepository {
                 LEFT JOIN users u ON u.id = f.following_user_id
                 LEFT JOIN workouts w ON w.id = ws.workout_id
                 WHERE f.follower_user_id = ?
-                ORDER BY ws.started_at DESC
+                ORDER BY w.ended_at DESC
                 """;
 
         HashSet<WorkoutSummaryDao> result = new HashSet<>();
@@ -118,6 +118,88 @@ public class WorkoutSummaryRepository {
                 result.add(newWorkout);
             }
              return rs;
+        }, 3*(page+1), userId);
+
+        return result.stream().toList();
+    }
+
+    public List<WorkoutSummaryDao> getOwnActivity (int page) {
+        // TODO implement the correct query!
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            return null;
+        }
+
+        //TODO: Add workout name!
+        String sqlStatement = """
+                WITH limited_workouts AS (
+                    SELECT workout_id
+                    FROM workouts_summary ws
+                    JOIN friends f ON f.following_user_id = ws.user_id
+                    WHERE f.follower_user_id = '382efc6f-03e8-4a58-9882-c2b9daa00830'
+                    GROUP BY workout_id
+                    ORDER BY MAX(ws.started_at) DESC
+                    LIMIT ?
+                )
+                SELECT
+                    w.name AS name,
+                    ws.workout_id AS workout_id,
+                    ws.duration AS duration,
+                    ws.volume AS volume,
+                    ws.started_at AS started_at,
+                    wes.exercise_id AS exercise_id,
+                    wes.sets AS sets,
+                    wes.exercise_num AS exercise_num,
+                    u.id AS id,
+                    u.username AS username
+                FROM workouts_summary ws
+                JOIN limited_workouts lw ON lw.workout_id = ws.workout_id
+                LEFT JOIN workout_exercises_summary wes ON wes.workout_id = ws.workout_id
+                LEFT JOIN friends f ON f.following_user_id = ws.user_id
+                LEFT JOIN users u ON u.id = f.following_user_id
+                LEFT JOIN workouts w ON w.id = ws.workout_id
+                WHERE f.follower_user_id = ?
+                ORDER BY w.ended_at DESC
+                """;
+
+        HashSet<WorkoutSummaryDao> result = new HashSet<>();
+
+        jdbcTemplate.query(sqlStatement, (rs, rowNum) -> {
+            int workoutId = rs.getInt("workout_id");
+            boolean found = false;
+            for (WorkoutSummaryDao workoutSummary : result) {
+                if (workoutSummary.getWorkoutId() == workoutId) {
+                    System.out.println("found existing workout" + workoutId + rs.getInt("exercise_num"));
+                    found = true;
+                    workoutSummary.getWorkoutExercises().add(
+                            WorkoutExerciseDao.builder()
+                                    .setsCount(rs.getInt("sets"))
+                                    .exerciseNum(rs.getInt("exercise_num"))
+                                    .exerciseId(rs.getInt("exercise_id"))
+                                    .build()
+                    );
+                }
+            }
+            if (!found) {
+                System.out.println("Workout not found, creating a ne one" + workoutId + rs.getInt("exercise_num"));
+                WorkoutSummaryDao newWorkout =  WorkoutSummaryDao.builder()
+                        .name(rs.getString("name"))
+                        .publicUserDao(PublicUserDao.builder().userId((UUID) rs.getObject("id")).username(rs.getString("username")).build())
+                        .workoutId(rs.getInt("workout_id"))
+                        .startDate(rs.getString("started_at"))
+                        .volume(rs.getDouble("volume"))
+                        .workoutExercises(new ArrayList<>())
+                        .duration(rs.getInt("duration"))
+                        .build();
+                newWorkout.getWorkoutExercises().add(
+                        WorkoutExerciseDao.builder()
+                                .setsCount(rs.getInt("sets"))
+                                .exerciseId(rs.getInt("exercise_id"))
+                                .exerciseNum(rs.getInt("exercise_num"))
+                                .build());
+                result.add(newWorkout);
+            }
+            return rs;
         }, 3*(page+1), userId);
 
         return result.stream().toList();

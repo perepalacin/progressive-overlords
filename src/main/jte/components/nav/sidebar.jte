@@ -16,7 +16,7 @@
             <img src="../icons/dumbell.svg" />
             Routines
         </a>
-        <a class="${"Records".equals(activeTab) ? "active" : ""}" href="/stats">
+        <a class="${"records".equals(activeTab) ? "active" : ""}" href="/stats">
             <img src="../icons/chart-column.svg" />
             Records
         </a>

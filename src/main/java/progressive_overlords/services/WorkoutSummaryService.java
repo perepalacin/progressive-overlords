@@ -5,6 +5,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import progressive_overlords.entities.dao.PublicUserDao;
 import progressive_overlords.entities.dao.WorkoutDao;
+import progressive_overlords.entities.dao.WorkoutExerciseDao;
 import progressive_overlords.entities.dao.WorkoutSummaryDao;
 import progressive_overlords.repositories.WorkoutSummaryRepository;
 import progressive_overlords.utils.TimeDiffHelper;
@@ -17,9 +18,16 @@ import java.util.UUID;
 public class WorkoutSummaryService {
 
     private final WorkoutSummaryRepository workoutSummaryRepository;
+    private final ExercisesService exercisesService;
 
     public List<WorkoutSummaryDao> getFriendsActivitySummary (int page) {
-        return workoutSummaryRepository.getFriendsActivity(page);
+        List<WorkoutSummaryDao> friendSummaries = workoutSummaryRepository.getFriendsActivity(page);
+        for (WorkoutSummaryDao summary : friendSummaries) {
+            for (WorkoutExerciseDao workoutExerciseDao : summary.getWorkoutExercises()) {
+                workoutExerciseDao.setExercise(exercisesService.getById(workoutExerciseDao.getExerciseId()));
+            }
+        }
+        return friendSummaries;
     }
 
     @Async

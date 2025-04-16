@@ -41,6 +41,7 @@ public class WorkoutRepository {
                 wt.template_id,
                 wt.started_at,
                 wt.ended_at,
+                wt.user_id,
                 COALESCE(json_agg(
                     json_build_object(
                         'id', wte.id,
@@ -54,9 +55,10 @@ public class WorkoutRepository {
                 ) FILTER (WHERE wte.exercise_id IS NOT NULL), '[]') AS exercises
             FROM workouts wt
             LEFT JOIN workout_exercises wte ON wt.id = wte.workout_id
-            WHERE wt.user_id = ? AND wt.id = ? AND wt.is_template = false
+            WHERE wt.id = ? AND wt.is_template = false
             GROUP BY wt.id
         """;
+//        AND wt.user_id = ?
 
         List<WorkoutDao> workoutList = jdbcTemplate.query(sql, (rs, rowNum) -> {
             String setsJson = rs.getString("exercises");
@@ -79,6 +81,7 @@ public class WorkoutRepository {
                     .isTemplate(rs.getBoolean("is_template"))
                     .startDate(rs.getString("started_at"))
                     .endDate(rs.getString("ended_at"))
+                    .userId((UUID) rs.getObject("user_id"))
                     .build();
 
             if (setList != null && !setList.isEmpty()) {
@@ -86,7 +89,7 @@ public class WorkoutRepository {
             }
 
             return workout;
-        }, userId, workoutId);
+        }, workoutId);
 
         return workoutList.isEmpty() ? null : workoutList.get(0);
     }

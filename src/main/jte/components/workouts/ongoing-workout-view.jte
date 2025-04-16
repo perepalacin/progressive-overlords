@@ -4,12 +4,14 @@
     <div id="workoutForm">
         <div class="flex-row align-center justify-between">
             <h1>${workout.getName()}</h1>
+            @if(workout.getEndDate() == null)
             <div class="flex-row gap-1 align-center">
                 <p id="timer">00:00:00</p>
                 <button hx-patch="/api/v1/workouts/finish/${workout.getId()}" hx-swap="none" hx-trigger="click" class="button main-button" type="submit">
                     Finish
                 </button>
             </div>
+            @endif
         </div>
         <ul id="exerciseContainer">
             @if(workout != null && !workout.getExercises().isEmpty())
@@ -173,10 +175,12 @@
     </div>
 </template>
 
+@if(workout.getEndDate() == null)
 <script src="../scripts/timer.js">
 </script>
 <script>
     startElapsedTimer("${workout.getStartDate()}");
 </script>
+@endif
 <script type="module" src="../scripts/create-workout.js"></script>
 <script type="module" src="../scripts/send-template.js"></script>

@@ -1,15 +1,15 @@
 package gg.jte.generated.ondemand.components.friends;
 public final class JtefriendrecommendationsidebarGenerated {
 	public static final String JTE_NAME = "components/friends/friend-recommendation-sidebar.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,0,0,2,2,2,6,6,9,9,10,10,10,12,12,14,14,17,17,18,18,18,0,0,0,0};
+	public static final int[] JTE_LINE_INFO = {0,0,0,0,4,4,4,8,8,11,11,12,12,12,14,14,16,16,19,19,20,20,20,0,0,0,0};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, java.util.List<progressive_overlords.entities.dao.PublicUserDao> userSuggestionList) {
-		jteOutput.writeContent("\n");
+		jteOutput.writeContent("\n\n\n");
 		if (!userSuggestionList.isEmpty()) {
 			jteOutput.writeContent("\n    <aside class=\"user-suggestion-sidebar\">\n        <p class=\"font-bold mb-1\">Suggested users</p>\n        <ul class=\"flex-column gap-1\">\n           ");
 			for (progressive_overlords.entities.dao.PublicUserDao user : userSuggestionList) {
 				jteOutput.writeContent("\n                <li class=\"flex-row w-full align-center justify-between gap-1\">\n                    <div class=\"flex-row gap-2 align-center\">\n                        ");
 				gg.jte.generated.ondemand.components.friends.JteuserlogoGenerated.render(jteOutput, jteHtmlInterceptor, user.getUsername());
-				jteOutput.writeContent("\n                        <p>");
+				jteOutput.writeContent("\n                        <p class=\"w-12\">");
 				jteOutput.setContext("p", null);
 				jteOutput.writeUserContent(user.getUsername());
 				jteOutput.writeContent("</p>\n                    </div>\n                    ");

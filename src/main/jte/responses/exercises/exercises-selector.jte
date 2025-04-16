@@ -2,7 +2,7 @@
     @template.components.exercises.exercises-dropdown()
     <div class="flex-row gap-025">
         <button type="button" class="ghost-button-icon remove-exercise-btn">
-            <img src="../icons/trash.svg" style="width: 1rem" />
+            <img loading="lazy" src="../icons/trash.svg" style="width: 1rem" />
         </button>
     </div>
 </div>

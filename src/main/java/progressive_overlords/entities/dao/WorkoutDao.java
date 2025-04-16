@@ -28,6 +28,7 @@ public class WorkoutDao {
     private boolean isTemplate;
     private Integer templateId;
     private AggregatedWorkoutDataDao aggregatedWorkoutData;
+    private UUID userId;
 
 
     public List<SetDao> getFlatSetsList () {

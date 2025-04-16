@@ -122,6 +122,11 @@ input:focus, textarea:focus {
   width: 100%;
 }
 
+.w-12 {
+    width: 12rem;
+    min-width: 12rem;
+}
+
 .px-1 {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -139,6 +144,11 @@ input:focus, textarea:focus {
 
 .m-0 {
   margin: 0;
+}
+
+.my-025 {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
 }
 
 .mt-1 {
@@ -219,6 +229,10 @@ input:focus, textarea:focus {
 
 .font-bold {
   font-weight: 600;
+}
+
+.font-normal {
+    font-weight: 400;
 }
 
 .font-light {
@@ -708,6 +722,18 @@ nav a img {
     border-radius: 0.5rem;
     border: 1px solid var(--hover-bg-color);
     background-color: var(--main-bg);
+}
+
+.feed-item {
+    padding: 1rem 2rem;
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid var(--hover-bg-color);
+    background-color: var(--main-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1rem;
 }
 
 .user-details-sidebar {
