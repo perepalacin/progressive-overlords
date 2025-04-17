@@ -18,4 +18,5 @@ public class SetDao {
     private float weight;
     private String annotation;
     private boolean isCompleted;
+    private String createdAt;
 }

@@ -1,7 +1,4 @@
 @param java.util.List<progressive_overlords.entities.dao.PublicUserDao> userSuggestionList
-
-
-
 @if (!userSuggestionList.isEmpty())
     <aside class="user-suggestion-sidebar">
         <p class="font-bold mb-1">Suggested users</p>

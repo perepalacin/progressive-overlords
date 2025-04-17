@@ -8,11 +8,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import progressive_overlords.entities.dao.WorkoutDao;
+import progressive_overlords.entities.dao.WorkoutSummaryDao;
 import progressive_overlords.entities.dto.WorkoutDto;
 import progressive_overlords.exceptions.BadRequestException;
 import progressive_overlords.services.RoutinesService;
 import progressive_overlords.services.WorkoutService;
+import progressive_overlords.services.WorkoutSummaryService;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -20,6 +23,7 @@ import java.util.UUID;
 public class WorkoutController {
 
     private final WorkoutService workoutService;
+    private final WorkoutSummaryService workoutSummaryService;
 
     @GetMapping("/workout/{workoutId}")
     public String getWorkoutView(@PathVariable int workoutId, Model model) {
@@ -32,6 +36,22 @@ public class WorkoutController {
         }
         model.addAttribute("isEditable", workout.getUserId().equals(userId));
         return "pages/workouts/ongoing-workout-view";
+    }
+
+    @GetMapping("/history")
+    public String getOwnHistory(Model model) {
+        List<WorkoutSummaryDao> workoutHistory =  workoutSummaryService.getOwnActivity(0);
+        model.addAttribute("workoutHistory", workoutHistory);
+        return "pages/workouts/workout-history";
+    }
+
+    @GetMapping("/api/v1/history")
+    public String getPersonalWorkoutHistory(@RequestParam int page, Model model) {
+        List<WorkoutSummaryDao> workoutHistory =  workoutSummaryService.getOwnActivity(page);
+        model.addAttribute("feedActivity", workoutHistory);
+        model.addAttribute("isOwnWorkout", true);
+        model.addAttribute("newPage", page+1);
+        return "components/feeds/feed-activity-items";
     }
 
     @GetMapping("/edit-workout/{workoutId}")

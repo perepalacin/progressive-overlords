@@ -242,5 +242,32 @@ public class SetsRepository {
         jdbcTemplate.update(deleteSetsSQL, workoutId, exerciseNum, exerciseId, userId);
     }
 
+    public List<SetDao> getLastUserExerciseSets(int exerciseId, int limit) {
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userId == null) {
+            //TODO: Throw invalid!;
+        }
+        String sqlStatement = """
+            SELECT *
+            FROM workout_exercises
+            WHERE
+                exercise_id = ? AND user_id = ? AND is_warmup = false
+            ORDER BY
+                created_at DESC
+            LIMIT ?
+        """;
+
+        List<SetDao> setList = jdbcTemplate.query(sqlStatement, (rs, rowNum) -> {
+            return SetDao.builder()
+                    .id(rs.getInt("id"))
+                    .workoutId(rs.getInt("workout_id"))
+                    .reps(rs.getFloat("reps"))
+                    .weight(rs.getFloat("weight"))
+                    .createdAt(rs.getString("created_at"))
+                    .build();
+        }, exerciseId, userId, limit);
+        return setList.isEmpty() ? null : setList;
+    }
+
 
 }

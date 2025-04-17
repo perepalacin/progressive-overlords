@@ -1,8 +1,7 @@
 package progressive_overlords.controllers;
 
-import jakarta.servlet.http.HttpServletResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import progressive_overlords.entities.dao.ExerciseDao;
+import progressive_overlords.entities.dao.ExerciseUserDataDao;
 import progressive_overlords.services.ExercisesService;
 
 import java.util.List;
@@ -34,11 +34,14 @@ public class ExercisesController {
     }
 
     @GetMapping
-    public String getExercises(HttpServletResponse httpServletResponse, @RequestParam int page, @RequestParam(required = false) String query, Model model) {
+    public String getExercises(@RequestParam int page, @RequestParam(required = false) boolean data, @RequestParam(required = false) String query, Model model) {
         List<ExerciseDao> exercisesDao = exercisesService.getExercises(page, query);
         model.addAttribute("exercises", exercisesDao);
         model.addAttribute("page", page);
         model.addAttribute("query", query);
+        if (data) {
+            return "responses/exercises/exercises-data-dropdown";
+        }
         return "responses/exercises/exercises-dropdown";
     }
 
@@ -54,6 +57,22 @@ public class ExercisesController {
     @GetMapping("/selector")
     public String getExerciseSelector() {
         return "responses/exercises/exercises-selector";
+    }
+
+    @GetMapping("/data/{exerciseId}")
+    public String getExerciseStatistic(@PathVariable int exerciseId, Model model) {
+        ExerciseDao exercise = exercisesService.getById(exerciseId);
+        ExerciseUserDataDao userData = exercisesService.getExerciseUserData(exerciseId);
+        model.addAttribute("exercise", exercise);
+        model.addAttribute("userData", userData);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            model.addAttribute("chartValues", objectMapper.writeValueAsString(userData.getValues()));
+            System.out.println(objectMapper.writeValueAsString(userData.getValues()));
+        } catch (Exception e) {
+            model.addAttribute("chartValues", "");
+        }
+        return "components/exercises/exercise-user-data";
     }
 }
 

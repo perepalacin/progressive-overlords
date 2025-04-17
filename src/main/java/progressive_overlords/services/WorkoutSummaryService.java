@@ -30,6 +30,16 @@ public class WorkoutSummaryService {
         return friendSummaries;
     }
 
+    public List<WorkoutSummaryDao> getOwnActivity (int page) {
+        List<WorkoutSummaryDao> ownSummaries = workoutSummaryRepository.getOwnActivity(page);
+        for (WorkoutSummaryDao summary : ownSummaries) {
+            for (WorkoutExerciseDao workoutExerciseDao : summary.getWorkoutExercises()) {
+                workoutExerciseDao.setExercise(exercisesService.getById(workoutExerciseDao.getExerciseId()));
+            }
+        }
+        return ownSummaries;
+    }
+
     @Async
     public void createWorkoutSummary (WorkoutDao finishedWorkout, UUID userId) {
         finishedWorkout.generateWorkoutAggregatedData();

@@ -127,6 +127,11 @@ input:focus, textarea:focus {
     min-width: 12rem;
 }
 
+.w-6 {
+    width: 6rem;
+    min-width: 6rem;
+}
+
 .px-1 {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -793,6 +798,32 @@ nav a img {
     left: 0;
     right: 0;
     margin: auto;
+}
+
+.exercise-kpis {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: stretch;
+    gap: 1rem;
+}
+
+.exercise-kpis div {
+    padding: 1rem;
+    border: 1px solid var(--hover-bg-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    gap: 1rem;
+    background-color: var(--main-bg);
+}
+
+#exercises-sidebar {
+    overflow-y: scroll;
+    max-height: 70vh;
+    margin-top: 1rem;
 }
 
 @keyframes float {

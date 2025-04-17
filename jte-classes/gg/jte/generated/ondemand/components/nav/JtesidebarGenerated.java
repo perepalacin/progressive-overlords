@@ -30,7 +30,7 @@ public final class JtesidebarGenerated {
 			jteOutput.setContext("a", null);
 			jteOutput.writeContent("\"");
 		}
-		jteOutput.writeContent(" href=\"/stats\">\n            <img src=\"../icons/chart-column.svg\" />\n            Records\n        </a>\n        <a");
+		jteOutput.writeContent(" href=\"/records\">\n            <img src=\"../icons/chart-column.svg\" />\n            Records\n        </a>\n        <a");
 		var __jte_html_attribute_3 = "compare".equals(activeTab) ? "active" : "";
 		if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_3)) {
 			jteOutput.writeContent(" class=\"");

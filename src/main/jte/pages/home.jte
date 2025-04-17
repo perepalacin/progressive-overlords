@@ -7,7 +7,7 @@
         <div class="px-2 py-1 flex-column w-full align-center">
             <h1 style="align-self: start">Home</h1>
             <div class="px-2 py-1 flex-column w-full" style="max-width: 800px">
-                @template.components.feeds.feed-activity(feedActivity = feedActivity, isOwnWorkout = false)
+                @template.components.feeds.feed-activity(feedActivity = feedActivity, isOwnWorkout = false, newPage = 1)
             </div>
         </div>
         <div class="flex-column gap-1 mobile-hidden px-1 py-1">

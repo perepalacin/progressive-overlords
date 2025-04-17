@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import progressive_overlords.entities.dao.PublicUserDao;
-import progressive_overlords.entities.dao.WorkoutDao;
 import progressive_overlords.entities.dao.WorkoutExerciseDao;
 import progressive_overlords.entities.dao.WorkoutSummaryDao;
 
@@ -54,10 +53,10 @@ public class WorkoutSummaryRepository {
                     SELECT workout_id
                     FROM workouts_summary ws
                     JOIN friends f ON f.following_user_id = ws.user_id
-                    WHERE f.follower_user_id = '382efc6f-03e8-4a58-9882-c2b9daa00830'
+                    WHERE f.follower_user_id = ?
                     GROUP BY workout_id
                     ORDER BY MAX(ws.started_at) DESC
-                    LIMIT ?
+                    LIMIT ? OFFSET ?
                 )
                 SELECT
                     w.name AS name,
@@ -87,7 +86,6 @@ public class WorkoutSummaryRepository {
             boolean found = false;
             for (WorkoutSummaryDao workoutSummary : result) {
                 if (workoutSummary.getWorkoutId() == workoutId) {
-                    System.out.println("found existing workout" + workoutId + rs.getInt("exercise_num"));
                     found = true;
                     workoutSummary.getWorkoutExercises().add(
                             WorkoutExerciseDao.builder()
@@ -99,7 +97,6 @@ public class WorkoutSummaryRepository {
                 }
             }
             if (!found) {
-                System.out.println("Workout not found, creating a ne one" + workoutId + rs.getInt("exercise_num"));
                 WorkoutSummaryDao newWorkout =  WorkoutSummaryDao.builder()
                         .name(rs.getString("name"))
                         .publicUserDao(PublicUserDao.builder().userId((UUID) rs.getObject("id")).username(rs.getString("username")).build())
@@ -118,7 +115,7 @@ public class WorkoutSummaryRepository {
                 result.add(newWorkout);
             }
              return rs;
-        }, 3*(page+1), userId);
+        }, userId, 4*(page+1), 4*(page), userId);
 
         return result.stream().toList();
     }
@@ -135,11 +132,10 @@ public class WorkoutSummaryRepository {
                 WITH limited_workouts AS (
                     SELECT workout_id
                     FROM workouts_summary ws
-                    JOIN friends f ON f.following_user_id = ws.user_id
-                    WHERE f.follower_user_id = '382efc6f-03e8-4a58-9882-c2b9daa00830'
+                    WHERE ws.user_id = ?
                     GROUP BY workout_id
                     ORDER BY MAX(ws.started_at) DESC
-                    LIMIT ?
+                    LIMIT ? OFFSET ?
                 )
                 SELECT
                     w.name AS name,
@@ -149,16 +145,12 @@ public class WorkoutSummaryRepository {
                     ws.started_at AS started_at,
                     wes.exercise_id AS exercise_id,
                     wes.sets AS sets,
-                    wes.exercise_num AS exercise_num,
-                    u.id AS id,
-                    u.username AS username
+                    wes.exercise_num AS exercise_num
                 FROM workouts_summary ws
                 JOIN limited_workouts lw ON lw.workout_id = ws.workout_id
                 LEFT JOIN workout_exercises_summary wes ON wes.workout_id = ws.workout_id
-                LEFT JOIN friends f ON f.following_user_id = ws.user_id
-                LEFT JOIN users u ON u.id = f.following_user_id
                 LEFT JOIN workouts w ON w.id = ws.workout_id
-                WHERE f.follower_user_id = ?
+                WHERE ws.user_id = ?
                 ORDER BY w.ended_at DESC
                 """;
 
@@ -169,7 +161,6 @@ public class WorkoutSummaryRepository {
             boolean found = false;
             for (WorkoutSummaryDao workoutSummary : result) {
                 if (workoutSummary.getWorkoutId() == workoutId) {
-                    System.out.println("found existing workout" + workoutId + rs.getInt("exercise_num"));
                     found = true;
                     workoutSummary.getWorkoutExercises().add(
                             WorkoutExerciseDao.builder()
@@ -181,10 +172,8 @@ public class WorkoutSummaryRepository {
                 }
             }
             if (!found) {
-                System.out.println("Workout not found, creating a ne one" + workoutId + rs.getInt("exercise_num"));
                 WorkoutSummaryDao newWorkout =  WorkoutSummaryDao.builder()
                         .name(rs.getString("name"))
-                        .publicUserDao(PublicUserDao.builder().userId((UUID) rs.getObject("id")).username(rs.getString("username")).build())
                         .workoutId(rs.getInt("workout_id"))
                         .startDate(rs.getString("started_at"))
                         .volume(rs.getDouble("volume"))
@@ -200,7 +189,7 @@ public class WorkoutSummaryRepository {
                 result.add(newWorkout);
             }
             return rs;
-        }, 3*(page+1), userId);
+        }, userId, 4*(page+1), 4*(page), userId);
 
         return result.stream().toList();
     }
