@@ -7,7 +7,7 @@
         <div class="flex-row align-center gap-1">
             <a href="/history">
                 <button class="button main-button gap-05">
-                    View workout history
+                    Select exercise
                 </button>
             </a>
         </div>
@@ -16,7 +16,7 @@
         <div class="w-full" id="exercise-data-container">
             <h3>Select an exercise to check your statistics</h3>
         </div>
-        <div style="min-width: 18rem">
+        <div style="min-width: 18rem" class="flex-column">
             @template.components.exercises.exercise-sidebar(exercises = exercises)
         </div>
     </div>

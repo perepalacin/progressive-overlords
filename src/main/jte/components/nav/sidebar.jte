@@ -20,9 +20,9 @@
             <img src="../icons/chart-column.svg" />
             Records
         </a>
-        <a class="${"compare".equals(activeTab) ? "active" : ""}" href="/compare">
-            <img src="../icons/users.svg" />
-            Compare
+        <a class="${"history".equals(activeTab) ? "active" : ""}" href="/history">
+            <img src="../icons/history.svg" />
+            History
         </a>
     </nav>
     <div class="logout-section">

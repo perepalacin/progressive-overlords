@@ -24,7 +24,9 @@
         </div>
     </div>
 @endif
+@if(userData != null)
 <div id="chart-container"></div>
+@endif
 <script type="module" src="../scripts/line-chart.js"></script>
 <script type="module">
     @if(chartValues != null && !chartValues.isEmpty())

@@ -31,7 +31,7 @@ public final class JtesidebarGenerated {
 			jteOutput.writeContent("\"");
 		}
 		jteOutput.writeContent(" href=\"/records\">\n            <img src=\"../icons/chart-column.svg\" />\n            Records\n        </a>\n        <a");
-		var __jte_html_attribute_3 = "compare".equals(activeTab) ? "active" : "";
+		var __jte_html_attribute_3 = "history".equals(activeTab) ? "active" : "";
 		if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_3)) {
 			jteOutput.writeContent(" class=\"");
 			jteOutput.setContext("a", "class");
@@ -39,7 +39,7 @@ public final class JtesidebarGenerated {
 			jteOutput.setContext("a", null);
 			jteOutput.writeContent("\"");
 		}
-		jteOutput.writeContent(" href=\"/compare\">\n            <img src=\"../icons/users.svg\" />\n            Compare\n        </a>\n    </nav>\n    <div class=\"logout-section\">\n        <div class=\"flex-row align-center gap-05\">\n            ");
+		jteOutput.writeContent(" href=\"/history\">\n            <img src=\"../icons/history.svg\" />\n            History\n        </a>\n    </nav>\n    <div class=\"logout-section\">\n        <div class=\"flex-row align-center gap-05\">\n            ");
 		gg.jte.generated.ondemand.components.friends.JteuserlogoGenerated.render(jteOutput, jteHtmlInterceptor, "perepalacin");
 		jteOutput.writeContent("\n            <p>Username</p>\n        </div>\n        <button hx-post=\"/api/v1/auth/logout\" hx-swap=\"none\" class=\"ghost-button-icon\">\n            <img src=\"https://unpkg.com/lucide-static@latest/icons/log-out.svg\" style=\"width: 1.2rem\" />\n        </button>\n    </div>\n</section>\n<div class=\"sidebar-filler\">\n</div>");
 	}

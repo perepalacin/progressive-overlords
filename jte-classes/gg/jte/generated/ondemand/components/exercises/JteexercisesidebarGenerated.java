@@ -1,10 +1,9 @@
 package gg.jte.generated.ondemand.components.exercises;
 public final class JteexercisesidebarGenerated {
 	public static final String JTE_NAME = "components/exercises/exercise-sidebar.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,0,0,2,2,15,15,16,16,17,17,23,23,23,0,0,0,0};
+	public static final int[] JTE_LINE_INFO = {0,0,0,0,13,13,13,14,14,15,15,21,21,21,0,0,0,0};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, java.util.List<progressive_overlords.entities.dao.ExerciseDao> exercises) {
-		jteOutput.writeContent("\n");
-		jteOutput.writeContent("\n<input type=\"search\"\n    name=\"query\"\n    required\n    autocomplete=\"off\"\n    hx-trigger=\"input changed delay:500ms, keyup[key=='Enter'], click\"\n    hx-get=\"/api/v1/exercises?page=0&data=true\"\n    placeholder=\"Search exercises\"\n    hx-target=\"#exercises-sidebar\"\n    hx-swap=\"innerHTML\"\n    class=\"w-full\"\n>\n<div id=\"exercises-sidebar\">\n    ");
+		jteOutput.writeContent("<input type=\"search\"\n    name=\"query\"\n    required\n    autocomplete=\"off\"\n    hx-trigger=\"input changed delay:500ms, keyup[key=='Enter'], click\"\n    hx-get=\"/api/v1/exercises?page=0&data=true\"\n    placeholder=\"Search exercises\"\n    hx-target=\"#exercises-sidebar\"\n    hx-swap=\"innerHTML\"\n    class=\"w-full\"\n>\n<div id=\"exercises-sidebar\">\n    ");
 		for (progressive_overlords.entities.dao.ExerciseDao exercise : exercises) {
 			jteOutput.writeContent("\n        ");
 			gg.jte.generated.ondemand.components.exercises.JteexerciseitemGenerated.render(jteOutput, jteHtmlInterceptor, exercise);

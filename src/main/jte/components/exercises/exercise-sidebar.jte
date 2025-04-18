@@ -1,6 +1,4 @@
 @param java.util.List<progressive_overlords.entities.dao.ExerciseDao> exercises
-
-<%--DESKTOP--%>
 <input type="search"
     name="query"
     required
@@ -21,4 +19,3 @@
     </button>
 </div>
 
-<%--MOBILE--%>

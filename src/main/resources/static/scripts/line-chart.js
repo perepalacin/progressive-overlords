@@ -1,9 +1,37 @@
+const getPreferredTextColor = () => {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return '#ffffff';
+    } else {
+        return '#333333';
+    }
+};
+
+const getPreferredLinesColor = () => {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return '#2b2b2b';
+    } else {
+        return '#e8e8e8';
+    }
+};
+
+const getPreferredTooltipBgColor = () => {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'rgba(50, 50, 50, 0.7)';
+    } else {
+        return 'rgba(255, 255, 255, 0.9)';
+    }
+};
+
 export function drawLineChart (chartValues) {
     const chartContainer = document.getElementById('chart-container');
         if (chartContainer) {
             const myChart = echarts.init(chartContainer);
 
             const rawData = chartValues;
+
+            const textColor = getPreferredTextColor();
+            const linesColor = getPreferredLinesColor();
+            const tooltipBgColor = getPreferredTooltipBgColor();
 
             const formatDate = (dateString) => {
                 const date = new Date(dateString);
@@ -19,7 +47,14 @@ export function drawLineChart (chartValues) {
             ]);
 
             const options = {
-                backgroundColor: '#add8e6',
+                title: {
+                    text: 'Your Progression',
+                    left: 'center',
+                    textStyle: {
+                        color: textColor
+                    }
+                },
+                backgroundColor: 'transparent',
                 tooltip: {
                     trigger: 'axis',
                     formatter: function (params) {
@@ -31,47 +66,76 @@ export function drawLineChart (chartValues) {
                     },
                     axisPointer: {
                         animation: false
-                    }
+                    },
+                    textStyle: {
+                        fontSize: 16,
+                        color: textColor
+                    },
+                    backgroundColor: tooltipBgColor
                 },
                 xAxis: {
                     type: 'time',
                     boundaryGap: false,
+                    splitNumber: 4,
                     axisLabel: {
                         formatter: function (value) {
                             const date = new Date(value);
                             return formatDate(date);
-                        }
+                        },
+                        fontSize: 16,
+                        color: textColor
                     },
-                     axisLine: {
+                    axisLine: {
                         lineStyle: {
-                            color: '#333'
+                            color: textColor
                         }
                     },
                     axisTick: {
-                        alignWithLabel: true
+                        alignWithLabel: true,
+                        lineStyle: {
+                            color: textColor
+                        }
+                    },
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            color: [linesColor],
+//                            type: 'dashed'
+                        }
                     }
                 },
                 yAxis: {
                     type: 'value',
-                    name: 'kilograms',
-                     axisLine: {
-                        lineStyle: {
-                            color: '#333'
-                        }
-                    },
+                    splitNumber: 4,
                     axisLabel: {
-                         formatter: '{value} kg'
+                        formatter: '{value} kg',
+                        fontSize: 14,
+                        color: textColor
+                    },
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            color: [linesColor],
+//                            type: 'dashed'
+                        }
                     }
                 },
                 series: [{
-                    name: 'ERP',
+                name: 'ERP',
                     type: 'line',
                     showSymbol: true,
                     itemStyle: {
-                        color: 'red'
+                        color: '#C4554D'
                     },
-                    data: seriesData
-                }]
+                    data: seriesData,
+                }],
+                grid: {
+                    left: '2%',
+                    right: '2%',
+                    bottom: '5%',
+                    top: '8%',
+                    containLabel: true
+                }
             };
 
             myChart.setOption(options);
