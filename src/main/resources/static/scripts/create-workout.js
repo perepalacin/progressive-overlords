@@ -10,6 +10,12 @@ document.body.addEventListener("htmx:afterRequest", function(event) {
 
 document.body.addEventListener("htmx:afterSwap", function(event) {
     const newElement = event.detail.elt;
+    if (event?.detail?.requestConfig?.triggeringEvent?.data) {
+        const dropdowns = document.querySelectorAll(".exercises-drop-down-response");
+        if (dropdowns && dropdowns.length !== 0) {
+            dropdowns.forEach((dropdown, index) => {if (index !== dropdowns.length -1) {dropdown.remove()}});
+        }
+    }
     console.log(event.detail);
     const requestPath = event.detail.requestConfig.path.split("/");
     const newExerciseId = requestPath[requestPath.length -1];

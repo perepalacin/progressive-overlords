@@ -52,9 +52,6 @@ public class UsersRepository {
 
     public PublicUserDao getOwnPublicDetails () {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            return null;
-        }
 
         String sqlStatement = """
                 SELECT u.id, u.username, agg_u.followers, agg_u.following, agg_u.workouts

@@ -43,11 +43,7 @@ public class WorkoutSummaryRepository {
 
     public List<WorkoutSummaryDao> getFriendsActivity (int page) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            return null;
-        }
 
-        //TODO: Add workout name!
         String sqlStatement = """
                 WITH limited_workouts AS (
                     SELECT workout_id
@@ -121,13 +117,8 @@ public class WorkoutSummaryRepository {
     }
 
     public List<WorkoutSummaryDao> getOwnActivity (int page) {
-        // TODO implement the correct query!
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            return null;
-        }
 
-        //TODO: Add workout name!
         String sqlStatement = """
                 WITH limited_workouts AS (
                     SELECT workout_id

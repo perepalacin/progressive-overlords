@@ -45,7 +45,6 @@ public class FriendsRepository {
 
     public List<PublicUserDao> getUserFriendList() {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //Method!
         String sql = """
                 SELECT u.*
                 FROM progressive_overlords.users u
@@ -64,7 +63,6 @@ public class FriendsRepository {
 
     public boolean followUser (UUID userId) {
         UUID currentUserId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         try {
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(
@@ -83,7 +81,6 @@ public class FriendsRepository {
 
     public boolean unFollowUser (UUID userId) {
         UUID currentUserId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         try {
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement("DELETE FROM friends WHERE follower_user_id = ? AND following_user_id = ?");

@@ -46,4 +46,5 @@ public class UserService {
     public PublicUserDao getOwnUserDetails () {
         return usersRepository.getOwnPublicDetails();
     }
+
 }

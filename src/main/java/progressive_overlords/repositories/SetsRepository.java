@@ -7,7 +7,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import progressive_overlords.entities.dao.SetDao;
-import progressive_overlords.entities.dto.SetDto;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -23,9 +22,6 @@ public class SetsRepository {
 
     public SetDao getByWorkoutIdExerciseNumIdAndSetNum(int workoutId, int exerciseNum, int exerciseId, int setNum) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            //TODO: Throw invalid!;
-        }
         String sqlStatement = """
             SELECT
                 id,
@@ -59,9 +55,6 @@ public class SetsRepository {
 
     public SetDao getById(int id) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            //TODO: Throw invalid!;
-        }
 
         String sqlStatement = """
             SELECT
@@ -96,10 +89,6 @@ public class SetsRepository {
 
     public List<SetDao> getListBySetId (int setId) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            return null;
-            // TODO: Throw an exception to unauthorized request maybe?
-        }
         String sqlStatement = """
                 SELECT
                     we.id,
@@ -143,9 +132,6 @@ public class SetsRepository {
 
     public SetDao createSet(SetDao newSet) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            //TODO: Throw invalid!;
-        }
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -174,9 +160,6 @@ public class SetsRepository {
 
     public SetDao updateSet(SetDao newSet) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            //TODO: Throw unvalid!;
-        }
 
         String sqlStatement = """
                 UPDATE workout_exercises SET is_warmup = ?, reps = ?, weight = ?
@@ -196,9 +179,6 @@ public class SetsRepository {
 
     public void deleteSet(int setId) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            // TODO: Throw an exception to unauthorized request maybe?
-        }
 
         String deleteSetsSQL = """
             DELETE FROM workout_exercises
@@ -210,10 +190,6 @@ public class SetsRepository {
 
     public void updateSetList(List<SetDao> sets) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (userId == null) {
-            // TODO: Throw an exception to unauthorized request maybe?
-        }
 
         String updateSetsSQL = """
             UPDATE workout_exercises
@@ -231,9 +207,6 @@ public class SetsRepository {
 
     public void deleteExerciseFromWorkout (int workoutId, int exerciseNum, int exerciseId) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            // TODO: Throw an exception to unauthorized request maybe?
-        }
 
         String deleteSetsSQL = """
             DELETE FROM workout_exercises
@@ -244,9 +217,6 @@ public class SetsRepository {
 
     public List<SetDao> getLastUserExerciseSets(int exerciseId, int limit) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            //TODO: Throw invalid!;
-        }
         String sqlStatement = """
             SELECT *
             FROM workout_exercises

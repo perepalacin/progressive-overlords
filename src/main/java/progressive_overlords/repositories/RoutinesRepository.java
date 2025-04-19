@@ -27,9 +27,6 @@ public class RoutinesRepository {
 
     public boolean findIfExists (int routineId) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            return false;
-        }
         String sql = """
             SELECT
                 wt.id
@@ -47,9 +44,6 @@ public class RoutinesRepository {
 
     public WorkoutDao getById(int routineId) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            return null;
-        }
 
         String sql = """
             SELECT
@@ -101,9 +95,6 @@ public class RoutinesRepository {
 
     public List<WorkoutDao> getAllFromUser () {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            return null;
-        }
         String sqlStatement = "SELECT id, name, description FROM workouts WHERE template_id IS NULL AND is_template = true AND user_id = ? ORDER BY name";
         return jdbcTemplate.query(sqlStatement, (rs, rowNum) -> {
             return WorkoutDao.builder()
@@ -116,9 +107,6 @@ public class RoutinesRepository {
 
     public WorkoutDao saveRoutine (WorkoutDao routine) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            return null;
-        }
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -160,9 +148,6 @@ public class RoutinesRepository {
 
     public WorkoutDao updateRoutine (WorkoutDao routine) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            return null;
-        }
 
         String updateRoutineSQL = """
             UPDATE workouts
@@ -203,9 +188,6 @@ public class RoutinesRepository {
 
     public boolean delete (int routineId) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            return false;
-        }
 
         try {
             jdbcTemplate.update(connection -> {

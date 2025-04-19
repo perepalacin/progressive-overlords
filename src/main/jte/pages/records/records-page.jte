@@ -4,19 +4,15 @@
 <div id="workoutForm">
     <div class="flex-row align-center justify-between">
         <h1>Records</h1>
-        <div class="flex-row align-center gap-1">
-            <a href="/history">
-                <button class="button main-button gap-05">
-                    Select exercise
-                </button>
-            </a>
+        <div class="flex-row align-center gap-1 desktop-hidden">
+            @template.components.exercises.mobile-exercise-sidebar(exercises = exercises)
         </div>
     </div>
     <div class="flex-row gap-2">
         <div class="w-full" id="exercise-data-container">
             <h3>Select an exercise to check your statistics</h3>
         </div>
-        <div style="min-width: 18rem" class="flex-column">
+        <div style="min-width: 18rem" class="flex-column mobile-hidden">
             @template.components.exercises.exercise-sidebar(exercises = exercises)
         </div>
     </div>

@@ -302,7 +302,8 @@ input:focus, textarea:focus {
   justify-content: space-between;
   background-color: var(--secondary-bg);
   border-right: 1px solid var(--hover-bg-color);
-  padding: 1rem;  
+  padding: 1rem;
+  z-index: 50;
 }
 
 .sidebar-filler {
@@ -379,6 +380,11 @@ nav a img {
 .main-button {
   border: none;
   background-color: var(--active-color);
+  color: white;
+}
+
+.main-button img {
+    filter: brightness(0) invert(1);
 }
 
 .muted-button {
@@ -737,6 +743,8 @@ nav a img {
     border-radius: 0.5rem;
     border: 1px solid var(--hover-bg-color);
     background-color: var(--main-bg);
+    position: relative;
+    z-index: 1;
 }
 
 .feed-item {
@@ -844,6 +852,31 @@ nav a img {
 canvas {
   position: absolute;
   z-index: 1;
+}
+
+
+.mobile-exercise-sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 18rem;
+    min-width: 18rem;
+    background-color: var(--main-bg);
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1);
+    transform: translateX(0);
+    transition: transform 0.4s ease-in-out;
+    z-index: 100;
+    overflow-y: auto;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.mobile-exercise-sidebar-hidden {
+    transform: translateX(100%);
+}
+
+.mobile-exercise-sidebar-toggle-button {
 }
 
 /* MEDIA BREAK POINTS! */

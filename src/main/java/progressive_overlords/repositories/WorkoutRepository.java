@@ -28,9 +28,6 @@ public class WorkoutRepository {
 
     public WorkoutDao getById (int workoutId) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            return null;
-        }
 
         String sql = """
             SELECT
@@ -58,7 +55,6 @@ public class WorkoutRepository {
             WHERE wt.id = ? AND wt.is_template = false
             GROUP BY wt.id
         """;
-//        AND wt.user_id = ?
 
         List<WorkoutDao> workoutList = jdbcTemplate.query(sql, (rs, rowNum) -> {
             String setsJson = rs.getString("exercises");
@@ -96,9 +92,6 @@ public class WorkoutRepository {
 
     public boolean findIfExists (int workoutId) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            return false;
-        }
         String sql = """
             SELECT
                 wt.id
@@ -116,9 +109,6 @@ public class WorkoutRepository {
 
     public int startWorkout (WorkoutDto workoutDto) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            //TODO: Throw unvalid!;
-        }
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -170,9 +160,6 @@ public class WorkoutRepository {
 
     public boolean delete (int workoutId) {
         UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userId == null) {
-            return false;
-        }
 
         try {
             jdbcTemplate.update(connection -> {
