@@ -1,42 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="flex items-center justify-center h-screen bg-gray-100">
-
-<div class="bg-white p-6 rounded-lg shadow-lg w-96">
-    <h2 class="text-2xl font-bold text-center mb-4">Sign Up</h2>
-
-    <form hx-post="/api/v1/auth/sign-up"
-          hx-target="#error-message"
-          hx-swap="innerHTML"
-          class="space-y-4">
-
-        <div>
-            <label class="block text-gray-700">Username</label>
-            <input type="text" name="username" required
-                   class="w-full px-3 py-2 border rounded-lg focus:ring focus:ring-indigo-200">
+@template.main(tabName = "Sign up",content = @`
+    <div class="w-full flex-column align-center justify-center mt-6 text-center gap-2 ">
+        <div class="flex-row gap-1 align-center logo">
+            <img style="width: 4rem; height: 4rem;" src="https://unpkg.com/lucide-static@latest/icons/chart-no-axes-column-increasing.svg" />
+            <h1 class="m-0">Progressive Overlords</h1>
         </div>
+        <h2 class="">Welcome!</h2>
+        <p class="">Sign up to start your fitness journey</p>
 
-        <div>
-            <label class="block text-gray-700">Password</label>
-            <input type="password" name="password" required
-                   class="w-full px-3 py-2 border rounded-lg focus:ring focus:ring-indigo-200">
-        </div>
+        <form hx-post="/api/v1/auth/sign-up"
+              hx-target="#error-message"
+              hx-swap="innerHTML"
+              class="flex-column gap-2 justify-center">
 
-        <button type="submit"
-                class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">
-            Sign Up
-        </button>
-    </form>
+            <div class="flex-row gap-2 align-center">
+                <label class="auth-form-label" for="email">Email</label>
+                <input type="username" id="username" name="username" placeholder="username" required>
+            </div>
 
-    <div id="error-message" class="text-red-600 text-center mt-3"></div>
-</div>
+            <div class="flex-row gap-2 align-center">
+                <label class="auth-form-label" for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
 
-</body>
-</html>
+            <button type="submit" class="button main-button">Sign Up</button>
+            <div class="signup-link">
+                <p>You already have an account? <a class="font-bold" style="text-decoration: underline" href="/sign-in">Sign In</a></p>
+            </div>
+        </form>
+
+        <div id="error-message" class=""></div>
+    </div>
+`)
+

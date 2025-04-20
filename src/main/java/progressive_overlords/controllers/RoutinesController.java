@@ -40,6 +40,10 @@ public class RoutinesController {
     @GetMapping("/routine/{routineId}")
     public String getRoutineView (@PathVariable int routineId, Model model) {
         WorkoutDao routine = routinesService.getById(routineId);
+        if (routine == null) {
+            model.addAttribute("activeTab", "routines");
+            return "pages/errors/404";
+        }
         model.addAttribute("routine", routine);
         return "pages/routines/routine-view";
     }

@@ -281,6 +281,11 @@ input:focus, textarea:focus {
 
 /* NAV COMPONENTS */
 
+.auth-form-label {
+    width: 6rem;
+    text-align: start;
+}
+
 .logo {
   color: var(--active-color);
   font-weight: 700;

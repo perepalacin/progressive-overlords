@@ -1,5 +1,5 @@
 @param java.util.List<progressive_overlords.entities.dao.ExerciseDao> exercises
-@template.main(tabName = "Routines",content = @`
+@template.main(tabName = "Records",content = @`
 @template.components.nav.sidebar(activeTab = "records")
 <div id="workoutForm">
     <div class="flex-row align-center justify-between">

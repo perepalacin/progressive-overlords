@@ -34,6 +34,11 @@ public class SessionCookieFilter extends OncePerRequestFilter {
             return;
         }
 
+        if (requestPath != null && (requestPath.startsWith("/styles/") || requestPath.startsWith("/scripts/") || requestPath.startsWith("/css/") || requestPath.startsWith("/js/") || requestPath.startsWith("/images/") || requestPath.startsWith("/icons/") || requestPath.startsWith("/static/"))) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         Optional<Cookie> sessionCookie = getSessionCookie(request);
         if (sessionCookie.isEmpty() || !SessionsService.isTokenValid(sessionCookie.get().getValue())) {
             if ("/sign-in".equals(requestPath) || "/sign-up".equals(requestPath)) {
