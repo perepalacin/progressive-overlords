@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 dropdowns.forEach((dropdown, index) => {if (index !== dropdowns.length -1) {dropdown.remove()}});
             }
         }
-    }
+    });
 
     processExerciseDropdowns();
 });

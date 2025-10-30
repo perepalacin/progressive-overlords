@@ -36,3 +36,5 @@ build/
 
 ### node modules ###
 /src/main/frontend/node_modules
+
+jte-classes/
